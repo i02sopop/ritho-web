@@ -1,0 +1,7 @@
+2011-02-09  Pablo Álvarez de Sotomayor Posadillo  <palvarez@ritho.net>
+
+	* style.css: Initial style of the index web page.
+
+	* index.html: Begins the Ritho's project web page in html5 adding
+	a basic structure to the web page.
+
