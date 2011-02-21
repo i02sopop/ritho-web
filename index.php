@@ -32,5 +32,5 @@ $index->head->gsVerification = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
 $index->header = new Template('header');
 $index->footer = new Template('footer'); 
 
-$index->render(TRUE);
+echo $index->render(FALSE);
 ?>
