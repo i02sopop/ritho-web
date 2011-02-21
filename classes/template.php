@@ -51,8 +51,7 @@ class Template {
    * @param print (bool): Check if the template has to be printed out
    * @return string 
    */ 
-  public function render($print=FALSE) 
-  { 
+  public function render($print=false) { 
     ob_start(); 
     
     // Extract data to local namespace. Don't worry extract isn't great 
@@ -61,7 +60,7 @@ class Template {
     require_once(TEMPLATE_PATH.$this->name.TEMPLATE_EXT);
     $output = ob_get_clean();
     
-    if($print === TRUE) { 
+    if($print === true) { 
       echo $output;
       return true;
     }

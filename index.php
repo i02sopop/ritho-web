@@ -34,5 +34,5 @@ $index->head = $head->render();
 $index->header = new Template('header');
 $index->footer = new Template('footer'); 
 
-$index->render(TRUE);
+$index->render(true);
 ?>
