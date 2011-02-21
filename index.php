@@ -28,9 +28,10 @@ $index->head->jquery = '/javascript/jquery.js';
 $index->head->title = 'Ritho\'s Web Page';
 $index->head->modernizr = '/javascript/modernizr-1.7.min.js';
 $index->head->gsVerification = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
+$index->head->render(FALSE);
 
 $index->header = new Template('header');
 $index->footer = new Template('footer'); 
 
-echo $index->render(FALSE);
+$index->render(TRUE);
 ?>
