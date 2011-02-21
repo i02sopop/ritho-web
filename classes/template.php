@@ -60,12 +60,12 @@ class Template {
     require_once(TEMPLATE_PATH.$this->name.TEMPLATE_EXT);
     $output = ob_get_clean();
     
-    //    if($print) { 
+    if($print) { 
       echo $output;
       return true;
-      //}
+    }
     
-      //    return $output;
+    return $output;
   }
 }
 ?>

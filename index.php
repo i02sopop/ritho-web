@@ -29,10 +29,11 @@ $head->title = 'Ritho\'s Web Page';
 $head->modernizr = '/javascript/modernizr-1.7.min.js';
 $head->gsVerification = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
 
-$index->head = $head->render();
+echo $head->render();
+//$index->head = $head->render();
 
-$index->header = new Template('header');
-$index->footer = new Template('footer'); 
+//$index->header = new Template('header');
+//$index->footer = new Template('footer'); 
 
-$index->render(true);
+//$index->render(true);
 ?>
