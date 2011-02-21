@@ -12,6 +12,34 @@ $(document).ready(function() {
 	if(event.which == 1)
 	    $('section').unbind('mousemove',$('section').move());
     });
+
+    $('div.col21').ready(
+	function(event) {
+	    if($('div.col21').height() < $('div.col1').height() ) {
+		$('div.col21').css("height", $('div.col1').height());
+	    }
+
+	    if($('div.col21').height() < $('div.col22').height() ) {
+		$('div.col21').css("height", $('div.col22').height());
+	    }
+
+	    if($('div.col21').height() > $('div.col22').height() ) {
+		$('div.col22').css("height", $('div.col21').height());
+	    }
+	}
+    );
+
+    $('div.col22').ready(
+	function(event) {
+	    if($('div.col21').height() < $('div.col22').height() ) {
+		$('div.col21').css("height", $('div.col22').height());
+	    }
+
+	    if($('div.col21').height() > $('div.col22').height() ) {
+		$('div.col22').css("height", $('div.col21').height());
+	    }
+	}
+    );
 });
 
 jQuery.fn.move = function() {
