@@ -5,7 +5,7 @@ define('TEMPLATE_PATH', dirname(__FILE__) . '/templates/');
 define('TEMPLATE_EXT', '.html');
 
 $index = new Template('index');
-$index->jquery = 'javascript/ritho.js';
+$index->jquery = '/javascript/ritho.js';
 
 $index->head = new Template('head');
 $index->head->charset = 'utf-8';
@@ -15,8 +15,8 @@ $index->head->copy = 'Copyright 2011, Pablo Alvarez de Sotomayor Posadillo';
 $index->head->projName = 'Ritho';
 $index->head->creator = 'Pablo Alvarez de Sotomayor Posadillo';
 $index->head->subject = 'Ritho\'s web page. It includes all the projects, blogs, new, ...';
-$index->head->favicon = '-/img/favicon.png'; //size: 16x16 or 32x32, transparency is OK, see wikipedia for info on broswer support: http://mky.be/favicon/
-$index->head->appleicon = '-/img/custom_icon.png'; // size: 57x57 for older iPhones, 72x72 for iPads, 114x114 for iPhone4's retina display (IMHO, just go ahead and use the biggest one)
+$index->head->favicon = '/img/favicon.png'; //size: 16x16 or 32x32, transparency is OK, see wikipedia for info on broswer support: http://mky.be/favicon/
+$index->head->appleicon = '/img/custom_icon.png'; // size: 57x57 for older iPhones, 72x72 for iPads, 114x114 for iPhone4's retina display (IMHO, just go ahead and use the biggest one)
                                                    // To prevent iOS from applying its styles to the icon name it thusly: apple-touch-icon-precomposed.png
                                                    // Transparency is not recommended (iOS will put a black BG behind the icon)
 $index->head->css = '/css/style.css';
