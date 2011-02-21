@@ -4,13 +4,14 @@ require_once('classes/template.php');
 define('TEMPLATE_PATH', dirname(__FILE__) . '/templates/'); 
 define('TEMPLATE_EXT', '.html');
 
-$index = new Template('index'); 
+$index = new Template('index');
+$index->jquery = 'javascript/ritho.js';
 
 $index->head = new Template('head');
 $index->head->charset = 'utf-8';
 $index->head->author = 'Pablo Alvarez de Sotomayor Posadillo';
 $index->head->description = 'Ritho\'s web page. It includes all the projects, blogs, new, ...';
-$index->head->copy = '&copy; Copyright 2011 Pablo Alvarez de Sotomayor Posadillo';
+$index->head->copy = 'Copyright 2011, Pablo Alvarez de Sotomayor Posadillo';
 $index->head->projName = 'Ritho';
 $index->head->creator = 'Pablo Alvarez de Sotomayor Posadillo';
 $index->head->subject = 'Ritho\'s web page. It includes all the projects, blogs, new, ...';
@@ -29,6 +30,9 @@ $index->head->modernizr = '/javascript/modernizr-1.7.min.js';
 $index->head->gsVerification = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
 
 $index->header = new Template('header');
+$index->left = new Template('left');
+$index->center = new Template('center');
+$index->right = new Template('right');
 $index->footer = new Template('footer'); 
 
 $index->render(true);
