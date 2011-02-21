@@ -4,8 +4,6 @@ require_once('classes/template.php');
 define('TEMPLATE_PATH', dirname(__FILE__) . '/templates/'); 
 define('TEMPLATE_EXT', '.html');
 
-echo TEMPLATE_PATH;
-
 $index = new Template('index'); 
 $index->message = 'Hello world'; 
 
@@ -31,8 +29,8 @@ $index->head->title = 'Ritho\'s Web Page';
 $index->head->modernizr = '/javascript/modernizr-1.7.min.js';
 $index->head->gsVerification = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
 
-$index->header = new Template('header');
-$index->footer = new Template('footer'); 
+// $index->header = new Template('header');
+// $index->footer = new Template('footer'); 
 
 $index->render(TRUE);
 ?>
