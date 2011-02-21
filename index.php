@@ -5,13 +5,12 @@ define('TEMPLATE_PATH', dirname(__FILE__) . '/templates/');
 define('TEMPLATE_EXT', '.html');
 
 $index = new Template('index'); 
-$index->message = 'Hello world'; 
 
 $index->head = new Template('head');
 $index->head->charset = 'utf-8';
 $index->head->author = 'Pablo Alvarez de Sotomayor Posadillo';
 $index->head->description = 'Ritho\'s web page. It includes all the projects, blogs, new, ...';
-$index->head->copy = 'Copyright Pablo Alvarez de Sotomayor Posadillo 2011. All Rights Reserved.';
+$index->head->copy = '&copy; Copyright 2011 Pablo Alvarez de Sotomayor Posadillo';
 $index->head->projName = 'Ritho';
 $index->head->creator = 'Pablo Alvarez de Sotomayor Posadillo';
 $index->head->subject = 'Ritho\'s web page. It includes all the projects, blogs, new, ...';
