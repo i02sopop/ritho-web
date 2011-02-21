@@ -7,7 +7,7 @@ define('TEMPLATE_EXT', '.html');
 $index = new Template('index'); 
 $index->message = 'Hello world'; 
 
-$head = new Template('head')
+$head = new Template('head');
 $head->charset = 'utf-8';
 $head->author = 'Pablo Alvarez de Sotomayor Posadillo';
 $head->description = 'Ritho\'s web page. It includes all the projects, blogs, new, ...';

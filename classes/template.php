@@ -21,7 +21,7 @@ class Template {
     if(!is_file(TEMPLATE_PATH.$name.TEMPLATE_EXT)) 
       die('Invalid template: '.$name); 
     
-    $this->tName = $name; 
+    $this->tName = $name;
   }
   
   public function __get($name) {
@@ -41,7 +41,7 @@ class Template {
   /** 
    * Set some template data. 
    * 
-   * @param name (string): Key of the data 
+   * @param name (string): Name of the data 
    * @param value (string): Value of the data 
    */ 
   public function __set($name, $value) {
