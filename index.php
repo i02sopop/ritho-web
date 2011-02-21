@@ -5,7 +5,7 @@ define('TEMPLATE_PATH', dirname(__FILE__) . '/templates/');
 define('TEMPLATE_EXT', '.html');
 
 $index = new Template('index');
-$index->jquery = '/javascript/ritho.js';
+$index->jquery = '/js/ritho.js';
 
 $index->head = new Template('head');
 $index->head->charset = 'utf-8';
@@ -24,9 +24,9 @@ $index->head->cssPrint = '/css/stylePrint.css';
 $index->head->cssIE = '/css/styleIE.css';
 $index->head->cssIE7 = '/css/styleIE7.css';
 $index->head->cssIEOld = '/css/styleIEOld.css';
-$index->head->jquery = '/javascript/jquery.js';
+$index->head->jquery = '/js/jquery.js';
 $index->head->title = 'Ritho\'s Web Page';
-$index->head->modernizr = '/javascript/modernizr-1.7.min.js';
+$index->head->modernizr = '/js/modernizr-1.7.min.js';
 $index->head->gsVerification = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
 
 $index->header = new Template('header');
