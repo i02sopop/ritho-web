@@ -42,7 +42,7 @@ class Template {
    */
   public function __toString() 
   { 
-    return $this->render()."\n";
+    return $this->render();
   } 
      
   /** 
