@@ -7,10 +7,8 @@ define('TEMPLATE_EXT', '.html');
 $index = new Template('index'); 
 $index->message = 'Hello world'; 
 
-//$home->header = new Template('header'); 
-
-// This is how you set a variable in a sub template. Easy as pie :) 
-//$home->header->title = 'Home Page'; 
+$index->head = new Template('head'); 
+$index->header = new Template('header');
 
 //$home->footer = new Template('footer'); 
 
