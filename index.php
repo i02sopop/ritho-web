@@ -8,7 +8,7 @@ $index = new Template('index');
 $index->message = 'Hello world'; 
 
 $index->head = new Template('head'); 
-$index->head->charset = '"utf-8"';
+$index->head->charset = 'utf-8';
 $index->head->author = 'Pablo Alvarez de Sotomayor Posadillo';
 $index->head->description = 'Ritho\'s web page. It includes all the projects, blogs, new, ...';
 $index->head->copy = 'Copyright Pablo Alvarez de Sotomayor Posadillo 2011. All Rights Reserved.';
