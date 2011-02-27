@@ -1,22 +1,37 @@
-<?php 
-/** 
- * Basic template engine. 
- * 
- * @package Template
- * @author Pablo Alvarez de Sotomayor Posadillo <palvarez@ritho.net> 
- * @copyright Copyright (c) Pablo Alvarez de Sotomayor Posadillo, 2011
- */ 
+<?php
+/* This file is part of ritho-web.
+
+   ritho-web is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Affero General Public License as 
+   published by the Free Software Foundation, either version 3 of the
+   License, or (at your option) any later version.
+
+   ritho-web is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU Affero General Public License for more details.
+
+   You should have received a copy of the GNU Affero General Public
+   License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*
+  Basic template engine. 
   
+  @package Template
+  @author Pablo Alvarez de Sotomayor Posadillo <palvarez@ritho.net> 
+  @copyright Copyright (c) 2011 Pablo Alvarez de Sotomayor Posadillo
+*/ 
 class Template { 
   private $tName; // Template name
   private $data = array(); // Local and global data.
   
-  /** 
-   * Constructor sets the template name, and makes sure 
-   * it exists. 
-   * 
-   * @param name (string): The template name 
-   */ 
+  /*
+    Constructor sets the template name, and makes sure 
+    it exists. 
+    
+    @param name (string): The template name 
+  */ 
   public function __construct($name) {
     if(!is_file(TEMPLATE_PATH.$name.TEMPLATE_EXT)) 
       die('Invalid template: '.$name); 
@@ -24,6 +39,11 @@ class Template {
     $this->tName = $name;
   }
   
+  /*
+    Getter for the data. 
+    
+    @param name (string): Name of the data.
+  */
   public function __get($name) {
     if (array_key_exists($name, $this->data)) {
       return $this->data[$name];
@@ -38,45 +58,54 @@ class Template {
     return null;
   }
 
-  /** 
-   * Set some template data. 
-   * 
-   * @param name (string): Name of the data 
-   * @param value (string): Value of the data 
-   */ 
+  /*
+    Set some template data. 
+    
+    @param name (string): Name of the data.
+    @param value (string): Value of the data.
+  */
   public function __set($name, $value) {
     $this->data[$name] = $value; 
   }
   
+  /*
+    Check if a data is set.
+    
+    @param name (string): Name of the data.
+  */
   public function __isset($name) {
     return isset($this->data[$name]);
   }
 
+  /*
+    Unset a data value.
+    
+    @param name (string): Name of the data.
+  */
   public function __unset($name) {
     unset($this->data[$name]);
   }
 
-  /** 
-   * Render a template.
-   * 
-   * @return string
-   */
+  /*
+    Render a template.
+    
+    @return string
+  */
   public function __toString() 
   { 
     return $this->render();
   } 
   
-  /** 
-   * Renders a template. 
-   * 
-   * @param print (bool): Check if the template has to be printed out
-   * @return string 
-   */ 
+  /*
+    Renders a template. 
+    
+    @param print (bool): Check if the template has to be printed out
+    @return string 
+  */
   public function render($print=false) { 
     ob_start(); 
     
-    // Extract data to local namespace. Don't worry extract isn't great 
-    // but this is only in local scope so nothing to worry about :) 
+    // Extract data to local namespace.
     extract($this->data, EXTR_SKIP); 
     require_once(TEMPLATE_PATH.$this->tName.TEMPLATE_EXT);
     $output = ob_get_clean();
