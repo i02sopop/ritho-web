@@ -19,8 +19,8 @@
   Basic template engine. 
   
   @package Template
-  @author Pablo Alvarez de Sotomayor Posadillo <palvarez@ritho.net> 
-  @copyright Copyright (c) 2011 Pablo Alvarez de Sotomayor Posadillo
+  @author Ritho-web team
+  @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
 */ 
 class Template { 
   private $tName; // Template name
