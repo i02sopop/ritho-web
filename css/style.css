@@ -73,6 +73,10 @@ section h1 {
     border-left: 5px solid #def;
 }
 
+.col22 img {
+    max-width: 100%;
+}
+
 footer {
     clear: both;
     float: left;
