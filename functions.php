@@ -26,6 +26,6 @@
 function __autoload($name) {
   if(!is_file(CLASS_PATH.strtolower($name).CLASS_EXT))
     throw new MissingException("Imposible cargar $name.");
-  require_once($name);
+  require_once(CLASS_PATH.strtolower($name).CLASS_EXT);
 }
 ?>
