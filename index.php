@@ -15,8 +15,10 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
+define('CLASS_PATH', dirname(__FILE__) . '/classes/');
+define('CLASS_EXT', '.php');
+
 require_once('functions.php');
-require_once('classes/template.php');
 
 define('TEMPLATE_PATH', dirname(__FILE__) . '/templates/'); 
 define('TEMPLATE_EXT', '.html');
