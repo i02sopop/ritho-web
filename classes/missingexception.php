@@ -34,11 +34,11 @@ class MissingException extends Exception {
     @parameter code (int): The error code.
     @parameter previous (Exception): The previous exception.
    */
-  public function __construct($msg, $code=0, $previous=NULL) {
-    parent::__construct($msg, $code, $previous);
-    $this->msg = $msg;
+  public function __construct($msg='', $code=0, $previous=NULL) {
+    $this->msg = 'Error loading the class: '.$msg;
     $this->code = $code;
     $this->previous = $previous;
+    parent::__construct($msg, $code, $previous);
   }
 }
 ?>
