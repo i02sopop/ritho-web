@@ -15,6 +15,7 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once('functions.php');
 require_once('classes/template.php');
 
 define('TEMPLATE_PATH', dirname(__FILE__) . '/templates/'); 
