@@ -15,17 +15,17 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-  Class autoload function.
-
-  @package Controller
-  @author Ritho-web team
-  @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
-  @parameter name (string): The class name.
-*/
-function __autoload($name) {
-  if(!is_file(CLASS_PATH.strtolower($name).CLASS_EXT))
-    throw new MissingException("Imposible cargar $name.");
-  require_once(CLASS_PATH.strtolower($name).CLASS_EXT);
-}
+// TODO: Include sql configs.
+$config = new array(
+		    'path' => dirname(__FILE__),
+		    'class_path' => $config['path'].'/classes/',
+		    'model_path' => $config['path'].'/classes/model/',
+		    'view_path' => $config['path'].'/classes/view/',
+		    'controller_path' => $config['path'].'/classes/controller/',
+		    'class_ext' => '.php',
+		    'template_path' => $config['path'].'/templates/',
+		    'template_ext' => '.php',
+		    'include_path' => $config['path'].'/includes/'
+		    );
+require_once($config['include_path'].'functions.php');
 ?>

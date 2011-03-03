@@ -18,11 +18,10 @@
 /*
   Basic template engine. 
   
-  @package Template
   @author Ritho-web team
   @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
 */ 
-class Template { 
+class Template extends Base{
   private $tName; // Template name
   private $data = array(); // Local and global data.
   

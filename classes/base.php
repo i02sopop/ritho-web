@@ -16,25 +16,16 @@
 */
 
 /*
-  Basic controller engine.
+  Base class with defaults to the classes of the app.
 
-  @package Controller
   @author Ritho-web team
   @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
 */
-class Controller{
-  private $view; // View for the controller
-
+abstract class Base{
   /*
-    Constructor sets the view of the controller and checks it's valid.
-
-    @parameter view (string): The view name.
+    Constructor of the class.
   */
-  public function __constructor($view) {
-    if(!is_file(CLASS_PATH.strtolower($view).CLASS_EXT))
-      die('Invalid view: '.$view); 
-    
-    $this->view = new $view();
+  public function __construct() {
   }
 
   /*
@@ -91,5 +82,6 @@ class Controller{
 	$this->$method();
       }
   }
+
 }
 ?>
