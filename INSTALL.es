@@ -17,5 +17,13 @@ para empezar a usar la aplicación.
  Proceso de instalación
 ========================
 
+Opciones para Apache:
+
+Options +FollowSymLinks
+RewriteEngine On
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule .* index.php [L] 
+
  Primeros pasos
 ================
