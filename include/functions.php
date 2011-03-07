@@ -18,20 +18,19 @@
 /*
   Class autoload function.
 
-  @package Controller
   @author Ritho-web team
   @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
   @parameter name (string): The class name.
 */
 function __autoload($name) {
-  if(is_file(config['class_path'].strtolower($name).config['class_ext']))
-    require_once(config['class_path'].strtolower($name).config['class_ext']);
-  else if(is_file(config['model_path'].strtolower($name).config['class_ext']))
-    require_once(config['model_path'].strtolower($name).config['class_ext']);
-  else if(is_file(config['view_path'].strtolower($name).config['class_ext']))
-    require_once(config['view_path'].strtolower($name).config['class_ext']);
-  else if(is_file(config['controller_path'].strtolower($name).config['class_ext']))
-    require_once(config['controller_path'].strtolower($name).config['class_ext']);
+  if(is_file($config['class_path'].strtolower($name).$config['class_ext']))
+    require_once($config['class_path'].strtolower($name).$config['class_ext']);
+  else if(is_file($config['model_path'].strtolower($name).$config['class_ext']))
+    require_once($config['model_path'].strtolower($name).$config['class_ext']);
+  else if(is_file($config['view_path'].strtolower($name).$config['class_ext']))
+    require_once($config['view_path'].strtolower($name).$config['class_ext']);
+  else if(is_file($config['controller_path'].strtolower($name).$config['class_ext']))
+    require_once($config['controller_path'].strtolower($name).$config['class_ext']);
   else
     throw new MissingException("Imposible cargar $name.");
 }
