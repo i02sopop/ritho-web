@@ -21,7 +21,9 @@
   @author Ritho-web team
   @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
 */
-abstract class Base{
+abstract class Base {
+  protected $data = array(); // Local and global data.
+
   /*
     Constructor of the class.
   */
@@ -35,11 +37,14 @@ abstract class Base{
   */
   public function __get($name)
   {
-    if (method_exists($this, ($method = 'get_'.$name)))
-      {
-	return $this->$method();
-      }
-    else return;
+    if(method_exists($this, ($method = 'get_'.$name)))
+      return $this->$method();
+    else if (array_key_exists($name, $this->data))
+      return $this->data[$name];
+
+    $trace = debug_backtrace();
+    trigger_error('Undefined property via __get(): '.$name.' in '.$trace[0]['file'].' on line '.$trace[0]['line'], E_USER_NOTICE);
+    return null;
   }
   
   /*
@@ -49,13 +54,12 @@ abstract class Base{
   */
   public function __isset($name)
   {
-    if (method_exists($this, ($method = 'isset_'.$name)))
-      {
-	return $this->$method();
-      }
-    else return;
+    if(method_exists($this, ($method = 'isset_'.$name)))
+      return $this->$method();
+    else
+      return isset($this->data[$name]);
   }
-  
+
   /*
     Setter of the class.
 
@@ -64,10 +68,10 @@ abstract class Base{
   */
   public function __set($name, $value)
   {
-    if (method_exists($this, ($method = 'set_'.$name)))
-      {
-	$this->$method($value);
-      }
+    if(method_exists($this, ($method = 'set_'.$name)))
+      $this->$method($value);
+    else
+      $this->data[$name] = $value;
   }
   
   /*
@@ -77,10 +81,10 @@ abstract class Base{
   */
   public function __unset($name)
   {
-    if (method_exists($this, ($method = 'unset_'.$name)))
-      {
-	$this->$method();
-      }
+    if(method_exists($this, ($method='unset_'.$name)))
+      $this->$method();
+    else
+      unset($this->data[$name]);
   }
 
 }

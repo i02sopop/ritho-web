@@ -21,9 +21,8 @@
   @author Ritho-web team
   @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
 */ 
-class Template extends Base{
+class Template extends Base {
   private $tName; // Template name
-  private $data = array(); // Local and global data.
   
   /*
     Constructor sets the template name, and makes sure 
@@ -38,53 +37,6 @@ class Template extends Base{
     $this->tName = $name;
   }
   
-  /*
-    Getter for the data. 
-    
-    @param name (string): Name of the data.
-  */
-  public function __get($name) {
-    if (array_key_exists($name, $this->data)) {
-      return $this->data[$name];
-    }
-    
-    $trace = debug_backtrace();
-    trigger_error(
-            'Undefined property via __get(): ' . $name .
-            ' in ' . $trace[0]['file'] .
-            ' on line ' . $trace[0]['line'],
-            E_USER_NOTICE);
-    return null;
-  }
-
-  /*
-    Set some template data. 
-    
-    @param name (string): Name of the data.
-    @param value (string): Value of the data.
-  */
-  public function __set($name, $value) {
-    $this->data[$name] = $value; 
-  }
-  
-  /*
-    Check if a data is set.
-    
-    @param name (string): Name of the data.
-  */
-  public function __isset($name) {
-    return isset($this->data[$name]);
-  }
-
-  /*
-    Unset a data value.
-    
-    @param name (string): Name of the data.
-  */
-  public function __unset($name) {
-    unset($this->data[$name]);
-  }
-
   /*
     Render a template.
     
