@@ -22,7 +22,7 @@
   @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
 */ 
 class Template extends Base {
-  private $tName; // Template name
+  private $path; // Template path
   
   /*
     Constructor sets the template name, and makes sure 
@@ -32,10 +32,10 @@ class Template extends Base {
   */ 
   public function __construct($name) {
     global $config; // Configs of the site.
-    if(!is_file($config['template_path'].$name.$config['template_ext'])) 
-      die('Invalid template: '.$name); 
+    if(!is_file($config['template_path'].$name.$config['template_ext']))
+      die('Invalid template: '.$config['template_path'].$name.$config['template_ext']); 
     
-    $this->tName = $name;
+    $this->path = $config['template_path'].$name.$config['template_ext'];
   }
   
   /*
@@ -55,12 +55,11 @@ class Template extends Base {
     @return string 
   */
   public function render($print=false) { 
-    global $config; // Configs of the site.
     ob_start(); 
     
     // Extract data to local namespace.
     extract($this->data, EXTR_SKIP); 
-    require_once($config['template_path'].$name.$config['template_ext']);
+    require_once($this->path);
     $output = ob_get_clean();
     
     if($print) { 
