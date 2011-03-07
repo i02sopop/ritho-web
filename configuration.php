@@ -24,7 +24,7 @@ $config = array('path' => dirname(__FILE__),
 		'class_ext' => '.php',
 		'template_path' => dirname(__FILE__).'/templates/',
 		'template_ext' => '.php',
-		'include_path' => dirname(__FILE__).'/includes/'
+		'include_path' => dirname(__FILE__).'/include/'
 		);
 require_once($config['include_path'].'functions.php');
 ?>
