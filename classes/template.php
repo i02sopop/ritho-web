@@ -22,7 +22,6 @@
   @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
 */ 
 class Template extends Base {
-  global $config; // Configs of the site.
   private $tName; // Template name
   
   /*
@@ -32,7 +31,8 @@ class Template extends Base {
     @param name (string): The template name 
   */ 
   public function __construct($name) {
-    if(!is_file($this->config['template_path'].$name.$this->config['template_ext'])) 
+    global $config; // Configs of the site.
+    if(!is_file($config['template_path'].$name.$config['template_ext'])) 
       die('Invalid template: '.$name); 
     
     $this->tName = $name;
@@ -55,11 +55,12 @@ class Template extends Base {
     @return string 
   */
   public function render($print=false) { 
+    global $config; // Configs of the site.
     ob_start(); 
     
     // Extract data to local namespace.
     extract($this->data, EXTR_SKIP); 
-    require_once($this->config['template_path'].$name.$this->config['template_ext']);
+    require_once($config['template_path'].$name.$config['template_ext']);
     $output = ob_get_clean();
     
     if($print) { 
