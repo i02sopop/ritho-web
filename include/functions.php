@@ -15,6 +15,8 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once($config['class_path'].'missingexception'.$config['class_ext']);
+
 /*
   Class autoload function.
 
