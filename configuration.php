@@ -16,16 +16,15 @@
 */
 
 // TODO: Include sql configs.
-$config = new array(
-		    'path' => dirname(__FILE__),
-		    'class_path' => $config['path'].'/classes/',
-		    'model_path' => $config['path'].'/classes/model/',
-		    'view_path' => $config['path'].'/classes/view/',
-		    'controller_path' => $config['path'].'/classes/controller/',
+$config = new array('path' => dirname(__FILE__),
+		    'class_path' => dirname(__FILE__).'/classes/',
+		    'model_path' => dirname(__FILE__).'/classes/model/',
+		    'view_path' => dirname(__FILE__).'/classes/view/',
+		    'controller_path' => dirname(__FILE__).'/classes/controller/',
 		    'class_ext' => '.php',
-		    'template_path' => $config['path'].'/templates/',
+		    'template_path' => dirname(__FILE__).'/templates/',
 		    'template_ext' => '.php',
-		    'include_path' => $config['path'].'/includes/'
+		    'include_path' => dirname(__FILE__).'/includes/'
 		    );
 require_once($config['include_path'].'functions.php');
 ?>
