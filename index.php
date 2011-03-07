@@ -15,7 +15,7 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('configuration.php'):
+require_once('configuration.php');
 
 // TODO: This wil go to the main class.
 $controller = null; /* Controller to run. */
