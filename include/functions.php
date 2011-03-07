@@ -23,6 +23,7 @@
   @parameter name (string): The class name.
 */
 function __autoload($name) {
+  global $config;
   if(is_file($config['class_path'].strtolower($name).$config['class_ext']))
     require_once($config['class_path'].strtolower($name).$config['class_ext']);
   else if(is_file($config['model_path'].strtolower($name).$config['class_ext']))
