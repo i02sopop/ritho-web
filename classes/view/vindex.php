@@ -30,7 +30,7 @@ class VIndex extends View {
     @parameter action (const string): Action to do: render or redirect.
   */
   public function __construct($name='index', $context=array(), $action=View::RENDER_ACTION) {
-    $parent::__construct($name, $context=array(), $action=View::RENDER_ACTION);
+    parent::__construct($name, $context=array(), $action=View::RENDER_ACTION);
   }
 
   /*
