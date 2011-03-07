@@ -23,7 +23,7 @@ $config = array('path' => dirname(__FILE__),
 		'controller_path' => dirname(__FILE__).'/classes/controller/',
 		'class_ext' => '.php',
 		'template_path' => dirname(__FILE__).'/templates/',
-		'template_ext' => '.php',
+		'template_ext' => '.html',
 		'include_path' => dirname(__FILE__).'/include/'
 		);
 require_once($config['include_path'].'functions.php');
