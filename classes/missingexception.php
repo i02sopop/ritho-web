@@ -23,9 +23,9 @@
   @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
 */
 class MissingException extends Exception {
-  private $msg = ''; // Error message
-  private $code = 0; // Error code
-  private $previous = NULL; // Previous exception
+  protected $msg = ''; // Error message
+  protected $code = 0; // Error code
+  protected $previous = NULL; // Previous exception
 
   /*
     Constructor sets the error message.
