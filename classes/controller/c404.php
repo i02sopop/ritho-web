@@ -22,7 +22,7 @@
   @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
 */
 class C404 extends Controller {
-  $path; // Path that launch the error
+  private $path; // Path that launch the error
 
   /*
     Constructor of C404.
