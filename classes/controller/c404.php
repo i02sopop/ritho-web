@@ -22,10 +22,13 @@
   @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
 */
 class C404 extends Controller {
+  $path; // Path that launch the error
+
   /*
     Constructor of C404.
   */
-  public function __construct() {
+  public function __construct($path='') {
+    $this->path = $path;
   }
 
   /*
@@ -39,7 +42,10 @@ class C404 extends Controller {
     GET request handler.
   */
   protected function get() {
-    return new V404();
+    $view = new V404();
+    if(!empty($this->path))
+      $view->path = $this->path;
+    return $view;
   }
 }
 ?>
