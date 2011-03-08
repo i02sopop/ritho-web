@@ -27,7 +27,7 @@ case '/index.php':
   $controller = new CIndex();
   break;
 default:
-  $controller = new C404();
+  $controller = new C404($requested);
   break;
 }
 
