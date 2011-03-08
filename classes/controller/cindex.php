@@ -23,7 +23,7 @@
 */
 class CIndex extends Controller {
   /*
-    Constructor of VIndex.
+    Constructor of CIndex.
   */
   public function __construct() {
   }

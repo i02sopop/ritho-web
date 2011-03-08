@@ -15,22 +15,31 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('configuration.php');
+/*
+  Controller for the 404 page.
 
-// TODO: This wil go to the main class.
-$controller = null; /* Controller to run. */
-$requested = empty($_SERVER['REQUEST_URI']) ? false : $_SERVER['REQUEST_URI']; /* URI requested. */
-switch ($requested) {
-case '/':
-case '/index':
-case '/index.php':
-  $controller = new CIndex();
-  break;
-default:
-  $controller = new C404();
-  break;
+  @author Ritho-web team
+  @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
+*/
+class C404 extends Controller {
+  /*
+    Constructor of C404.
+  */
+  public function __construct() {
+  }
+
+  /*
+    Method to initalize the controller before handling the request.
+  */
+  function init() {
+
+  }
+
+  /*
+    GET request handler.
+  */
+  protected function get() {
+    return new V404();
+  }
 }
-
-$controller->run();
-
 ?>

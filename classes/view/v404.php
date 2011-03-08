@@ -16,20 +16,20 @@
 */
 
 /*
-  View for the Index page.
+  View for the 404 page.
 
   @author Ritho-web team
   @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
 */
-class VIndex extends View {
+class V404 extends View {
   /*
-    Constructor of VIndex.
+    Constructor of V404.
 
     @parameter name (string): Name or url of the view. It can be a template name or an external url.
     @parameter context (array): Context variables of the view.
     @parameter action (const string): Action to do: render or redirect.
   */
-  public function __construct($name='index', $context=array(), $action=View::RENDER_ACTION) {
+  public function __construct($name='404', $context=array(), $action=View::RENDER_ACTION) {
     parent::__construct($name, $context=array(), $action=View::RENDER_ACTION);
   }
 
@@ -38,7 +38,6 @@ class VIndex extends View {
   */
   public function render() {
     $index = new Template($this->name);
-    $index->jquery = '/js/ritho.js';
 
     $index->head = new Template('head');
     $index->head->charset = 'utf-8';
@@ -65,13 +64,9 @@ class VIndex extends View {
     $index->head->title = $this->name.' - Ritho\'s Web Page';
     $index->head->modernizr = '/js/modernizr-1.7.min.js';
     $index->head->gsVerification = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
-      
-    $index->header = new Template('header');
-    $index->left = new Template('left');
-    $index->center = new Template('center');
-    $index->right = new Template('right');
-    $index->footer = new Template('footer'); 
-      
+
+    $index->page = $_SERVER['REQUEST_URI'];
+
     $index->render(true);
   }
 }
