@@ -65,7 +65,8 @@ class V404 extends View {
     $index->head->modernizr = '/js/modernizr-1.7.min.js';
     $index->head->gsVerification = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
 
-    $index->path = $this->data['path'];
+    if(isset($this->path))
+      $index->path = $this->path;
 
     $index->render(true);
   }
