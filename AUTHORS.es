@@ -17,10 +17,10 @@ del proyecto en palvarez@ritho.net.
 ------------------------------
 Pablo Álvarez de Sotomayor Posadillo	<palvarez@ritho.net>
 
- Contribuidores significantes:
--------------------------------
+ Contribuyentes significativos:
+--------------------------------
 
- Contribuidores pasados, ahora retirados:
+ Contribuyentes pasados, ahora retirados:
 ------------------------------------------
 
  Traductores:
