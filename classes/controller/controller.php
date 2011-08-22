@@ -2,7 +2,7 @@
 /* This file is part of ritho-web.
 
    ritho-web is free software: you can redistribute it and/or modify
-   it under the terms of the GNU Affero General Public License as 
+   it under the terms of the GNU Affero General Public License as
    published by the Free Software Foundation, either version 3 of the
    License, or (at your option) any later version.
 
@@ -28,15 +28,14 @@ abstract class Controller extends Base {
     Controller execution.
   */
   public function run() {
-    session_start();
     $this->init();
- 
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $this->view = $this->post();
     } else {
       $this->view = $this->get();
     }
- 
+
     $this->display();
   }
 
@@ -44,21 +43,21 @@ abstract class Controller extends Base {
     Method to initalize the controller before handling the request.
   */
   abstract protected function init();
- 
+
   /*
     GET request handler.
   */
   protected function get() {
     $this->process();
   }
- 
+
   /*
     POST request handler.
   */
   protected function post() {
     $this->process();
   }
- 
+
   /**
      Request handler. This method will be called if no method specific handler
      is defined
@@ -66,26 +65,26 @@ abstract class Controller extends Base {
   protected function process() {
     throw new Exception($_SERVER['REQUEST_METHOD'] . ' request not handled');
   }
- 
+
   /*
     Populates the given object with POST data.
     If not object is given a StdClass is created.
 
-    @param StdClass $obj
-    @return StdClass
+    @param $obj (StdClass): Object to add the POST values.
+    @return Object populated
   */
   protected function populateWithPost($obj = null) {
     if(!is_object($obj)) {
       $obj = new StdClass();
     }
- 
+
     foreach ($_POST as $var => $value) {
       $obj->$var = trim($value);
     }
- 
+
     return $obj;
   }
- 
+
   /*
     Displays the view.
   */

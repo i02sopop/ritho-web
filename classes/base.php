@@ -2,7 +2,7 @@
 /* This file is part of ritho-web.
 
    ritho-web is free software: you can redistribute it and/or modify
-   it under the terms of the GNU Affero General Public License as 
+   it under the terms of the GNU Affero General Public License as
    published by the Free Software Foundation, either version 3 of the
    License, or (at your option) any later version.
 
@@ -16,7 +16,7 @@
 */
 
 /*
-  Base class with defaults to the classes of the app.
+  Base class with some default methods and vars in common to all the app classes..
 
   @author Ritho-web team
   @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
@@ -46,7 +46,7 @@ abstract class Base {
     trigger_error('Undefined property via __get(): '.$name.' in '.$trace[0]['file'].' on line '.$trace[0]['line'], E_USER_NOTICE);
     return null;
   }
-  
+
   /*
     Check if a parameter is set in the class.
 
@@ -73,7 +73,7 @@ abstract class Base {
     else
       $this->data[$name] = $value;
   }
-  
+
   /*
     Unset a parameter of the class.
 
