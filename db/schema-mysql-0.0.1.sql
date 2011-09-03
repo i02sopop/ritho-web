@@ -4,19 +4,19 @@ DROP TABLE IF EXISTS user_group;
 
 CREATE TABLE users(
        id INT AUTO_INCREMENT PRIMARY KEY,
-       username VARCHAR2(20) NOT NULL UNIQUE,
-       pass VARCHAR2(30) NOT NULL,
-       uname VARCHAR2(30),
-       usurname VARCHAR2(50),
-       uaddress VARCHAR2(50),
-       ucp INT,
-       ucity VARCHAR2(30),
-       ucountry VARCHAR2(30)
+       username VARCHAR(20) NOT NULL UNIQUE,
+       pass VARCHAR(30) NOT NULL,
+       u_name VARCHAR(30),
+       u_surname VARCHAR(50),
+       u_address VARCHAR(50),
+       u_cp INT,
+       u_city VARCHAR(30),
+       u_country VARCHAR(30)
 );
 
 CREATE TABLE groups(
        id INT AUTO_INCREMENT PRIMARY KEY,
-       gname VARCHAR2(30) NOT NULL UNIQUE
+       gname VARCHAR(30) NOT NULL UNIQUE
 );
 
 CREATE TABLE user_group(
