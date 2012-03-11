@@ -1,0 +1,26 @@
+* TODO Develop the github website of the project.
+:PROPERTIES:
+:ORDERED: t
+:LOGGING: TODO(!) STARTED(!) WAITING(!) DELEGATED(!) APPT(!) DONE(!) DEFERRED(!) CANCELLED(!)
+:STYLE: habit
+:COOKIE_DATA: todo recursive
+:ASSIGNED: ?
+:DIFICULTY: Medium
+:HOURS_ESTIMATED: ?
+:HOURS: ?
+:DESCRIPTION: Develop the project website showed at github.com.
+:CREATED_BY: i02sopop
+:CREATION_DATE: <2012-03-11 dom>
+:NOTES: -
+:END:
+
+
+* org-mode configuration
+CLOSED: [2012-03-11 dom 19:34]
+#+STARTUP: content
+#+STARTUP: overview
+#+STARTUP: lognotestate
+#+SEQ_TODO: TODO STARTED WAITING DELEGATED APPT | DONE DEFERRED CANCELLED
+#+PROPERTY: Effort_ALL  0:10 0:20 0:30 1:00 2:00 4:00 6:00 8:00
+#+COLUMNS: %38ITEM(Details) %TAGS(Context) %7TODO(To Do) %5Effort(Time){:} %6CLOCKSUM{Total}
+
