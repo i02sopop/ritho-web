@@ -1,5 +1,7 @@
 <?php
-/* This file is part of ritho-web.
+/* Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+
+   This file is part of ritho-web.
 
    ritho-web is free software: you can redistribute it and/or modify
    it under the terms of the GNU Affero General Public License as 
@@ -24,13 +26,12 @@ switch ($requested) {
 case '/':
 case '/index':
 case '/index.php':
-  $controller = new CIndex();
-  break;
+    $controller = new CIndex();
+    break;
 default:
-  $controller = new C404(substr($requested,1));
-  break;
+    $controller = new C404(substr($requested,1));
+    break;
 }
 
 $controller->run();
-
 ?>

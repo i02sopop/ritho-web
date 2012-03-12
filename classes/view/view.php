@@ -1,5 +1,7 @@
 <?php
-/* This file is part of ritho-web.
+/* Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+
+   This file is part of ritho-web.
 
    ritho-web is free software: you can redistribute it and/or modify
    it under the terms of the GNU Affero General Public License as 
@@ -15,54 +17,47 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-  Basic view.
+/* Basic view.
 
-  @author Ritho-web team
-  @copyright Copyright (c) 2011 Ritho-web team (look at AUTHORS file)
+   @author Ritho-web team
+   @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
 */
 abstract class View extends Base {
-  const RENDER_ACTION = 'render';
-  const REDIRECT_ACTION = 'redirect';
+    const RENDER_ACTION = 'render';
+    const REDIRECT_ACTION = 'redirect';
  
-  protected $name; /* Name of the template to render. */
-  protected $url; /* URL to redirect. */
-  protected $context; /* Context variables of the view. */
-  protected $action; /* Action to do: render or redirect. */
+    protected $name; /* Name of the template to render. */
+    protected $url; /* URL to redirect. */
+    protected $context; /* Context variables of the view. */
+    protected $action; /* Action to do: render or redirect. */
 
-  /*
-    Constructor of View.
+    /* Constructor of View.
 
-    @parameter url (string): Url of the view. It can be a local php file or an external url.
-    @parameter context (array): Context variables of the view.
-    @parameter action (const string): Action to do: render or redirect.
-  */
-  public function __construct($name, $context=array(), $action=View::RENDER_ACTION) {
-    if($action == View::RENDER_ACTION)
-      $this->name = $name;
-    else
-      $this->url = $name;
-    $this->context = $context;
-    $this->action = $action;
-  }
+       @parameter url (string): Url of the view. It can be a local php file or an external url.
+       @parameter context (array): Context variables of the view.
+       @parameter action (const string): Action to do: render or redirect.
+    */
+    public function __construct($name, $context = array(),
+                                $action = View::RENDER_ACTION) {
+        if($action == View::RENDER_ACTION)
+            $this->name = $name;
+        else
+            $this->url = $name;
+        $this->context = $context;
+        $this->action = $action;
+    }
 
-  /*
-    Method to generate the output the view.
-  */
-  abstract public function render();
+    /* Method to generate the output the view. */
+    abstract public function render();
 
-  /*
-    Method to get the action of the view.
-  */
-  public function get_action() {
-    return $this->action;
-  }
+    /* Method to get the action of the view. */
+    public function get_action() {
+        return $this->action;
+    }
 
-  /*
-    Method to get the URL of the view.
-  */
-  public function get_url() {
-    return $this->url;
-  }
+    /* Method to get the URL of the view. */
+    public function get_url() {
+        return $this->url;
+    }
 }
 ?>
