@@ -42,9 +42,7 @@ class MyDB extends DB {
        @return TRUE on success, FALSE on failure.
     */
     public function close($conn = NULL) {
-        if($conn != NULL)
-            return mysql_close($conn);
-        return mysql_close();
+        return mysql_close($conn);
     }
 
     /* Connect to the database engine.
@@ -66,7 +64,19 @@ class MyDB extends DB {
     */
     public function delete($table_name, $assoc, $conn = NULL) {
         $query = "DELETE FROM " . $table_name;
-        mysql_query($query, $conn);
+        if(is_array($assoc) && count($assoc) > 0) {
+            $query = $query . " WHERE ";
+            foreach($assoc as $key => $value)
+                $query = $query . " " . $key . " = " . $value . " AND ";
+            $query = substr($query, 0, -5);
+        }
+
+        if($query != false) {
+            Log::i($query);
+            mysql_query($query, $conn);
+        } else {
+            Log::e("Error deleting the records.");
+        }
     }
 
     /* Escape a string for insertion into the database.

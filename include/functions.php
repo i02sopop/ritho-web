@@ -36,7 +36,9 @@ function __autoload($name) {
         require_once($config['view_path'].strtolower($name).$config['class_ext']);
     else if(is_file($config['controller_path'].strtolower($name).$config['class_ext']))
         require_once($config['controller_path'].strtolower($name).$config['class_ext']);
+    else if(is_file($config['utils_path'].strtolower($name).$config['class_ext']))
+        require_once($config['utils_path'].strtolower($name).$config['class_ext']);
     else
-        throw new MissingException("Imposible cargar $name.");
+        throw new MissingException("Impossible to load $name.");
 }
 ?>
