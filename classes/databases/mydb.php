@@ -64,16 +64,16 @@ class MyDB extends DB {
     */
     public function delete($table_name, $assoc, $conn = NULL) {
         $query = "DELETE FROM " . $table_name;
-        if(is_array($assoc) && count($assoc) > 0) {
+        if(is_array($assoc) && $assoc) {
             $query = $query . " WHERE ";
             foreach($assoc as $key => $value)
                 $query = $query . " " . $key . " = " . $value . " AND ";
             $query = substr($query, 0, -5);
         }
 
-        if($query != false) {
-            Log::i($query);
-            mysql_query($query, $conn);
+        if($query) {
+            Log::i($this->escape_string($query, $conn));
+            mysql_query($this->escape_string($query, $conn), $conn);
         } else {
             Log::e("Error deleting the records.");
         }
@@ -84,7 +84,10 @@ class MyDB extends DB {
        @param $str (string): String to escape.
        @return String escaped.
     */
-    public function escape_string($str) {
+    public function escape_string($str, $conn = NULL) {
+        if(is_null($str))
+            return "";
+        mysql_real_escape_string($str, $conn);
     }
 
     /* Execute a query.
@@ -94,6 +97,9 @@ class MyDB extends DB {
        @return TRUE on success, FALSE on failure.
     */
     public function exec($query, $conn = NULL) {
+        // TODO: Check if the query is an INSERT, UPDATE, DELETE, DROP, ... or
+        // any query without results.
+        return (mysql_query($this->escape_string($query, $conn), $conn) === true);
     }
 
     /* Sends a request to execute a prepared statement with given parameters,
