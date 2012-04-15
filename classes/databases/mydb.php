@@ -23,6 +23,10 @@
    @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
 */
 class MyDB extends DB {
+    $mysqli_conn = null;
+    $isPersistent = false;
+    $stmts = array();
+
     /* Constructor of the class.
 
        @param $user (string): User to authenticate to the DB server.
@@ -38,19 +42,31 @@ class MyDB extends DB {
 
     /* Disconnect the database engine.
 
-       @param $conn (resource): Database connection resource.
        @return TRUE on success, FALSE on failure.
     */
-    public function close($conn = NULL) {
-        return mysql_close($conn);
+    public function close() {
+        if(!$isPersistent)
+            return $mysqli_conn->close();
+        return true;
     }
 
     /* Connect to the database engine.
 
-       @return Connection resource on success, FALSE on failure.
+       @return TRUE on success, FALSE on failure.
     */
     public function connect() {
-        return mysql_connect($host . ':' . $port,  $user, $pass);
+        /* Close previous persistent connection. */
+        $isPersistent = false;
+        if($mysqli_conn !== null)
+            $this->close();
+
+        /* Connect to the MySQL database. */
+        $mysqli_conn = new mysqli($host,  $user, $pass, $db, $port);
+        // TODO: Throws an exception if there is an error.
+        if($mysqli_conn->connect_errno)
+            Log::e("Failed to connect to MySQL: " . $mysqli_conn->connect_errno);
+
+        return $mysqli_conn->connect_errno;
     }
 
     /* Delete records from a table specified by the keys and values in assoc_array.
@@ -59,23 +75,23 @@ class MyDB extends DB {
        @param $assoc (array): An array whose keys are field names in the table
               table_name, and whose values are the values of those fields that are
               to be deleted.
-       @param $conn (resource): Database connection resource.
        @return TRUE on success, FALSE on failure.
     */
-    public function delete($table_name, $assoc, $conn = NULL) {
+    public function delete($table_name, $assoc) {
         $query = "DELETE FROM " . $table_name;
         if(is_array($assoc) && $assoc) {
-            $query = $query . " WHERE ";
+            $query = $query . " WHERE";
             foreach($assoc as $key => $value)
                 $query = $query . " " . $key . " = " . $value . " AND ";
             $query = substr($query, 0, -5);
         }
 
         if($query) {
-            Log::i($this->escape_string($query, $conn));
-            mysql_query($this->escape_string($query, $conn), $conn);
+            Log::i($this->escape_string($query));
+            return $mysqli_conn->real_query($this->escape_string($query));
         } else {
-            Log::e("Error deleting the records.");
+            Log::e("Error deleting the rows.");
+            return false;
         }
     }
 
@@ -84,35 +100,84 @@ class MyDB extends DB {
        @param $str (string): String to escape.
        @return String escaped.
     */
-    public function escape_string($str, $conn = NULL) {
+    public function escape_string($str) {
         if(is_null($str))
             return "";
-        mysql_real_escape_string($str, $conn);
+        return $mysqli_conn->real_escape_string($str);
     }
 
     /* Execute a query.
 
        @param $query (string): Query to execute in the DB.
-       @param $conn (resource): Database connection resource.
        @return TRUE on success, FALSE on failure.
     */
-    public function exec($query, $conn = NULL) {
+    public function exec($query) {
         // TODO: Check if the query is an INSERT, UPDATE, DELETE, DROP, ... or
         // any query without results.
-        return (mysql_query($this->escape_string($query, $conn), $conn) === true);
+        return $mysqli_conn->real_query($this->escape_string($query));
     }
 
-    /* Sends a request to execute a prepared statement with given parameters,
-       without waiting for the result(s).
+
+    /* Bind parameters to a prepared statement.
 
        @param $stmtname (string): The name of the prepared statement to execute.
-       @param $params (array): Array of parameter values to substitute for the
-              placeholders in the original prepared query string. The number of
-              elements in the array must match the number of placeholders.
-       @param $conn (resource): Database connection resource.
+       @param $params (string | int | double | array): Array of parameter values
+              to substitute for the placeholders in the original prepared query
+              string. The number of elements in the array must match the number of
+              placeholders.
        @return TRUE on success, FALSE on failure.
     */
-    public function exec_prepared($stmtname, $params, $conn = NULL) {
+    public function exec_bind($stmtname, $params) {
+        if($stmtname !== null && is_string($stmtname) && is_set($stmts[$stmtname])) {
+            if(is_string($params))
+                return $stmts[$stmtname]->bind_param("s", $params);
+            else if(is_int($params))
+                return $stmts[$stmtname]->bind_param("i", $params);
+            else if(is_double($params))
+                return $stmts[$stmtname]->bind_param("d", $params);
+            else if(is_array($params)) {
+                $types = "";
+                foreach($param as $params) {
+                    if(is_string($param))
+                        $types .= "s";
+                    else if(is_int($param))
+                        $types .= "i";
+                    else if(is_double($param))
+                        $types .= "d";
+                    else {
+                        Log::e("Unexpected parameter type.");
+                        return false;
+                    }
+                }
+
+                return call_user_func_array(array($stmts[$stmtname], "bind_param"), array($types, $params));
+            } else {
+                Log::e("Unexpected parameter type.");
+                return false;
+            }
+        }
+    }
+
+    /* Close a prepared statement.
+
+       @param $stmtname (string): The name of the prepared statement to execute.
+       @return TRUE on success, FALSE on failure.
+    */
+    public function exec_close($stmtname) {
+        if($stmtname !== null && is_string($stmtname) && is_set($stmts[$stmtname]))
+            return $stmts[$stmtname]->close();
+        return false;
+    }
+
+    /* Sends a request to execute a prepared statement without waiting for the result(s).
+
+       @param $stmtname (string): The name of the prepared statement to execute.
+       @return TRUE on success, FALSE on failure.
+    */
+    public function exec_prepared($stmtname) {
+        if($stmtname !== null && is_string($stmtname) && is_set($stmts[$stmtname]))
+            return $stmts[$stmtname]->execute();
+        return false;
     }
 
     /* Get an array that contains all rows (records) in the result resource.
@@ -203,14 +268,13 @@ class MyDB extends DB {
 
     /* Inserts the values of assoc_array into the table specified by table_name.
 
-       @param $connection (resource): Database connection resource.
        @param $table_name (string): Name of the table into which to insert rows.
        @param $assoc (array): Array whose keys are field names in the table
               table_name, and whose values are the values of those fields that are
               to be inserted.
        @return TRUE on success, FALSE on failure.
     */
-    public function insert($connection, $table_name, $assoc) {
+    public function insert($table_name, $assoc) {
     }
 
     /* Get the number of fields (columns) in a result resource.
@@ -231,9 +295,14 @@ class MyDB extends DB {
 
     /* Persistent connection to the database engine.
 
-       @return Connection resource on success, FALSE on failure.
+       @return TRUE on success, FALSE on failure.
     */
     public function pconnect() {
+        $isPersistent = true;
+        if($mysqli_conn == null)
+            return $this->connect();
+
+        return $isPersistent;
     }
 
     /* Pings a database connection and tries to reconnect it if it is broken.
@@ -241,6 +310,7 @@ class MyDB extends DB {
        @return TRUE on success, FALSE on failure.
     */
     public function ping() {
+        return $mysqli_conn->ping();
     }
 
     /* Creates a prepared statement for later execution.
@@ -250,19 +320,23 @@ class MyDB extends DB {
        @param $query (string): The parameterized SQL statement. Must contain only a
               single statement. If any parameters are used, they are referred to as
               $1, $2, etc.
-       @param $conn (resource): Database connection resource.
        @return TRUE on success, FALSE on failure.
     */
-    public function prepare($stmtname, $query, $conn = NULL) {
+    public function prepare($stmtname, $query) {
+        if($stmtname !== null && is_string($stmtname)) {
+            $stmts[$stmtname] = $mysqli_conn->prepare($query);
+            return ($stmts[$stmtname] !== false);
+        }
+
+        return false;
     }
 
     /* Execute a query.
 
        @param $query (string): Query to execute in the DB.
-       @param $conn (resource): Database connection resource.
        @return Query result resource on success, FALSE on failure.
     */
-    public function query($query, $conn = NULL) {
+    public function query($query) {
     }
 
     /* Query a prepared statement.
@@ -271,10 +345,9 @@ class MyDB extends DB {
        @param $params (array): Array of parameter values to substitute for the
               placeholders in the original prepared query string. The number of
               elements in the array must match the number of placeholders.
-       @param $conn (resource): Database connection resource.
        @return Values that match the query.
     */
-    public function query_prepared($stmtname, $params, $conn = NULL) {
+    public function query_prepared($stmtname, $params) {
     }
 
     /* Select records specified by assoc_array which has field=>value.
@@ -283,10 +356,9 @@ class MyDB extends DB {
        @param $assoc (array): Array whose keys are field names in the table
               table_name, and whose values are the conditions that a row must meet
               to be retrieved.
-       @param $conn (resource): Database connection resource.
        @return Query result resource on success, FALSE on failure.
     */
-    public function select($table_name, $assoc = array(), $conn = NULL) {
+    public function select($table_name, $assoc = array()) {
     }
 }
 ?>

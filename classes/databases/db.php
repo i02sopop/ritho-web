@@ -47,14 +47,13 @@ abstract class DB extends Base {
 
     /* Disconnect the database engine.
 
-       @param $conn (resource): Database connection resource.
        @return TRUE on success, FALSE on failure.
     */
-    abstract public function close($conn = NULL);
+    abstract public function close();
 
     /* Connect to the database engine.
 
-       @return Connection resource on success, FALSE on failure.
+       @return TRUE on success, FALSE on failure.
     */
     abstract public function connect();
 
@@ -62,10 +61,9 @@ abstract class DB extends Base {
 
        @param $table_name (string): Name of the table from which to delete rows.
        @param $assoc (array): An array whose keys are field names in the table table_name, and whose values are the values of those fields that are to be deleted.
-       @param $conn (resource): Database connection resource.
        @return TRUE on success, FALSE on failure.
     */
-    abstract public function delete($table_name, $assoc, $conn = NULL);
+    abstract public function delete($table_name, $assoc);
 
     /* Escape a string for insertion into the database.
 
@@ -77,19 +75,34 @@ abstract class DB extends Base {
     /* Execute a query.
 
        @param $query (string): Query to execute in the DB.
-       @param $conn (resource): Database connection resource.
        @return TRUE on success, FALSE on failure.
     */
-    abstract public function exec($query, $conn = NULL);
+    abstract public function exec($query);
 
-    /* Sends a request to execute a prepared statement with given parameters, without waiting for the result(s).
+    /* Bind parameters to a prepared statement.
 
        @param $stmtname (string): The name of the prepared statement to execute.
-       @param $params (array): Array of parameter values to substitute for the placeholders in the original prepared query string. The number of elements in the array must match the number of placeholders.
-       @param $conn (resource): Database connection resource.
+       @param $params (string | int | double | array): Array of parameter values
+              to substitute for the placeholders in the original prepared query
+              string. The number of elements in the array must match the number of
+              placeholders.
        @return TRUE on success, FALSE on failure.
     */
-    abstract public function exec_prepared($stmtname, $params, $conn = NULL);
+    abstract public function exec_bind($stmtname, $params);
+
+    /* Close a prepared statement.
+
+       @param $stmtname (string): The name of the prepared statement to execute.
+       @return TRUE on success, FALSE on failure.
+    */
+    abstract public function exec_close($stmtname);
+
+    /* Sends a request to execute a prepared statement without waiting for the result(s).
+
+       @param $stmtname (string): The name of the prepared statement to execute.
+       @return TRUE on success, FALSE on failure.
+    */
+    abstract public function exec_prepared($stmtname);
 
     /* Get an array that contains all rows (records) in the result resource.
 
@@ -160,12 +173,11 @@ abstract class DB extends Base {
 
     /* Inserts the values of assoc_array into the table specified by table_name.
 
-       @param $connection (resource): Database connection resource.
        @param $table_name (string): Name of the table into which to insert rows.
        @param $assoc (array): Array whose keys are field names in the table table_name, and whose values are the values of those fields that are to be inserted.
        @return TRUE on success, FALSE on failure.
     */
-    abstract public function insert($connection, $table_name, $assoc);
+    abstract public function insert($table_name, $assoc);
 
     /* Get the number of fields (columns) in a result resource.
 
@@ -183,7 +195,7 @@ abstract class DB extends Base {
 
     /* Persistent connection to the database engine.
 
-       @return Connection resource on success, FALSE on failure.
+       @return TRUE on success, FALSE on failure.
     */
     abstract public function pconnect();
 
@@ -197,35 +209,31 @@ abstract class DB extends Base {
 
        @param $stmtname (string): The name to give the prepared statement. Must be unique per-connection.
        @param $query (string): The parameterized SQL statement. Must contain only a single statement. If any parameters are used, they are referred to as $1, $2, etc.
-       @param $conn (resource): Database connection resource.
        @return TRUE on success, FALSE on failure.
     */
-    abstract public function prepare($stmtname, $query, $conn = NULL);
+    abstract public function prepare($stmtname, $query);
 
     /* Execute a query.
 
        @param $query (string): Query to execute in the DB.
-       @param $conn (resource): Database connection resource.
        @return Query result resource on success, FALSE on failure.
     */
-    abstract public function query($query, $conn = NULL);
+    abstract public function query($query);
 
     /* Query a prepared statement.
 
        @param $stmtname (string): The name of the prepared statement to execute.
        @param $params (array): Array of parameter values to substitute for the placeholders in the original prepared query string. The number of elements in the array must match the number of placeholders.
-       @param $conn (resource): Database connection resource.
        @return Values that match the query.
     */
-    abstract public function query_prepared($stmtname, $params, $conn = NULL);
+    abstract public function query_prepared($stmtname, $params);
 
     /* Select records specified by assoc_array which has field=>value.
 
        @param $table_name (string): Name of the table from which to select rows.
        @param $assoc (array): Array whose keys are field names in the table table_name, and whose values are the conditions that a row must meet to be retrieved.
-       @param $conn (resource): Database connection resource.
        @return Query result resource on success, FALSE on failure.
     */
-    abstract public function select($table_name, $assoc = array(), $conn = NULL);
+    abstract public function select($table_name, $assoc = array());
 }
 ?>
