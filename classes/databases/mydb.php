@@ -23,9 +23,6 @@
    @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
 */
 class MyDB extends DB {
-    $isPersistent = false;
-    $stmts = array();
-
     /* Constructor of the class.
 
        @param $user (string): User to authenticate to the DB server.
