@@ -23,7 +23,6 @@
    @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
 */
 class MyDB extends DB {
-    $mysqli_conn = null;
     $isPersistent = false;
     $stmts = array();
 
@@ -46,7 +45,7 @@ class MyDB extends DB {
     */
     public function close() {
         if(!$isPersistent)
-            return $mysqli_conn->close();
+            return $conn->close();
         return true;
     }
 
@@ -57,16 +56,16 @@ class MyDB extends DB {
     public function connect() {
         /* Close previous persistent connection. */
         $isPersistent = false;
-        if($mysqli_conn !== null)
+        if($conn !== null)
             $this->close();
 
         /* Connect to the MySQL database. */
-        $mysqli_conn = new mysqli($host,  $user, $pass, $db, $port);
+        $conn = new mysqli($host,  $user, $pass, $db, $port);
         // TODO: Throws an exception if there is an error.
-        if($mysqli_conn->connect_errno)
-            Log::e("Failed to connect to MySQL: " . $mysqli_conn->connect_errno);
+        if($conn->connect_errno)
+            Log::e("Failed to connect to MySQL: " . $conn->connect_errno);
 
-        return $mysqli_conn->connect_errno;
+        return $conn->connect_errno;
     }
 
     /* Delete records from a table specified by the keys and values in assoc_array.
@@ -88,7 +87,7 @@ class MyDB extends DB {
 
         if($query) {
             Log::i($this->escape_string($query));
-            return $mysqli_conn->real_query($this->escape_string($query));
+            return $conn->real_query($this->escape_string($query));
         } else {
             Log::e("Error deleting the rows.");
             return false;
@@ -103,7 +102,7 @@ class MyDB extends DB {
     public function escape_string($str) {
         if(is_null($str))
             return "";
-        return $mysqli_conn->real_escape_string($str);
+        return $conn->real_escape_string($str);
     }
 
     /* Execute a query.
@@ -114,7 +113,7 @@ class MyDB extends DB {
     public function exec($query) {
         // TODO: Check if the query is an INSERT, UPDATE, DELETE, DROP, ... or
         // any query without results.
-        return $mysqli_conn->real_query($this->escape_string($query));
+        return $conn->real_query($this->escape_string($query));
     }
 
 
@@ -299,7 +298,7 @@ class MyDB extends DB {
     */
     public function pconnect() {
         $isPersistent = true;
-        if($mysqli_conn == null)
+        if($conn == null)
             return $this->connect();
 
         return $isPersistent;
@@ -310,7 +309,7 @@ class MyDB extends DB {
        @return TRUE on success, FALSE on failure.
     */
     public function ping() {
-        return $mysqli_conn->ping();
+        return $conn->ping();
     }
 
     /* Creates a prepared statement for later execution.
@@ -324,7 +323,7 @@ class MyDB extends DB {
     */
     public function prepare($stmtname, $query) {
         if($stmtname !== null && is_string($stmtname)) {
-            $stmts[$stmtname] = $mysqli_conn->prepare($query);
+            $stmts[$stmtname] = $conn->prepare($query);
             return ($stmts[$stmtname] !== false);
         }
 

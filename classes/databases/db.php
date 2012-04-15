@@ -28,6 +28,13 @@ define('SQL_BOTH', 2);
    @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
 */
 abstract class DB extends Base {
+    $$user = null;
+    $pass = null;
+    $host = null;
+    $db = null;
+    $port = null;
+    $conn = null;
+
     /* Constructor of the class.
 
        @param $user (string): User to authenticate to the DB server.
