@@ -72,7 +72,7 @@ abstract class DB extends Base {
        @param $assoc (array): An array whose keys are field names in the table table_name, and whose values are the values of those fields that are to be deleted.
        @return TRUE on success, FALSE on failure.
     */
-    abstract public function delete($table_name, $assoc);
+    abstract public function delete($table_name, $assoc = array());
 
     /* Escape a string for insertion into the database.
 
@@ -186,7 +186,7 @@ abstract class DB extends Base {
        @param $assoc (array): Array whose keys are field names in the table table_name, and whose values are the values of those fields that are to be inserted.
        @return TRUE on success, FALSE on failure.
     */
-    abstract public function insert($table_name, $assoc);
+    abstract public function insert($table_name, $assoc = array());
 
     /* Get the number of fields (columns) in a result resource.
 

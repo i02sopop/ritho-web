@@ -73,7 +73,7 @@ class MyDB extends DB {
               to be deleted.
        @return TRUE on success, FALSE on failure.
     */
-    public function delete($table_name, $assoc) {
+    public function delete($table_name, $assoc = array()) {
         $query = "DELETE FROM " . $table_name;
         if(is_array($assoc) && $assoc) {
             $query = $query . " WHERE";
@@ -270,7 +270,25 @@ class MyDB extends DB {
               to be inserted.
        @return TRUE on success, FALSE on failure.
     */
-    public function insert($table_name, $assoc) {
+    public function insert($table_name, $assoc = array()) {
+        $query = "INSERT INTO " . $table_name . " VALUES(";
+        if(is_array($assoc) && $assoc) {
+            foreach($assoc as $value)
+                $query = $query . $value . ", ";
+            $query = substr($query, 0, -2);
+            $query = $query . ")";
+        } else {
+            Log::e("Couldn't execute the insert statement. You must insert some data.");
+            return false;
+        }
+
+        if($query) {
+            Log::i($this->escape_string($query));
+            return $conn->real_query($this->escape_string($query));
+        } else {
+            Log::e("Error inserting the rows.");
+            return false;
+        }
     }
 
     /* Get the number of fields (columns) in a result resource.
