@@ -240,9 +240,10 @@ abstract class DB extends Base {
     /* Select records specified by assoc_array which has field=>value.
 
        @param $table_name (string): Name of the table from which to select rows.
-       @param $assoc (array): Array whose keys are field names in the table table_name, and whose values are the conditions that a row must meet to be retrieved.
+       @param $cols (array): Array with the names of the columns to return by the query.
+       @param $where (array): Array whose keys are columns in the table table_name, and whose values are the conditions that a row must meet to be retrieved.
        @return Query result resource on success, FALSE on failure.
     */
-    abstract public function select($table_name, $assoc = array());
+    abstract public function select($table_name, $cols = array(), $where = array());
 }
 ?>

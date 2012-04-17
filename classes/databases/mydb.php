@@ -23,6 +23,8 @@
    @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
 */
 class MyDB extends DB {
+    $result = null;
+
     /* Constructor of the class.
 
        @param $user (string): User to authenticate to the DB server.
@@ -75,7 +77,7 @@ class MyDB extends DB {
     */
     public function delete($table_name, $assoc = array()) {
         $query = "DELETE FROM " . $table_name;
-        if(is_array($assoc) && $assoc) {
+        if($assoc != null && is_array($assoc) && $assoc) {
             $query = $query . " WHERE";
             foreach($assoc as $key => $value)
                 $query = $query . " " . $key . " = " . $value . " AND ";
@@ -124,7 +126,7 @@ class MyDB extends DB {
        @return TRUE on success, FALSE on failure.
     */
     public function exec_bind($stmtname, $params) {
-        if($stmtname !== null && is_string($stmtname) && is_set($stmts[$stmtname])) {
+        if($stmtname !== null && is_string($stmtname) && isset($stmts[$stmtname])) {
             if(is_string($params))
                 return $stmts[$stmtname]->bind_param("s", $params);
             else if(is_int($params))
@@ -160,7 +162,7 @@ class MyDB extends DB {
        @return TRUE on success, FALSE on failure.
     */
     public function exec_close($stmtname) {
-        if($stmtname !== null && is_string($stmtname) && is_set($stmts[$stmtname]))
+        if($stmtname !== null && is_string($stmtname) && isset($stmts[$stmtname]))
             return $stmts[$stmtname]->close();
         return false;
     }
@@ -171,7 +173,7 @@ class MyDB extends DB {
        @return TRUE on success, FALSE on failure.
     */
     public function exec_prepared($stmtname) {
-        if($stmtname !== null && is_string($stmtname) && is_set($stmts[$stmtname]))
+        if($stmtname !== null && is_string($stmtname) && isset($stmts[$stmtname]))
             return $stmts[$stmtname]->execute();
         return false;
     }
@@ -183,7 +185,13 @@ class MyDB extends DB {
                values indexed by field name. FALSE if there are no rows in the
                result, or on any other error.
     */
-    public function fetch_all($result) {
+    public function fetch_all($res = null) {
+        if($res !== null && method_exists($res, "fetch_all"))
+            return $res->fetch_all(MYSQLI_ASSOC);
+        else if($result !== null && method_exists($result, "fetch_all"))
+            return $result->fetch_all(MYSQLI_ASSOC);
+
+        return null;
     }
 
     /* Fetch a row into a numbered array from a query result.
@@ -197,7 +205,7 @@ class MyDB extends DB {
                Each value in the array is represented as a string. Database NULL
                values are returned as NULL.
     */
-    public function fetch_array($result, $result_type = 0, $row = -1) {
+    public function fetch_array($res = null, $result_type = 0, $row = -1) {
     }
 
     /* Fetch a row into an associative array from a query result.
@@ -207,7 +215,7 @@ class MyDB extends DB {
        @return Array indexed associatively, FALSE on error. Each value in the array
                is represented as a string. Database NULL values are returned as NULL.
     */
-    public function fetch_assoc($result, $row = -1) {
+    public function fetch_assoc($res = null, $row = -1) {
     }
 
     /* Fetch an object with properties that correspond to the fetched row's field
@@ -220,7 +228,7 @@ class MyDB extends DB {
        @param $params (array): Params to attach to the constructor of the object.
        @return Object fetched.
     */
-    public function fetch_object($result, $row = -1, $class_name = 'StdClass',
+    public function fetch_object($res = null, $row = -1, $class_name = 'StdClass',
                                  $params = array()) {
     }
 
@@ -231,7 +239,7 @@ class MyDB extends DB {
        @return Array indexed numerically, FALSE on error. Each value in the array is
                represented as a string. Database NULL values are returned as NULL.
     */
-    public function fetch_row($result, $row = -1) {
+    public function fetch_row($res = null, $row = -1) {
     }
 
     /* Get the name of the field occupying the given field_number in the given
@@ -241,7 +249,7 @@ class MyDB extends DB {
        @param $field_number (integer): Number of field to check.
        @return An string with the name of the field.
     */
-    public function field_name($result, $field_number = -1) {
+    public function field_name($res = null, $field_number = -1) {
     }
 
     /* Get a string containing the base type name of the given field_number in the
@@ -251,7 +259,7 @@ class MyDB extends DB {
        @param $field_number (int): Number of field to check.
        @return String with the type of object of the given field.
     */
-    public function field_type($result, $field_number) {
+    public function field_type($res, $field_number) {
     }
 
     /* Free a query result.
@@ -259,7 +267,13 @@ class MyDB extends DB {
        @param $result (resource): Result to free.
        @return TRUE on success, FALSE on failure.
     */
-    public function free($result) {
+    public function free($res = null) {
+        if($res !== null && method_exists($res, "close"))
+            $res->close();
+        else if($result !== null && method_exists($result, "close"))
+            $result->close();
+
+        return true;
     }
 
     /* Inserts the values of assoc_array into the table specified by table_name.
@@ -296,7 +310,13 @@ class MyDB extends DB {
        @param $result (resource): Result to check.
        @return Number of columns of the result.
     */
-    public function num_fields($result) {
+    public function num_fields($res = null) {
+        if($res !== null && isset($res->num_rows))
+            return $res->field_count;
+        else if($result !== null && isset($result->num_rows))
+            return $result->field_count;
+
+        return 0;
     }
 
     /* Get the number of rows in a result resource..
@@ -304,7 +324,13 @@ class MyDB extends DB {
        @param $result (resource): Result to check.
        @return Number of rows of the result.
     */
-    public function num_rows($result) {
+    public function num_rows($res = null) {
+        if($res !== null && isset($res->num_rows))
+            return $res->num_rows;
+        else if($result !== null && isset($result->num_rows))
+            return $result->num_rows;
+
+        return 0;
     }
 
     /* Persistent connection to the database engine.
@@ -351,6 +377,9 @@ class MyDB extends DB {
        @return Query result resource on success, FALSE on failure.
     */
     public function query($query) {
+        $result = $conn->query($query);
+
+        return $result;
     }
 
     /* Query a prepared statement.
@@ -367,12 +396,34 @@ class MyDB extends DB {
     /* Select records specified by assoc_array which has field=>value.
 
        @param $table_name (string): Name of the table from which to select rows.
-       @param $assoc (array): Array whose keys are field names in the table
-              table_name, and whose values are the conditions that a row must meet
-              to be retrieved.
+       @param $cols (array): Array with the names of the columns to return by
+              the query.
+       @param $where (array): Array whose keys are columns in the table table_name,
+              and whose values are the conditions that a row must meet to be retrieved.
        @return Query result resource on success, FALSE on failure.
     */
-    public function select($table_name, $assoc = array()) {
+    public function select($table_name, $cols = array(), $where = array()) {
+        /* We build the query. */
+        $query = "SELECT ";
+        if($cols !== null && is_array($cols) && $cols) {
+            foreach($cols as $key => $value)
+                $query .= $value . ", ";
+            $query = substr($query, 0, -2);
+        } else
+            $query .= "*";
+
+        $query .= " FROM " . $table_name;
+        if($where !== null && is_array($where) && $where) {
+            $query .= " WHERE";
+            foreach($where as $key => $value)
+                $query .= " " . $key . $value . " AND ";
+            $query = substr($query, 0, -5);
+        }
+
+        /* We make the query and return the result. */
+        $result = $conn->query($query);
+
+        return $result;
     }
 }
 ?>
