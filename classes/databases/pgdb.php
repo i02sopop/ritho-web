@@ -87,58 +87,82 @@ class PgDB extends DB {
     /* Execute a query.
 
        @param $query (string): Query to execute in the DB.
-       @param $conn (resource): Database connection resource.
        @return TRUE on success, FALSE on failure.
     */
-    public function exec($query, $conn = NULL) {
+    public function exec($query) {
     }
 
-    /* Sends a request to execute a prepared statement with given parameters, without waiting for the result(s).
+    /* Bind parameters to a prepared statement.
 
        @param $stmtname (string): The name of the prepared statement to execute.
-       @param $params (array): Array of parameter values to substitute for the placeholders in the original prepared query string. The number of elements in the array must match the number of placeholders.
-       @param $conn (resource): Database connection resource.
+       @param $params (string | int | double | array): Array of parameter values
+              to substitute for the placeholders in the original prepared query
+              string. The number of elements in the array must match the number of
+              placeholders.
        @return TRUE on success, FALSE on failure.
     */
-    public function exec_prepared($stmtname, $params, $conn = NULL) {
+    abstract public function exec_bind($stmtname, $params);
+
+    /* Close a prepared statement.
+
+       @param $stmtname (string): The name of the prepared statement to execute.
+       @return TRUE on success, FALSE on failure.
+    */
+    abstract public function exec_close($stmtname = null);
+
+    /* Sends a request to execute a prepared statement without waiting for the result(s).
+
+       @param $stmtname (string): The name of the prepared statement to execute.
+       @return TRUE on success, FALSE on failure.
+    */
+    public function exec_prepared($stmtname = null) {
     }
 
     /* Get an array that contains all rows (records) in the result resource.
 
        @param $result (resource): Query result resource.
-       @return Array with all rows in the result. Each row is an array of field values indexed by field name. FALSE if there are no rows in the result, or on any other error.
+       @return Array with all rows in the result. Each row is an array of field
+       values indexed by field name and by field number. FALSE if there are no
+       rows in the result, or on any other error.
     */
-    public function fetch_all($result) {
+    public function fetch_all($result = null) {
     }
 
     /* Fetch a row into a numbered array from a query result.
 
        @param $result (resource): Result to get the row.
-       @param $result_type (int): Parameter to control how the returned array is indexed. result_type is a constant and can take the following values: SQL_ASSOC, SQL_NUM and SQL_BOTH.
+       @param $result_type (int): Parameter to control how the returned array is
+       indexed. result_type is a constant and can take the following values:
+       SQL_ASSOC, SQL_NUM and SQL_BOTH.
        @param $row (int): Row to fetch.
-       @return Array indexed numerically, associatively or both, FALSE on error. Each value in the array is represented as a string. Database NULL values are returned as NULL.
+       @return Array indexed numerically, associatively or both, FALSE on error.
+       Each value in the array is represented as a string. Database NULL values
+       are returned as NULL.
     */
-    public function fetch_array($result, $result_type = 0, $row = -1) {
+    public function fetch_array($result = null, $result_type = 0, $row = -1) {
     }
 
     /* Fetch a row into an associative array from a query result.
 
        @param $result (resource): Result to get the row.
        @param $row (int): Row to fetch.
-       @return Array indexed associatively, FALSE on error. Each value in the array is represented as a string. Database NULL values are returned as NULL.
+       @return Array indexed associatively, FALSE on error. Each value in the
+       array is represented as a string. Database NULL values are returned as
+       NULL. Returns NULL if there are no more rows in resultset.
     */
-    public function fetch_assoc($result, $row = -1) {
+    public function fetch_assoc($result = null, $row = -1) {
     }
 
-    /* Fetch an object with properties that correspond to the fetched row's field names. It can optionally instantiate an object of a specific class, and pass parameters to that class's constructor.
+    /* Fetch an object with properties that correspond to the fetched row's field
+       names. It can optionally instantiate an object of a specific class, and
+       pass parameters to that class's constructor.
 
        @param $result (resource): Result to get the row.
-       @param $row (int): Row to fetch.
        @param $class_name (string): Class name to store the row.
        @param $params (array): Params to attach to the constructor of the object.
        @return Object fetched.
     */
-    public function fetch_object($result, $row = -1, $class_name = 'StdClass',
+    public function fetch_object($result = null, $class_name = 'StdClass',
                                  $params = array()) {
     }
 
@@ -146,27 +170,30 @@ class PgDB extends DB {
 
        @param $result (resource): Result to get the row.
        @param $row (int): Row to fetch.
-       @return Array indexed numerically, FALSE on error. Each value in the array is represented as a string. Database NULL values are returned as NULL.
+       @return Array indexed numerically, FALSE on error. Each value in the array
+       is represented as a string. Database NULL values are returned as NULL.
     */
-    public function fetch_row($result, $row = -1) {
+    public function fetch_row($result = null, $row = -1) {
     }
 
-    /* Get the name of the field occupying the given field_number in the given result resource. Field numbering starts from 0.
+    /* Get the name of the field occupying the given field_number in the given
+       result resource. Field numbering starts from 0.
 
        @param $result (resource): Result to get the name of the column.
        @param $field_number (integer): Number of field to check.
        @return An string with the name of the field.
     */
-    public function field_name($result, $field_number = -1) {
+    public function field_name($result = null, $field_number = -1) {
     }
 
-    /* Get a string containing the base type name of the given field_number in the given result resource.
+    /* Get a string containing the base type name of the given field_number in the
+       given result resource.
 
        @param $result (resource): Result resource to get the type of the field.
        @param $field_number (int): Number of field to check.
        @return String with the type of object of the given field.
     */
-    public function field_type($result, $field_number) {
+    public function field_type($result = null, $field_number = -1) {
     }
 
     /* Free a query result.
@@ -174,17 +201,17 @@ class PgDB extends DB {
        @param $result (resource): Result to free.
        @return TRUE on success, FALSE on failure.
     */
-    public function free($result) {
+    public function free($result = null) {
     }
 
     /* Inserts the values of assoc_array into the table specified by table_name.
 
-       @param $connection (resource): Database connection resource.
        @param $table_name (string): Name of the table into which to insert rows.
-       @param $assoc (array): Array whose keys are field names in the table table_name, and whose values are the values of those fields that are to be inserted.
+       @param $assoc (array): Array whose keys are field names in the table table_name,
+       and whose values are the values of those fields that are to be inserted.
        @return TRUE on success, FALSE on failure.
     */
-    public function insert($connection, $table_name, $assoc) {
+    public function insert($table_name, $assoc = array()) {
     }
 
     /* Get the number of fields (columns) in a result resource.
@@ -192,7 +219,7 @@ class PgDB extends DB {
        @param $result (resource): Result to check.
        @return Number of columns of the result.
     */
-    public function num_fields($result) {
+    public function num_fields($result = null) {
     }
 
     /* Get the number of rows in a result resource..
@@ -200,12 +227,12 @@ class PgDB extends DB {
        @param $result (resource): Result to check.
        @return Number of rows of the result.
     */
-    public function num_rows($result) {
+    public function num_rows($result = null) {
     }
 
     /* Persistent connection to the database engine.
 
-       @return Connection resource on success, FALSE on failure.
+       @return TRUE on success, FALSE on failure.
     */
     public function pconnect() {
     }
@@ -219,42 +246,44 @@ class PgDB extends DB {
 
     /* Creates a prepared statement for later execution.
 
-       @param $stmtname (string): The name to give the prepared statement. Must be unique per-connection.
-       @param $query (string): The parameterized SQL statement. Must contain only a single statement. If any parameters are used, they are referred to as $1, $2, etc.
-       @param $conn (resource): Database connection resource.
+       @param $stmtname (string): The name to give the prepared statement. Must
+       be unique per-connection.
+       @param $query (string): The parameterized SQL statement. Must contain only
+       a single statement. If any parameters are used, they are referred to as $1,
+       $2, etc.
        @return TRUE on success, FALSE on failure.
     */
-    public function prepare($stmtname, $query, $conn = NULL) {
+    public function prepare($stmtname, $query) {
     }
 
     /* Execute a query.
 
        @param $query (string): Query to execute in the DB.
-       @param $conn (resource): Database connection resource.
        @return Query result resource on success, FALSE on failure.
     */
-    public function query($query, $conn = NULL) {
+    public function query($query) {
     }
 
     /* Query a prepared statement.
 
        @param $stmtname (string): The name of the prepared statement to execute.
-       @param $params (array): Array of parameter values to substitute for the placeholders in the original prepared query string. The number of elements in the array must match the number of placeholders.
-       @param $conn (resource): Database connection resource.
+       @param $params (array): Array of parameter values to substitute for the
+       placeholders in the original prepared query string. The number of elements
+       in the array must match the number of placeholders.
        @return Values that match the query.
     */
-    public function query_prepared($stmtname, $params, $conn = NULL) {
+    public function query_prepared($stmtname, $params) {
     }
 
-    /*
-      Select records specified by assoc_array which has field=>value.
+    /* Select records specified by assoc_array which has field=>value.
 
-      @param $table_name (string): Name of the table from which to select rows.
-      @param $assoc (array): Array whose keys are field names in the table table_name, and whose values are the conditions that a row must meet to be retrieved.
-      @param $conn (resource): Database connection resource.
-      @return Query result resource on success, FALSE on failure.
+       @param $table_name (string): Name of the table from which to select rows.
+       @param $cols (array): Array with the names of the columns to return by the query.
+       @param $where (array): Array whose keys are columns in the table table_name, and
+       whose values are the conditions that a row must meet to be retrieved.
+       @return Query result resource on success, FALSE on failure.
     */
-    public function select($table_name, $assoc = array(), $conn = NULL) {
+    public function select($table_name, $cols = array(), $where = array()) {
     }
 }
 ?>
