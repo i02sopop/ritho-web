@@ -38,31 +38,42 @@ class PgDB extends DB {
 
     /* Disconnect the database engine.
 
-       @param $conn (resource): Database connection resource.
        @return TRUE on success, FALSE on failure.
     */
-    public function close($conn = NULL) {
-        if($conn != NULL)
-            return pg_close($conn);
+    public function close() {
+        if($this->getConnection() != null)
+            return pg_close($this->getConnection());
         return pg_close();
     }
 
     /* Connect to the database engine.
 
-       @return Connection resource on success, FALSE on failure.
-    */
-    public function connect() {
-        // $dbconn3 = pg_connect("host=sheep port=5432 dbname=mary user=lamb password=foo options='--client_encoding=UTF8'");
-    }
-
-    /* Delete records from a table specified by the keys and values in assoc_array.
-
-       @param $table_name (string): Name of the table from which to delete rows.
-       @param $assoc (array): An array whose keys are field names in the table table_name, and whose values are the values of those fields that are to be deleted.
-       @param $conn (resource): Database connection resource.
        @return TRUE on success, FALSE on failure.
     */
-    public function delete($table_name, $assoc, $conn = NULL) {
+    public function connect() {
+        /* Close previous persistent connection. */
+        $this->setPersistent(false);
+        if($this->setConnection(null))
+            $this->close();
+
+        // Get charset from config.
+        $connection_string = "host=" . $this->getHost() . " port=" . $this->getPort() .
+            " dbname=" . $this->getDB() . " user=" . $this->getUser() . " password=" .
+            $this->getPassword() . " options='--client_encoding=UTF8'";
+        $this->setConnection(pg_connect($connection_string));
+
+        return (pg_connection_status($this->getConnection()) === PGSQL_CONNECTION_OK);
+    }
+
+    /* Deletes records from a table specified by the keys and values in assoc_array.
+
+       @param $table_name (string): Name of the table from which to delete rows.
+       @param $assoc (array): An array whose keys are field names in the table table_name,
+                              and whose values are the values of those fields that are to
+                              be deleted.
+       @return TRUE on success, FALSE on failure.
+    */
+    public function delete($table_name, $assoc = array()) {
     }
 
     /* Escape a string for insertion into the database.
