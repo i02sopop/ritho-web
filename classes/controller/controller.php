@@ -75,13 +75,11 @@ abstract class Controller extends Base {
       @return Object populated
     */
     protected function populateWithPost($obj = null) {
-        if(!is_object($obj)) {
+        if(!is_object($obj))
             $obj = new StdClass();
-        }
 
-        foreach ($_POST as $var => $value) {
+        foreach ($_POST as $var => $value)
             $obj->$var = trim($value);
-        }
 
         return $obj;
     }
@@ -90,13 +88,12 @@ abstract class Controller extends Base {
       Displays the view.
     */
     private function display() {
-        if ($this->view->action == View::RENDER_ACTION) {
+        if($this->view->action == View::RENDER_ACTION)
             $this->view->render();
-        } else if ($this->view->action == View::REDIRECT_ACTION) {
+        else if ($this->view->action == View::REDIRECT_ACTION)
             header('Location: ' . $this->view->url);
-        } else {
-            throw Exception('Unknown view action: ' . $this->view->action);
-        }
+        else
+            throw new Exception('Unknown view action: ' . $this->view->action);
     }
 }
 ?>
