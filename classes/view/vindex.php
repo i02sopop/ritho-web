@@ -61,11 +61,11 @@ class VIndex extends View {
         // To prevent iOS from applying its styles to the icon name it thusly: apple-touch-icon-precomposed.png
         // Transparency is not recommended (iOS will put a black BG behind the icon)
         $index->head->appleicon = $CONFIG['img_path'] . '/custom_icon.png';
-        $index->head->css = $CONFIG['css_path'] . '/style.css';
-        $index->head->cssPrint = $CONFIG['css_path'] . '/stylePrint.css';
-        $index->head->cssIE = $CONFIG['css_path'] . '/styleIE.css';
-        $index->head->cssIE7 = $CONFIG['css_path'] . '/styleIE7.css';
-        $index->head->cssIEOld = $CONFIG['css_path'] . '/styleIEOld.css';
+        $index->head->css = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/style.css';
+        $index->head->cssPrint = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/stylePrint.css';
+        $index->head->cssIE = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/styleIE.css';
+        $index->head->cssIE7 = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/styleIE7.css';
+        $index->head->cssIEOld = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/styleIEOld.css';
         $index->head->jquery = $CONFIG['js_path'] . '/jquery.js';
         $index->head->title = $this->name.' - Ritho\'s Web Page';
         $index->head->modernizr = $CONFIG['js_path'] . '/modernizr-1.7.min.js';

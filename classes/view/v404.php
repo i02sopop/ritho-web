@@ -57,15 +57,15 @@ class V404 extends View {
         // size: 57x57 for older iPhones, 72x72 for iPads, 114x114 for iPhone4's retina display (IMHO, just go ahead and use the biggest one)
         // To prevent iOS from applying its styles to the icon name it thusly: apple-touch-icon-precomposed.png
         // Transparency is not recommended (iOS will put a black BG behind the icon)
-        $index->head->appleicon = '/img/custom_icon.png';
-        $index->head->css = '/css/style.css';
-        $index->head->cssPrint = '/css/stylePrint.css';
-        $index->head->cssIE = '/css/styleIE.css';
-        $index->head->cssIE7 = '/css/styleIE7.css';
-        $index->head->cssIEOld = '/css/styleIEOld.css';
-        $index->head->jquery = '/js/jquery.js';
-        $index->head->title = $this->name.' - Ritho\'s Web Page';
-        $index->head->modernizr = '/js/modernizr-1.7.min.js';
+        $index->head->appleicon = $CONFIG['img_path'] . '/custom_icon.png';
+        $index->head->css = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/style.css';
+        $index->head->cssPrint = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/stylePrint.css';
+        $index->head->cssIE = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/styleIE.css';
+        $index->head->cssIE7 = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/styleIE7.css';
+        $index->head->cssIEOld = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/styleIEOld.css';
+        $index->head->jquery = $CONFIG['js_path'] . '/jquery.js';
+        $index->head->title = $this->name . ' - Ritho\'s Web Page';
+        $index->head->modernizr = $CONFIG['js_path'] . '/modernizr-1.7.min.js';
         $index->head->gsVerification = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
 
         if(isset($this->path))
