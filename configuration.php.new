@@ -18,17 +18,26 @@
 */
 
 // TODO: Include sql configs.
-$config = array('path' => dirname(__FILE__),
-                'class_path' => dirname(__FILE__).'/classes/',
-                'model_path' => dirname(__FILE__).'/classes/model/',
-                'view_path' => dirname(__FILE__).'/classes/view/',
-                'controller_path' => dirname(__FILE__).'/classes/controller/',
-                'utils_path' => dirname(__FILE__).'/classes/utils/',
+$CONFIG = array(// Paths
+                'class_path' => dirname(__FILE__) . '/classes',
+                'controller_path' => dirname(__FILE__) . '/classes/controller',
+                'css_path' => '/css/blue-three-columns',
+                'exceptions_path' => dirname(__FILE__) . '/classes/exceptions',
+                'img_path' => '/img',
+                'include_path' => dirname(__FILE__) . '/include',
+                'js_path' => '/js',
+                'log_path' => '/var/log',
+                'model_path' => dirname(__FILE__) . '/classes/model',
+                'path' => dirname(__FILE__),
+                'template_path' => dirname(__FILE__) . '/templates',
+                'utils_path' => dirname(__FILE__) . '/classes/utils',
+                'view_path' => dirname(__FILE__) . '/classes/view',
+                // File extensions
                 'class_ext' => '.php',
-                'template_path' => dirname(__FILE__).'/templates/',
                 'template_ext' => '.html',
-                'include_path' => dirname(__FILE__).'/include/'
+                // Other config parameters
+                'log_file' => 'ritho.log',
+                'log_file_prefix' => 'ritho_'
                 );
 
-require_once($config['include_path'].'functions.php');
-?>
+require_once($CONFIG['include_path'] . '/functions.php');

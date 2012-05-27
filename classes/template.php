@@ -32,12 +32,12 @@ class Template extends Base {
        @param name (string): The template name 
     */ 
     public function __construct($name) {
-        global $config; // Configs of the site.
-        if(!is_file($config['template_path'] . $name . $config['template_ext']))
-            die('Invalid template: ' . $config['template_path'] . $name .
-                $config['template_ext']); 
+        global $CONFIG; // Configs of the site.
+        if(!is_file($CONFIG['template_path'] . '/' . $name . $CONFIG['template_ext']))
+            die('Invalid template: ' . $CONFIG['template_path'] . '/' . $name .
+                $CONFIG['template_ext']);
     
-        $this->path = $config['template_path'] . $name . $config['template_ext'];
+        $this->path = $CONFIG['template_path'] . '/' . $name . $CONFIG['template_ext'];
     }
   
     /* Render a template.
@@ -61,7 +61,7 @@ class Template extends Base {
         require_once($this->path);
         $output = ob_get_clean();
     
-        if($print) { 
+        if($print === true) {
             echo $output;
             return true;
         }

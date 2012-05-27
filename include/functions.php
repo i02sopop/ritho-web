@@ -17,7 +17,7 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once($config['class_path'].'missingexception'.$config['class_ext']);
+require_once($CONFIG['exceptions_path'] . '/missingexception' . $CONFIG['class_ext']);
 
 /*
   Class autoload function.
@@ -27,18 +27,54 @@ require_once($config['class_path'].'missingexception'.$config['class_ext']);
   @parameter name (string): The class name.
 */
 function __autoload($name) {
-    global $config;
-    if(is_file($config['class_path'].strtolower($name).$config['class_ext']))
-        require_once($config['class_path'].strtolower($name).$config['class_ext']);
-    else if(is_file($config['model_path'].strtolower($name).$config['class_ext']))
-        require_once($config['model_path'].strtolower($name).$config['class_ext']);
-    else if(is_file($config['view_path'].strtolower($name).$config['class_ext']))
-        require_once($config['view_path'].strtolower($name).$config['class_ext']);
-    else if(is_file($config['controller_path'].strtolower($name).$config['class_ext']))
-        require_once($config['controller_path'].strtolower($name).$config['class_ext']);
-    else if(is_file($config['utils_path'].strtolower($name).$config['class_ext']))
-        require_once($config['utils_path'].strtolower($name).$config['class_ext']);
+    global $CONFIG;
+
+    if(is_file($CONFIG['class_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
+        require_once($CONFIG['class_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
+    else if(is_file($CONFIG['model_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
+        require_once($CONFIG['model_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
+    else if(is_file($CONFIG['view_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
+        require_once($CONFIG['view_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
+    else if(is_file($CONFIG['controller_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
+        require_once($CONFIG['controller_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
+    else if(is_file($CONFIG['utils_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
+        require_once($CONFIG['utils_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
     else
         throw new MissingException("Impossible to load $name.");
 }
-?>
+
+/*
+  Function to log info messages into the logging file.
+
+  @author Ritho-web team
+  @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+  @parameter name (string): The class name.
+  @parameter file (string): The log filename.
+*/
+function log_i($msg = "", $file = null) {
+    Log::instance($file)->i($msg);
+}
+
+/*
+  Function to log debug messages into the logging file.
+
+  @author Ritho-web team
+  @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+  @parameter name (string): The class name.
+  @parameter file (string): The log filename.
+*/
+function log_d($msg = "", $file = null) {
+    Log::instance($file)->d($msg);
+}
+
+/*
+  Function to log error messages into the logging file.
+
+  @author Ritho-web team
+  @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+  @parameter name (string): The class name.
+  @parameter file (string): The log filename.
+*/
+function log_e($msg = "", $file = null) {
+    Log::instance($file)->e($msg);
+}
