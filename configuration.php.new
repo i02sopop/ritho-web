@@ -17,6 +17,7 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/* Setting the default configuration variables */
 $CONFIG = array(// Paths
                 'class_path' => dirname(__FILE__) . '/classes',
                 'controller_path' => dirname(__FILE__) . '/classes/controller',
@@ -46,6 +47,11 @@ $CONFIG = array(// Paths
                 'db_user' => 'root',
                 'db_password' => '',
                 'db_name' => 'ritho-web',
+                'timezone' => 'Europe/Madrid',
                 );
 
+/* Loading functions. */
 require_once($CONFIG['include_path'] . '/functions.php');
+
+/* Setting the timezone. */
+date_default_timezone_set($CONFIG['timezone']);
