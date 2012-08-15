@@ -10,6 +10,6 @@ echo -n "."
 done
 
 /usr/bin/createdb $DSNARGS $DATABASE
-psql -q -h $1 $DATABASE -f $2/db/schema-postgresql-0.0.1.sql
+psql -q -h $1 $DATABASE -f $2/scripts/db/schema-postgresql-0.0.1.sql
 
 echo "To connect: psql -h $1 $database"
