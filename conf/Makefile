@@ -1,10 +1,9 @@
 TOPDIR?=..
 include $(TOPDIR)/Config.mk
 
-SRCS=httpd-www.conf httpd.conf postgresql.conf
+SRCS=apache2-vhosts.conf apache2.conf postgresql.conf
 
-.PHONY=install
-install:build
+install: build
 	mkdir -p $(BUILD_DIR)/conf
 	cp $(SRCS) $(BUILD_DIR)/conf/
 	@for i in $(SRCS); do \
@@ -14,7 +13,6 @@ install:build
 	cp $(SSL_CERT) $(SERVER_CRT)
 	cp $(SSL_KEY) $(SERVER_KEY)
 
-.PHONY=build
 build: $(SSL_CERT) $(SSL_KEY)
 
 $(SSL_KEY):
