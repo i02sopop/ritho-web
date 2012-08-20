@@ -12,20 +12,26 @@ SERVER_CRT=$(BUILD_DIR)/conf/ssl/server.crt
 SERVER_KEY=$(BUILD_DIR)/conf/ssl/priv/server.key
 
 BUILD_DIR=$(TOP_DIR)/dev-env
+USR_BIN=/usr/bin
+USR_SBIN=/usr/sbin
 
 SERVER_ROOT=$(BUILD_DIR)
 WWW_ROOT=$(BUILD_DIR)/www
 CSS_DIR=$(WWW_ROOT)/css
 
+DATABASE=ritho-web
+SCRIPTS_DIR=$(TOP_DIR)/scripts
+DB_SCRIPTS_DIR=$(SCRIPTS_DIR)/db
+
 PGSQL_HOST=$(BUILD_DIR)/data
 PGSQL_PORT=$(call genport,10)
 PGSQL_USER=$(shell id -un)
 PGSQL_PASSWD=
-PGSQL_DBNAME=chuponMordac
 
 PGSQL_VERSION=9.1
 PGSQL_DATA=$(PGSQL_HOST)
 PGSQL_DIR=$(BUILD_DIR)/pgsql
+PGSQL_BIN=/usr/lib/postgresql/9.1/bin
 
 MYSQL_PORT=$(call genport,20)
 MYSQL_DATA=$(BUILD_DIR)/mysql

@@ -4,7 +4,7 @@ include $(TOPDIR)/Config.mk
 
 DIRS=conf www
 
-all: clean-build start-environment
+all: clean-build install start-environment
 
 dirs:
 	@if [ ! -d $(BUILD_DIR) ] ; then mkdir -p $(BUILD_DIR) ; fi
@@ -23,16 +23,23 @@ mysql-start:
 	@echo "\\033[1;35m+++ Starting mysql\\033[39;0m"
 	@if [ ! -f $(RUN_DIR)/mysql.pid ]; then \
 		rm -rf $(MYSQL_DATA) > /dev/null; \
-		/usr/bin/mysql_install_db --user=$(USER) --ldata=$(MYSQL_DATA) > /dev/null 2> /dev/null; \
-		/usr/sbin/mysqld -P $(MYSQL_PORT) -h $(MYSQL_DATA) --socket=$(MYSQL_SOCKET) --pid-file=$(BUILD_DIR)/mysql.pid > /dev/null 2> /dev/null& \
+		$(USR_BIN)/mysql_install_db --user=$(USER) --ldata=$(MYSQL_DATA) > /dev/null 2> /dev/null; \
+		$(USR_SBIN)/mysqld -P $(MYSQL_PORT) -h $(MYSQL_DATA) --socket=$(MYSQL_SOCKET) --pid-file=$(BUILD_DIR)/mysql.pid > /dev/null 2> /dev/null& \
 	fi;
 
 postgresql-start:
 	@echo "\\033[1;35m+++ Starting postgres\\033[39;0m"
 	@if [ ! -f $(RUN_DIR)/postmaster.pid ]; then \
 		rm -rf $(PGSQL_DATA) > /dev/null; \
-		/usr/lib/postgresql/9.1/bin/initdb --pgdata=$(PGSQL_DATA) --auth="ident" > /dev/null; \
-		$(TOP_DIR)/scripts/db/pg_start.sh $(PGSQL_DATA) $(TOP_DIR) $(BUILD_DIR) > /dev/null 2> /dev/null; \
+		$(PGSQL_BIN)/initdb --pgdata=$(PGSQL_DATA) --auth="ident" > /dev/null; \
+		$(PGSQL_BIN)/postmaster -h '' -k $(PGSQL_DATA) -D $(PGSQL_DATA) 1> $(PGSQL_DATA)/pgsql.log < /dev/null 2>&1 & \
+		echo $! > $(BUILD_DIR)/postmaster.pid; \
+		while ! $(USR_BIN)/psql -h $(PGSQL_DATA) -c "select current_timestamp" template1 > /dev/null 2>&1; do \
+			/bin/sleep 1; \
+			echo -n "."; \
+		done; \
+		$(USR_BIN)/createdb -h $(PGSQL_DATA) $(DATABASE); \
+		$(USR_BIN)/psql -q -h $(PGSQL_DATA) $(DATABASE) -f $(DB_SCRIPTS_DIR)/schema-postgresql-0.0.1.sql; \
 	fi
 
 apache-start:
