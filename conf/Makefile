@@ -1,22 +1,20 @@
 TOPDIR?=..
 include $(TOPDIR)/Config.mk
 
-SRCS=apache2-vhosts.conf apache2.conf postgresql.conf
+DIRS=ssl
+SRCS=apache2-vhosts.conf apache2.conf postgresql.conf my.cnf
 
 install: build
-	mkdir -p $(BUILD_DIR)/conf
-	cp $(SRCS) $(BUILD_DIR)/conf/
+	@echo "\\033[1;35m+++ Installing conf\\033[39;0m"
+	@mkdir -p $(CONF_DIR)
+	@for i in $(DIRS) ; do $(MAKE) -C $$i install ; done
+	@cp $(SRCS) $(CONF_DIR)
 	@for i in $(SRCS); do \
-		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(BUILD_DIR)/conf/$$i ; \
+		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(CONF_DIR)/$$i ; \
 	done
-	mkdir -p $(BUILD_DIR)/conf/ssl/priv
-	cp $(SSL_CERT) $(SERVER_CRT)
-	cp $(SSL_KEY) $(SERVER_KEY)
+	@echo "\\033[1;35m+++ Conf installed\\033[39;0m"
 
-build: $(SSL_CERT) $(SSL_KEY)
-
-$(SSL_KEY):
-	openssl genrsa -out $@ 4096
-
-$(SSL_CERT): $(SSL_KEY)
-	openssl req -new -x509 -days 365 -key $< -out $@ -config $(SSL_CONFIG) -batch -subj /C=ES/ST=Madrid/O=Ritho/localityName=Madrid/commonName=$(HOST)/emailAddress=$(SUPPORT_EMAIL)/
+build:
+	@echo "\\033[1;35m+++ Building up conf\\033[39;0m"
+	@for i in $(DIRS) ; do $(MAKE) -C $$i build ; done
+	@echo "\\033[1;35m+++ Conf built\\033[39;0m"
