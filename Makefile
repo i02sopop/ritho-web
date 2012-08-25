@@ -82,7 +82,7 @@ postgresql-stop:
 apache-stop:
 	@echo "\\033[1;35m+++ Stopping HTTP daemon\\033[39;0m"
 	@if [ -f $(RUN_DIR)/apache2.pid ]; then \
-		$(HTTPD) -f $(BUILD_DIR)/conf/apache2.conf -k stop; \
+		$(HTTPD) -f $(CONF_DIR)/apache2.conf -k stop; \
 	fi
 
 clean-build:
