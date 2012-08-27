@@ -8,8 +8,8 @@ install: build
 	@echo "\\033[1;35m+++ Installing SSL\\033[39;0m"
 	@mkdir -p $(SSL_DIR)/priv/
 	@for i in $(DIRS) ; do $(MAKE) -C $$i install ; done
-	@cp $(SRCS) $(SSL_DIR)
 	@for i in $(SRCS); do \
+		cp $$i $(SSL_DIR); \
 		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(SSL_DIR)/$$i ; \
 	done
 	@+make ssl-cert
@@ -24,7 +24,7 @@ build:
 ssl-cert: $(SSL_CERT)
 
 $(SSL_KEY):
-	openssl genrsa -out $@ 4096
+	@openssl genrsa -out $@ 4096
 
 $(SSL_CERT): $(SSL_KEY)
-	openssl req -new -x509 -days 365 -key $< -out $@ -config $(SSL_CONFIG) -batch -subj /C=ES/ST=Madrid/O=Ritho/localityName=Madrid/commonName=$(HOST)/emailAddress=$(SUPPORT_EMAIL)/
+	@openssl req -new -x509 -days 365 -key $< -out $@ -config $(SSL_CONFIG) -batch -subj /C=ES/ST=Madrid/O=Ritho/localityName=Madrid/commonName=$(HOST)/emailAddress=$(SUPPORT_EMAIL)/
