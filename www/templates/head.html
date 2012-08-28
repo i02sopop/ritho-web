@@ -12,24 +12,6 @@
 	
 <link rel="shortcut icon" href="<?php echo $favicon; ?>" />
 <link rel="apple-touch-icon" href="<?php echo $appleicon; ?>" />
-<link rel="stylesheet/less" type="text/css" href="<?php echo $css; ?>"  media="all" />
-<link rel="stylesheet" href="<?php echo $cssPrint; ?>" media="print" />
-
-<!--[if IE]>
-<link rel="stylesheet" href="<?php echo $cssIE; ?>" media="all" />
-<![endif]-->
-<!--[if IE 7]>
-<link rel="stylesheet" href="<?php echo $cssIE7; ?>" media="all" />
-<![endif]-->
-<!--[if lt IE 7]>
-<link rel="stylesheet" href="<?php echo $cssIEOld; ?>" media="all" />
-<![endif]-->
-
-<!--[if lt IE 9]>
-<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
-<!-- This is STRONGLY OPTIONAL, but useful if you need to really kick IE in the pants.
-There are different flavors; pick the one right for your project: http://code.google.com/p/ie7-js/ -->
-<![endif]-->
 
 <script type="text/javascript" src="<?php echo $jquery; ?>"></script>
 <title><?php echo $title; ?></title>
@@ -41,8 +23,16 @@ If you're using this, you don't need the HTML5 Shiv script below -->
 <!-- lesscss -->
 <script src="<?php echo $lesscss; ?>" type="text/javascript"></script>
 
-<!--[if lt IE 9]>
-<!-- comment this back in if you're not using the Modernizr script -->
-<!--<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>-->
+<link rel="stylesheet/less" type="text/css" href="<?php echo $css; ?>"  media="all" />
+<link rel="stylesheet/less" type="text/css" href="<?php echo $cssPrint; ?>" media="print" />
+
+<!--[if IE]>
+<link rel="stylesheet" href="<?php echo $cssIE; ?>" media="all" />
+<![endif]-->
+<!--[if IE 7]>
+<link rel="stylesheet" href="<?php echo $cssIE7; ?>" media="all" />
+<![endif]-->
+<!--[if lt IE 7]>
+<link rel="stylesheet" href="<?php echo $cssIEOld; ?>" media="all" />
 <![endif]-->
 </head>
