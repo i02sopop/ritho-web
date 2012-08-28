@@ -68,7 +68,8 @@ class VIndex extends View {
         $index->head->cssIEOld = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/styleIEOld.css';
         $index->head->jquery = $CONFIG['js_path'] . '/jquery.js';
         $index->head->title = $this->name.' - Ritho\'s Web Page';
-        $index->head->modernizr = $CONFIG['js_path'] . '/modernizr-1.7.min.js';
+        $index->head->modernizr = $CONFIG['js_path'] . '/modernizr.js';
+        $index->head->lesscss = $CONFIG['js_path'] . '/less.js';
         $index->head->gsVerification = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
       
         $index->header = new Template('header');
