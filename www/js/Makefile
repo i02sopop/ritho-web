@@ -2,7 +2,7 @@ TOPDIR?=..
 include $(TOPDIR)/Config.mk
 
 DIRS=
-SRCS=jquery.js modernizr-1.7.min.js ritho.js
+SRCS=jquery.js modernizr.js ritho.js less.js
 
 build: install
 
