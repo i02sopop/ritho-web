@@ -2,7 +2,7 @@ TOPDIR?=..
 include $(TOPDIR)/Config.mk
 
 DIRS=
-SRCS=jquery.js modernizr.js ritho.js less.js
+SRCS=jquery.js modernizr.js ritho.js less.js ember.js
 
 build: install
 
