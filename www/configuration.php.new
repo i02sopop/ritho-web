@@ -27,7 +27,7 @@ $GLOBALS['CONFIG'] = $CONFIG = array(
     'img_path' => '/img', // Include only relative path or external url to generate the html link.
     'include_path' => dirname(__FILE__) . '/include',
     'js_path' => '/js',  // Include only relative path or external url to generate the html link.
-    'log_path' => '/var/log/ritho',
+    'log_path' => '%LOG_DIR%',
     'model_path' => dirname(__FILE__) . '/classes/model',
     'path' => dirname(__FILE__),
     'template_path' => dirname(__FILE__) . '/templates',
@@ -39,15 +39,15 @@ $GLOBALS['CONFIG'] = $CONFIG = array(
     // css theme
     'css_theme' => 'blue-three-columns',
     // Log parameters
-    'log_file' => 'ritho.log',
-    'log_file_prefix' => 'ritho_',
+    'log_file' => '%LOG_FILE%',
+    'log_file_prefix' => '%LOG_PREFIX%',
     // Database parameters
-    'db_engine' => 'mysql',
-    'db_host' => 'localhost',
-    'db_port' => '3306',
+    'db_engine' => '%DB_ENGINE%',
+    'db_host' => '%DB_HOST%',
+    'db_port' => '%DB_PORT%',
     'db_user' => 'root',
     'db_password' => '',
-    'db_name' => 'ritho-web',
+    'db_name' => '%DATABASE%',
     'timezone' => 'Europe/Madrid',
 );
 

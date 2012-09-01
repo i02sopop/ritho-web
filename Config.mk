@@ -14,6 +14,14 @@ RUN_DIR=/var/run
 SCRIPTS_DIR=$(BUILD_DIR)/scripts
 DB_SCRIPTS_DIR=$(SCRIPTS_DIR)/db
 
+USER=www-data
+HOST=ritho.net
+
+HTTP_PORT=80
+HTTPS_PORT=443
+HTTPD_USER=www-data
+HTTPD_GROUP=www-data
+
 PGSQL_HOST=localhost
 PGSQL_PORT=5432
 PGSQL_USER=postgres
@@ -26,23 +34,15 @@ PGSQL_LOGDIR=$(LOG_DIR)
 PGSQL_LOG=$(PGSQL_LOGDIR)/pgsql.log
 PGSQL_SCHEMA=$(DB_SCRIPTS_DIR)/schema-postgresql-$(VERSION).sql
 
-MYSQL_USER=mysql
+MYSQL_HOST=$(HOST)
 MYSQL_PORT=3306
+MYSQL_USER=mysql
 MYSQL_BASEDIR=/usr
 MYSQL_DATA=/var/lib/mysql
 MYSQL_SOCKET=/var/run/mysqld/mysqld.sock
 MYSQL_PID=/var/run/mysqld/mysqld.pid
 MYSQL_LOGDIR=/var/log/mysql
 MYSQL_SCHEMA=$(DB_SCRIPTS_DIR)/schema-mysql-$(VERSION).sql
-
-USER=www-data
-
-HTTPD_USER=www-data
-HTTPD_GROUP=www-data
-
-HOST=ritho.net
-HTTP_PORT=80
-HTTPS_PORT=443
 
 SUPPORT_EMAIL=palvarez@ritho.net
 
@@ -58,6 +58,14 @@ RUN_DIR=$(BUILD_DIR)
 SCRIPTS_DIR=$(TOP_DIR)/scripts
 DB_SCRIPTS_DIR=$(SCRIPTS_DIR)/db
 
+USER=$(shell id -un)
+HOST=$(shell hostname -f | head -1)
+
+HTTP_PORT=$(call genport,1)
+HTTPS_PORT=$(call genport,2)
+HTTPD_USER=$(shell id -un)
+HTTPD_GROUP=$(shell id -gn)
+
 PGSQL_HOST=$(BUILD_DIR)/data
 PGSQL_PORT=$(call genport,10)
 PGSQL_USER=$(shell id -un)
@@ -70,8 +78,9 @@ PGSQL_LOGDIR=$(LOG_DIR)
 PGSQL_LOG=$(PGSQL_LOGDIR)/pgsql.log
 PGSQL_SCHEMA=$(DB_SCRIPTS_DIR)/schema-postgresql-$(VERSION).sql
 
-MYSQL_USER=$(shell id -un)
+MYSQL_HOST=$(HOST)
 MYSQL_PORT=$(call genport,20)
+MYSQL_USER=$(shell id -un)
 MYSQL_BASEDIR=$(BUILD_DIR)
 MYSQL_DATA=$(MYSQL_BASEDIR)/mysql
 MYSQL_SOCKET=$(MYSQL_DATA)/my.sock
@@ -79,15 +88,6 @@ MYSQL_PID=$(MYSQL_BASEDIR)/mysql.pid
 MYSQL_CONF=$(CONF_DIR)/my.cnf
 MYSQL_LOGDIR=$(LOG_DIR)/mysql
 MYSQL_SCHEMA=$(DB_SCRIPTS_DIR)/schema-mysql-$(VERSION).sql
-
-USER=$(shell id -un)
-
-HTTPD_USER=$(shell id -un)
-HTTPD_GROUP=$(shell id -gn)
-
-HOST=$(shell hostname -f | head -1)
-HTTP_PORT=$(call genport,1)
-HTTPS_PORT=$(call genport,2)
 
 SUPPORT_EMAIL=palvarez@ritho.net
 
@@ -107,12 +107,19 @@ CSS_DIR=$(WWW_ROOT)/css
 
 DATABASE=ritho-web
 
+LOG_FILE=ritho.log
+LOG_PREFIX=ritho_
+
 PGSQL_VERSION=9.1
 
 MYSQL_CONF=$(CONF_DIR)/my.cnf
 MYSQL_LOG=$(MYSQL_LOGDIR)/mysql.log
 MYSQL_LOG_BIN=$(MYSQL_LOGDIR)/mysql-bin.log
 MYSQL_LOG_QSLOW=$(MYSQL_LOGDIR)/mysql-slow.log
+
+DB_ENGINE=mysql
+DB_HOST=$(HOST)
+DB_PORT=$(MYSQL_PORT)
 
 HTTPD=/usr/sbin/apache2
 HTTPD_SYSCONFIG=/etc/apache2

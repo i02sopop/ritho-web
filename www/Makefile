@@ -2,7 +2,7 @@ TOPDIR?=..
 include $(TOPDIR)/Config.mk
 
 DIRS=classes css img include js templates
-SRCS=index.php configuration.php
+SRCS=index.php configuration.php configuration.php.new
 
 build:
 	@echo "\\033[1;35m+++ Building up www\\033[39;0m"
