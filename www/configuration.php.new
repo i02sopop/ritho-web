@@ -18,37 +18,38 @@
 */
 
 /* Setting the default configuration variables */
-$CONFIG = array(// Paths
-                'class_path' => dirname(__FILE__) . '/classes',
-                'controller_path' => dirname(__FILE__) . '/classes/controller',
-                'css_path' => '/css', // Include only relative path or external url to generate the html link.
-                'exceptions_path' => dirname(__FILE__) . '/classes/exceptions',
-                'img_path' => '/img', // Include only relative path or external url to generate the html link.
-                'include_path' => dirname(__FILE__) . '/include',
-                'js_path' => '/js',  // Include only relative path or external url to generate the html link.
-                'log_path' => '/var/log/ritho',
-                'model_path' => dirname(__FILE__) . '/classes/model',
-                'path' => dirname(__FILE__),
-                'template_path' => dirname(__FILE__) . '/templates',
-                'utils_path' => dirname(__FILE__) . '/classes/utils',
-                'view_path' => dirname(__FILE__) . '/classes/view',
-                // File extensions
-                'class_ext' => '.php',
-                'template_ext' => '.html',
-                // css theme
-                'css_theme' => 'blue-three-columns',
-                // Log parameters
-                'log_file' => 'ritho.log',
-                'log_file_prefix' => 'ritho_',
-                // Database parameters
-                'db_engine' => 'mysql',
-                'db_host' => 'localhost',
-                'db_port' => '3306',
-                'db_user' => 'root',
-                'db_password' => '',
-                'db_name' => 'ritho-web',
-                'timezone' => 'Europe/Madrid',
-                );
+$GLOBALS['CONFIG'] = $CONFIG = array(
+    // Paths
+    'class_path' => dirname(__FILE__) . '/classes',
+    'controller_path' => dirname(__FILE__) . '/classes/controller',
+    'css_path' => '/css', // Include only relative path or external url to generate the html link.
+    'exceptions_path' => dirname(__FILE__) . '/classes/exceptions',
+    'img_path' => '/img', // Include only relative path or external url to generate the html link.
+    'include_path' => dirname(__FILE__) . '/include',
+    'js_path' => '/js',  // Include only relative path or external url to generate the html link.
+    'log_path' => '/var/log/ritho',
+    'model_path' => dirname(__FILE__) . '/classes/model',
+    'path' => dirname(__FILE__),
+    'template_path' => dirname(__FILE__) . '/templates',
+    'utils_path' => dirname(__FILE__) . '/classes/utils',
+    'view_path' => dirname(__FILE__) . '/classes/view',
+    // File extensions
+    'class_ext' => '.php',
+    'template_ext' => '.html',
+    // css theme
+    'css_theme' => 'blue-three-columns',
+    // Log parameters
+    'log_file' => 'ritho.log',
+    'log_file_prefix' => 'ritho_',
+    // Database parameters
+    'db_engine' => 'mysql',
+    'db_host' => 'localhost',
+    'db_port' => '3306',
+    'db_user' => 'root',
+    'db_password' => '',
+    'db_name' => 'ritho-web',
+    'timezone' => 'Europe/Madrid',
+);
 
 /* Loading functions. */
 require_once($CONFIG['include_path'] . '/functions.php');

@@ -84,6 +84,4 @@ abstract class Base {
         else
             unset($this->data[$name]);
     }
-
 }
-?>

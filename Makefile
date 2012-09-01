@@ -4,7 +4,7 @@ include $(TOPDIR)/Config.mk
 
 DIRS=conf www
 
-all: clean-build install start-environment
+all: install start-environment
 
 dirs:
 	@if [ ! -d $(BUILD_DIR) ] ; then mkdir -p $(BUILD_DIR) ; fi
@@ -104,6 +104,10 @@ install: build
 rw: dirs
 	@echo "\\033[1;35m+++ Installing www\\033[39;0m"
 	@make -C $(TOP_DIR)/www install
+
+tests: install start-environment
+	@echo "\\033[1;35m+++ Running tests\\033[39;0m"
+	@make -C $(TOP_DIR)/tests tests
 
 help:
 	@echo "\033[1;35mmake all\\033[39;0m - build, install and bring up environment."
