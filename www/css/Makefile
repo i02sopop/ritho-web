@@ -1,4 +1,4 @@
-TOPDIR?=..
+TOPDIR?=$(realpath ../..)
 include $(TOPDIR)/Config.mk
 
 DIRS=blue-three-columns

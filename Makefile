@@ -1,4 +1,4 @@
-TOPDIR?=$(shell pwd)
+TOPDIR?=$(realpath .)
 
 include $(TOPDIR)/Config.mk
 
