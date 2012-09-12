@@ -4,7 +4,7 @@ include $(TOPDIR)/Config.mk
 
 DIRS=conf www
 
-all: install start-environment
+all: start-environment
 
 dirs:
 	@if [ ! -d $(BUILD_DIR) ] ; then mkdir -p $(BUILD_DIR) ; fi
@@ -14,50 +14,53 @@ start-environment: apache-start db-start
 
 stop-environment: apache-stop db-stop
 
-clean: stop-environment clean-build
+clean: clean-build
 
 db-start: postgresql-start mysql-start
 	@echo "\\033[1;35m+++ Starting db\\033[39;0m"
 
-mysql-start:
+$(BUILD_DIR): install
+
+mysql-start: $(BUILD_DIR)
 	@echo -n "\\033[1;35m+++ Starting mysql\\033[39;0m "
-	@if [ ! -f $(RUN_DIR)/mysql.pid ]; then \
+	@if [ ! -f $(MYSQL_PID) ]; then \
 		rm -rf $(MYSQL_DATA) > /dev/null; \
 		$(USR_BIN)/mysql_install_db --user=$(USER) --ldata=$(MYSQL_DATA) > /dev/null 2> /dev/null; \
 		mkdir -p $(MYSQL_LOGDIR); \
 		$(USR_SBIN)/mysqld --defaults-extra-file=$(MYSQL_CONF) -P $(MYSQL_PORT) -h $(MYSQL_DATA) --socket=$(MYSQL_SOCKET) --pid-file=$(MYSQL_PID) > /dev/null 2>&1 & \
 		ps_alive=0; \
-		for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14; do \
+		for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do \
                 sleep 1; \
-				if [ -f $(MYSQL_PID) ] && ps `cat $(MYSQL_PID)` >/dev/null 2>&1; then ps_alive=1; break; fi; \
+				if [ -f $(MYSQL_PID) ]; then pid=`cat $(MYSQL_PID)`; fi; \
+				if [ -f $(MYSQL_PID) ] && `ps $${pid}` > /dev/null 2>&1; then ps_alive=1; break; fi; \
                 echo -n "\\033[1;35m.\\033[39;0m"; \
         done; \
-		if [ $psalive ]; then \
-			$(USR_BIN)/mysqladmin --protocol=TCP -P $(MYSQL_PORT) -u root create '$(DATABASE)'; \
-			$(USR_BIN)/mysql --protocol=TCP -P $(MYSQL_PORT) -u root '$(DATABASE)' < $(MYSQL_SCHEMA); \
-		else \
+		if [ $${ps_alive} ]; then \
+			$(USR_BIN)/mysqladmin --protocol=TCP -P $(MYSQL_PORT) -h $(MYSQL_HOST) -u root create $(DATABASE) ; \
+			$(USR_BIN)/mysql --protocol=TCP -P $(MYSQL_PORT) -h $(MYSQL_HOST) -u root $(DATABASE) < $(MYSQL_SCHEMA) ; \
+		elif [ ! $${ps_alive} ]; then \
 			echo "\\033[1;35m+++ Failed to start mysql\\033[39;0m"; \
 		fi; \
 	fi;
 	@echo;
 
-postgresql-start:
+postgresql-start: $(BUILD_DIR)
 	@echo "\\033[1;35m+++ Starting postgres\\033[39;0m"
-	@if [ ! -f $(RUN_DIR)/postmaster.pid ]; then \
+	@if [ ! -f $(BUILD_DIR)/postmaster.pid ]; then \
 		rm -rf $(PGSQL_DATA) > /dev/null; \
 		mkdir -p $(PGSQL_LOGDIR); \
 		$(PGSQL_BIN)/initdb --pgdata=$(PGSQL_DATA) --auth="ident" > /dev/null; \
 		$(PGSQL_BIN)/postmaster -h '' -k $(PGSQL_DATA) -D $(PGSQL_DATA) 1> $(PGSQL_LOG) < /dev/null 2>&1 & \
-		echo $! > $(BUILD_DIR)/postmaster.pid; \
+		echo $$! > $(BUILD_DIR)/postmaster.pid; \
 		while ! $(USR_BIN)/psql -h $(PGSQL_DATA) -c "select current_timestamp" template1 > /dev/null 2>&1; do \
 			/bin/sleep 1; \
 			echo -n "."; \
 		done; \
 		$(USR_BIN)/createdb -h $(PGSQL_DATA) $(DATABASE); \
-		$(USR_BIN)/psql -q -h $(PGSQL_DATA) $(DATABASE) -f $(PGSQL_SCHEMA); \
+		$(USR_BIN)/psql -q -h $(PGSQL_DATA) $(DATABASE) -f $(PGSQL_SCHEMA) > /dev/null 2>&1; \
 	fi
 
-apache-start:
+apache-start: $(BUILD_DIR)
 	@echo "\\033[1;35m+++ Starting HTTP daemon\\033[39;0m"
 	@if [ ! -f $(HTTPD_PIDFILE) ]; then \
 		if [ ! -d $(HTTPD_LOGDIR) ] ; then mkdir -p $(HTTPD_LOGDIR) ; fi; \
@@ -65,7 +68,7 @@ apache-start:
 		$(HTTPD) -f $(HTTPD_CONFIG); \
 	fi
 
-db-stop: postgresql-stop mysql-stop 
+db-stop: mysql-stop postgresql-stop
 
 mysql-stop:
 	@echo "\\033[1;35m+++ Stopping mysql\\033[39;0m"
@@ -85,7 +88,7 @@ apache-stop:
 		$(HTTPD) -f $(CONF_DIR)/apache2.conf -k stop; \
 	fi
 
-clean-build:
+clean-build: stop-environment
 	@echo "\\033[1;35m+++ Cleaning files and directories.\\033[39;0m"
 	@rm -rf $(LOG_DIR)
 	@rm -rf $(SESSIONS_DIR)
