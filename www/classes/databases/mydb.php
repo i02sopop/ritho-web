@@ -23,9 +23,6 @@
    @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
 */
 class MyDB extends DB {
-    private $result = null;
-    private $stmts = array();
-
     /* Constructor of the class.
 
        @param $user (string): User to authenticate to the DB server.
@@ -90,20 +87,21 @@ class MyDB extends DB {
         if($table_name && is_string($table_name)) {
             $query = "DELETE FROM " . $table_name;
             if($assoc && is_array($assoc)) {
-                $query = $query . " WHERE";
-                foreach($assoc as $key => $value)
-                    $query = $query . " " . $key . " = " . $value . " AND ";
-                $query = substr($query, 0, -5);
+                $query .= " WHERE " . array_reduce(array_keys($assoc), function($result, $key) {
+                        $result = (!$result || !is_string($result)) ?
+                            "$key = " . $assoc[$key] :
+                            $result . " AND $key = " . $assoc[$key];
+                        return $result;
+                    });
             }
-        }
+            $query .= ";";
 
-        if($query) {
             Log::i($this->escape_string($query));
             return $this->getConnection()->real_query($this->escape_string($query));
-        } else {
-            Log::e("Error deleting the rows.");
-            return false;
         }
+
+        Log::e("Error deleting the rows.");
+        return false;
     }
 
     /* Escape a string for insertion into the database.
@@ -112,10 +110,7 @@ class MyDB extends DB {
        @return String escaped.
     */
     public function escape_string($str) {
-        if($str === null)
-            return "";
-
-        return $this->getConnection()->real_escape_string($str);
+        return ($str && is_string($str)) ? $this->getConnection()->real_escape_string($str) : "";
     }
 
     /* Execute a query.
@@ -124,13 +119,7 @@ class MyDB extends DB {
        @return TRUE on success, FALSE on failure.
     */
     public function exec($query) {
-        if($query && is_string($query)) {
-            // TODO: Check if the query is an INSERT, UPDATE, DELETE, DROP, ... or
-            // any query without results.
-            return $this->getConnection()->real_query($this->escape_string($query));
-        }
-
-        return false;
+        return ($query && is_string($query)) ? $this->getConnection()->real_query($this->escape_string($query)) : false;
     }
 
     /* Bind parameters to a prepared statement.
@@ -145,11 +134,11 @@ class MyDB extends DB {
     public function exec_bind($stmtname, $params) {
         if($stmtname && is_string($stmtname) && isset($stmts[$stmtname]) && isset($params)) {
             if(is_string($params))
-                return $stmts[$stmtname]->bind_param("s", $params);
+                return $this->stmts[$stmtname]->bind_param("s", $params);
             else if(is_int($params))
-                return $stmts[$stmtname]->bind_param("i", $params);
+                return $this->stmts[$stmtname]->bind_param("i", $params);
             else if(is_double($params))
-                return $stmts[$stmtname]->bind_param("d", $params);
+                return $this->stmts[$stmtname]->bind_param("d", $params);
             else if(is_array($params) && $params) {
                 $types = "";
                 foreach($param as $params) {
@@ -165,6 +154,7 @@ class MyDB extends DB {
                     }
                 }
 
+                // Not sure if call_user_func_array is the function I need and if it's used correctly.
                 return call_user_func_array(array($this->stmts[$stmtname], "bind_param"), array($types, $params));
             } else {
                 Log::e("Unexpected parameter type.");
@@ -183,7 +173,6 @@ class MyDB extends DB {
     public function exec_close($stmtname = null) {
         if($stmtname && is_string($stmtname) && isset($this->stmts[$stmtname]))
             return $this->stmts[$stmtname]->close();
-
         return false;
     }
 
@@ -195,7 +184,6 @@ class MyDB extends DB {
     public function exec_prepared($stmtname = null) {
         if($stmtname && is_string($stmtname) && isset($this->stmts[$stmtname]))
             return $this->stmts[$stmtname]->execute();
-
         return false;
     }
 

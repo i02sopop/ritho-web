@@ -35,6 +35,8 @@ abstract class DB extends Base {
     private $port = -1;
     private $connection = null;
     private $isPersistent = false;
+    private $result = null;
+    private $stmts = array();
 
     /* Constructor of the class.
 

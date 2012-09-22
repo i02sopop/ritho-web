@@ -23,6 +23,8 @@
    @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
 */
 class PgDB extends DB {
+    private $stmt_params = array();
+
     /* Constructor of the class.
 
        @param $user (string): User to authenticate to the DB server.
@@ -74,6 +76,24 @@ class PgDB extends DB {
        @return TRUE on success, FALSE on failure.
     */
     public function delete($table_name, $assoc = array()) {
+        if($table_name && is_string($table_name)) {
+            $query = "DELETE FROM $table_name";
+            if($assoc && is_array($assoc)) {
+                $query .= " WHERE " . array_reduce(array_keys($assoc), function($result, $key) {
+                        $result = (!$result || !is_string($result)) ?
+                            "$key = " . $assoc[$key] :
+                            $result . " AND $key = " . $assoc[$key];
+                        return $result;
+                    });
+            }
+            $query .= ";";
+
+            Log::i($this->escape_string($query));
+            return (pg_query($this->getConnection(), $this->escape_string($query)) !== false);
+        }
+
+        Log::e("Error deleting the rows.");
+        return false;
     }
 
     /* Escape a string for insertion into the database.
@@ -82,6 +102,7 @@ class PgDB extends DB {
        @return String escaped.
     */
     public function escape_string($str) {
+        return ($str && is_string($str)) ? pg_escape_string($this->getConnection(), $str) : "";
     }
 
     /* Execute a query.
@@ -90,6 +111,7 @@ class PgDB extends DB {
        @return TRUE on success, FALSE on failure.
     */
     public function exec($query) {
+        return ($query && is_string($query)) ? (pg_query($this->getConnection(), $this->escape_string($query)) !== false) : false;
     }
 
     /* Bind parameters to a prepared statement.
@@ -101,14 +123,20 @@ class PgDB extends DB {
               placeholders.
        @return TRUE on success, FALSE on failure.
     */
-    abstract public function exec_bind($stmtname, $params);
+    public function exec_bind($stmtname, $params) {
+        if($stmtname && is_string($stmtname) && isset($stmts[$stmtname]) && isset($params)) {
+        }
+
+        return false;
+    }
 
     /* Close a prepared statement.
 
        @param $stmtname (string): The name of the prepared statement to execute.
        @return TRUE on success, FALSE on failure.
     */
-    abstract public function exec_close($stmtname = null);
+    public function exec_close($stmtname = null) {
+    }
 
     /* Sends a request to execute a prepared statement without waiting for the result(s).
 
