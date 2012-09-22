@@ -58,7 +58,7 @@ abstract class DB extends Base {
         if($newDB !== null)
             $this->db = $newDB;
 
-        $this->port = $port;
+        $this->port = $newPort;
     }
 
     /* Disconnect the database engine.

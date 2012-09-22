@@ -32,6 +32,7 @@ $GLOBALS['CONFIG'] = $CONFIG = array(
     'path' => dirname(__FILE__),
     'template_path' => dirname(__FILE__) . '/templates',
     'utils_path' => dirname(__FILE__) . '/classes/utils',
+    'databases_path' => dirname(__FILE__) . '/classes/databases',
     'view_path' => dirname(__FILE__) . '/classes/view',
     // File extensions
     'class_ext' => '.php',
