@@ -42,7 +42,7 @@ class MyDB extends DB {
     */
     public function close() {
         if(!$this->isPersistent())
-            return $$this->getConnection()->close();
+            return $this->getConnection()->close();
         return true;
     }
 
@@ -61,7 +61,7 @@ class MyDB extends DB {
         if($this->getConnection()->connect_errno) {
             Log::e("Failed to connect to MySQL: " . $this->getConnection()->connect_errno);
             // TODO: Throws an exception if there is an error instead die.
-            // die('mysqli() failed');
+            die('mysqli() failed');
         }
 
         // Set the character set of the connection

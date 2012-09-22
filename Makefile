@@ -127,7 +127,8 @@ help:
 	@echo "\033[1;35mmake apache-stop\\033[39;0m - bring down apache server."
 	@echo "\033[1;35mmake start-environment\\033[39;0m - bring up environment."
 	@echo "\033[1;35mmake stop-environment\\033[39;0m - bring down environment."
-	@echo "------"
+
+info:
 	@echo "To connect to postgresql database: \033[1;35mpsql -h $(PGSQL_DATA) $(DATABASE)\\033[39;0m"
 	@echo "To connect to mysql database (tcp): \033[1;35mmysql --protocol=TCP -P $(MYSQL_PORT) -u root $(DATABASE)\\033[39;0m"
 	@echo "To connect to mysql database (socket): \033[1;35mmysql --socket=$(MYSQL_SOCKET) -u root $(DATABASE)\\033[39;0m"

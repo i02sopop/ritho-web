@@ -17,10 +17,12 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('%WWW_ROOT%/classes/template.php');
+require_once('%WWW_ROOT%/classes/databases/mydb.php');
 
-class TemplateTest extends PHPUnit_Framework_TestCase {
+class DBTest extends PHPUnit_Framework_TestCase {
     public function testInitial() {
-        $template = new Template('index');
+        $db = new MyDB('root', '', '%MYSQL_HOST%', '%DATABASE%', %MYSQL_PORT%);
+        $db->connect();
+        $db->close();
     }
 }

@@ -48,7 +48,7 @@ SUPPORT_EMAIL=palvarez@ritho.net
 
 else
 
-TOP_DIR?=$(shell pwd)
+TOP_DIR?=$(realpath .)
 BUILD_DIR=$(TOP_DIR)/dev-env
 CONF_DIR=$(BUILD_DIR)/conf
 TMP_DIR=$(BUILD_DIR)/tmp
@@ -104,6 +104,7 @@ SSL_CONFIG=$(SSL_DIR)/openssl.cnf
 SERVER_ROOT=$(BUILD_DIR)
 WWW_ROOT=$(SERVER_ROOT)/www
 CSS_DIR=$(WWW_ROOT)/css
+TESTS_ROOT=$(SERVER_ROOT)/tests
 
 DATABASE=ritho-web
 

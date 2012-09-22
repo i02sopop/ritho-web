@@ -17,10 +17,5 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('%WWW_ROOT%/classes/template.php');
-
-class TemplateTest extends PHPUnit_Framework_TestCase {
-    public function testInitial() {
-        $template = new Template('index');
-    }
-}
+require_once('%WWW_ROOT%/configuration.php');
+spl_autoload_register('__autoload');

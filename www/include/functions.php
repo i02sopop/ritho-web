@@ -39,6 +39,8 @@ function __autoload($name) {
         require_once($CONFIG['controller_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
     else if(is_file($CONFIG['utils_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
         require_once($CONFIG['utils_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
+    else if(is_file($CONFIG['databases_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
+        require_once($CONFIG['databases_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
     else
         throw new MissingException("Impossible to load $name.");
 }
