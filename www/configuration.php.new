@@ -20,20 +20,20 @@
 /* Setting the default configuration variables */
 $GLOBALS['CONFIG'] = $CONFIG = array(
     // Paths
-    'class_path' => dirname(__FILE__) . '/classes',
-    'controller_path' => dirname(__FILE__) . '/classes/controller',
+    'class_path' => '%WWW_ROOT%/classes',
+    'controller_path' => '%WWW_ROOT%/classes/controller',
     'css_path' => '/css', // Include only relative path or external url to generate the html link.
-    'exceptions_path' => dirname(__FILE__) . '/classes/exceptions',
+    'exceptions_path' => '%WWW_ROOT%/classes/exceptions',
     'img_path' => '/img', // Include only relative path or external url to generate the html link.
-    'include_path' => dirname(__FILE__) . '/include',
+    'include_path' => '%WWW_ROOT%/include',
     'js_path' => '/js',  // Include only relative path or external url to generate the html link.
     'log_path' => '%LOG_DIR%',
-    'model_path' => dirname(__FILE__) . '/classes/model',
-    'path' => dirname(__FILE__),
-    'template_path' => dirname(__FILE__) . '/templates',
-    'utils_path' => dirname(__FILE__) . '/classes/utils',
-    'databases_path' => dirname(__FILE__) . '/classes/databases',
-    'view_path' => dirname(__FILE__) . '/classes/view',
+    'model_path' => '%WWW_ROOT%/classes/model',
+    'path' => '%WWW_ROOT%',
+    'template_path' => '%WWW_ROOT%/templates',
+    'utils_path' => '%WWW_ROOT%/classes/utils',
+    'databases_path' => '%WWW_ROOT%/classes/databases',
+    'view_path' => '%WWW_ROOT%/classes/view',
     // File extensions
     'class_ext' => '.php',
     'template_ext' => '.html',
