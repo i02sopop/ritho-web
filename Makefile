@@ -54,7 +54,7 @@ postgresql-start: $(BUILD_DIR)
 		echo $$! > $(BUILD_DIR)/postmaster.pid; \
 		while ! $(USR_BIN)/psql -h $(PGSQL_DATA) -c "select current_timestamp" template1 > /dev/null 2>&1; do \
 			/bin/sleep 1; \
-			echo -n "."; \
+			echo -n "\\033[1;35m.\\033[39;0m"; \
 		done; \
 		$(USR_BIN)/createdb -h $(PGSQL_DATA) $(DATABASE); \
 		$(USR_BIN)/psql -q -h $(PGSQL_DATA) $(DATABASE) -f $(PGSQL_SCHEMA) > /dev/null 2>&1; \
