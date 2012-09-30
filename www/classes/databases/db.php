@@ -79,8 +79,8 @@ abstract class DB extends Base {
 
        @param $table_name (string): Name of the table from which to delete rows.
        @param $assoc (array): An array whose keys are field names in the table table_name,
-                              and whose values are the values of those fields that are to
-                              be deleted.
+	   and whose values are the values of those fields that are to
+	   be deleted.
        @return TRUE on success, FALSE on failure.
     */
     abstract public function delete($table_name, $assoc = array());
@@ -99,17 +99,6 @@ abstract class DB extends Base {
     */
     abstract public function exec($query);
 
-    /* Bind parameters to a prepared statement.
-
-       @param $stmtname (string): The name of the prepared statement to execute.
-       @param $params (string | int | double | array): Array of parameter values
-              to substitute for the placeholders in the original prepared query
-              string. The number of elements in the array must match the number of
-              placeholders.
-       @return TRUE on success, FALSE on failure.
-    */
-    abstract public function exec_bind($stmtname, $params);
-
     /* Close a prepared statement.
 
        @param $stmtname (string): The name of the prepared statement to execute.
@@ -120,9 +109,13 @@ abstract class DB extends Base {
     /* Sends a request to execute a prepared statement without waiting for the result(s).
 
        @param $stmtname (string): The name of the prepared statement to execute.
-       @return TRUE on success, FALSE on failure.
+       @param $params (string | int | double | array): Array of parameter values
+	   to substitute for the placeholders in the original prepared query
+	   string. The number of elements in the array must match the number of
+	   placeholders.
+       @return Query result resource on success, FALSE on failure.
     */
-    abstract public function exec_prepared($stmtname = null);
+    abstract public function exec_prepared($stmtname, $params);
 
     /* Get an array that contains all rows (records) in the result resource.
 
@@ -255,16 +248,6 @@ abstract class DB extends Base {
     */
     abstract public function query($query);
 
-    /* Query a prepared statement.
-
-       @param $stmtname (string): The name of the prepared statement to execute.
-       @param $params (array): Array of parameter values to substitute for the
-       placeholders in the original prepared query string. The number of elements
-       in the array must match the number of placeholders.
-       @return Values that match the query.
-    */
-    abstract public function query_prepared($stmtname, $params);
-
     /* Select records specified by assoc_array which has field=>value.
 
        @param $table_name (string): Name of the table from which to select rows.
@@ -338,4 +321,3 @@ abstract class DB extends Base {
         $this->isPersistent = $newPersistent;
     }
 }
-?>

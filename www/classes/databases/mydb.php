@@ -79,8 +79,8 @@ class MyDB extends DB {
 
        @param $table_name (string): Name of the table from which to delete rows.
        @param $assoc (array): An array whose keys are field names in the table
-              table_name, and whose values are the values of those fields that are
-              to be deleted.
+	   table_name, and whose values are the values of those fields that are
+	   to be deleted.
        @return TRUE on success, FALSE on failure.
     */
     public function delete($table_name, $assoc = array()) {
@@ -89,8 +89,8 @@ class MyDB extends DB {
             if($assoc && is_array($assoc)) {
                 $query .= " WHERE " . array_reduce(array_keys($assoc), function($result, $key) {
                         $result = (!$result || !is_string($result)) ?
-                            "$key = " . $assoc[$key] :
-                            $result . " AND $key = " . $assoc[$key];
+						"$key = " . $assoc[$key] :
+						$result . " AND $key = " . $assoc[$key];
                         return $result;
                     });
             }
@@ -122,49 +122,6 @@ class MyDB extends DB {
         return ($query && is_string($query)) ? $this->getConnection()->real_query($this->escape_string($query)) : false;
     }
 
-    /* Bind parameters to a prepared statement.
-
-       @param $stmtname (string): The name of the prepared statement to execute.
-       @param $params (string | int | double | array): Array of parameter values
-              to substitute for the placeholders in the original prepared query
-              string. The number of elements in the array must match the number of
-              placeholders.
-       @return TRUE on success, FALSE on failure.
-    */
-    public function exec_bind($stmtname, $params) {
-        if($stmtname && is_string($stmtname) && isset($stmts[$stmtname]) && isset($params)) {
-            if(is_string($params))
-                return $this->stmts[$stmtname]->bind_param("s", $params);
-            else if(is_int($params))
-                return $this->stmts[$stmtname]->bind_param("i", $params);
-            else if(is_double($params))
-                return $this->stmts[$stmtname]->bind_param("d", $params);
-            else if(is_array($params) && $params) {
-                $types = "";
-                foreach($param as $params) {
-                    if(is_string($param))
-                        $types .= "s";
-                    else if(is_int($param))
-                        $types .= "i";
-                    else if(is_double($param))
-                        $types .= "d";
-                    else {
-                        Log::e("Unexpected parameter type.");
-                        return false;
-                    }
-                }
-
-                // Not sure if call_user_func_array is the function I need and if it's used correctly.
-                return call_user_func_array(array($this->stmts[$stmtname], "bind_param"), array($types, $params));
-            } else {
-                Log::e("Unexpected parameter type.");
-                return false;
-            }
-        }
-
-        return false;
-    }
-
     /* Close a prepared statement.
 
        @param $stmtname (string): The name of the prepared statement to execute.
@@ -179,11 +136,43 @@ class MyDB extends DB {
     /* Sends a request to execute a prepared statement without waiting for the result(s).
 
        @param $stmtname (string): The name of the prepared statement to execute.
-       @return TRUE on success, FALSE on failure.
+       @param $params (string | int | double | array): Array of parameter values
+	   to substitute for the placeholders in the original prepared query
+	   string. The number of elements in the array must match the number of
+	   placeholders.
+       @return Query result resource on success, FALSE on failure.
     */
-    public function exec_prepared($stmtname = null) {
-        if($stmtname && is_string($stmtname) && isset($this->stmts[$stmtname]))
-            return $this->stmts[$stmtname]->execute();
+    public function exec_prepared($stmtname, $params) {
+        if($stmtname && is_string($stmtname) && isset($this->stmts[$stmtname]) && isset($params)) {
+            if(is_string($params)) {
+                $this->stmts[$stmtname]->bind_param("s", $params);
+			} else if(is_int($params)) {
+                $this->stmts[$stmtname]->bind_param("i", $params);
+			} else if(is_double($params)) {
+                $this->stmts[$stmtname]->bind_param("d", $params);
+			} else if(is_array($params) && $params) {
+                $types = "";
+                foreach($params as $param) {
+                    if(is_string($param)) {
+						$this->stmts[$stmtname]->bind_param("s", $param);
+					} else if(is_int($param)) {
+						$this->stmts[$stmtname]->bind_param("i", $param);
+					} else if(is_double($param)) {
+						$this->stmts[$stmtname]->bind_param("d", $param);
+					} else {
+                        Log::e("Unexpected parameter type.");
+                        return false;
+                    }
+                }
+            } else {
+                Log::e("Unexpected parameter type.");
+                return false;
+            }
+
+			$this->stmts[$stmtname]->execute();
+            return $this->stmts[$stmtname]->get_result();
+		}
+
         return false;
     }
 
@@ -191,8 +180,8 @@ class MyDB extends DB {
 
        @param $result (resource): Query result resource.
        @return Array with all rows in the result. Each row is an array of field
-               values indexed by field name and by field number. FALSE if there
-               are no rows in the result, or on any other error.
+	   values indexed by field name and by field number. FALSE if there
+	   are no rows in the result, or on any other error.
     */
     public function fetch_all($result = null) {
         if($result !== null && method_exists($result, "fetch_all"))
@@ -207,13 +196,13 @@ class MyDB extends DB {
 
        @param $result (resource): Result to get the row.
        @param $result_type (int): Parameter to control how the returned array is
-              indexed. result_type is a constant and can take the following values:
-              MYSQLI_ASSOC, MYSQLI_NUM and MYSQLI_BOTH.
+	   indexed. result_type is a constant and can take the following values:
+	   MYSQLI_ASSOC, MYSQLI_NUM and MYSQLI_BOTH.
        @param $row (int): Row to fetch.
        @return Array indexed numerically, associatively or both, FALSE on error.
-               Each value in the array is represented as a string. Database NULL
-               values are returned as NULL. Returns NULL if there are no more rows
-               in resultset.
+	   Each value in the array is represented as a string. Database NULL
+	   values are returned as NULL. Returns NULL if there are no more rows
+	   in resultset.
     */
     public function fetch_array($result = null, $result_type = MYSQLI_BOTH, $row = -1) {
         if($result !== null && method_exists($result, "fetch_array"))
@@ -229,8 +218,8 @@ class MyDB extends DB {
        @param $result (resource): Result to get the row.
        @param $row (int): Row to fetch.
        @return Array indexed associatively, FALSE on error. Each value in the array
-               is represented as a string. Database NULL values are returned as NULL.
-               Returns NULL if there are no more rows in resultset.
+	   is represented as a string. Database NULL values are returned as NULL.
+	   Returns NULL if there are no more rows in resultset.
     */
     public function fetch_assoc($result = null, $row = -1) {
         return $this->fetch_array($result, MYSQLI_ASSOC, $row);
@@ -260,7 +249,7 @@ class MyDB extends DB {
        @param $result (resource): Result to get the row.
        @param $row (int): Row to fetch.
        @return Array indexed numerically, FALSE on error. Each value in the array is
-               represented as a string. Database NULL values are returned as NULL.
+	   represented as a string. Database NULL values are returned as NULL.
     */
     public function fetch_row($result = null, $row = -1) {
         return $this->fetch_array($result, MYSQLI_NUM, $row);
@@ -271,12 +260,16 @@ class MyDB extends DB {
 
        @param $result (resource): Result to get the name of the column.
        @param $field_number (integer): Number of field to check.
-       @return An string with the name of the field.
+       @return An string with the name of the field or NULL on failure.
     */
     public function field_name($result = null, $field_number = -1) {
-        if($result !== null && $field_number < $result->field_count) {
-            $result->field_seek($field_number);
-            $finfo = $result->fetch_field();
+		$res = $this->result;
+		if($result !== null)
+			$res = $result;
+
+        if($res !== null && is_integer($field_number) && $field_number > -1  && $field_number < $res->field_count) {
+            $res->field_seek($field_number);
+            $finfo = $res->fetch_field();
 
             return $finfo->name;
         }
@@ -289,12 +282,16 @@ class MyDB extends DB {
 
        @param $result (resource): Result resource to get the type of the field.
        @param $field_number (int): Number of field to check.
-       @return String with the type of object of the given field.
+       @return String with the type of object of the given field or NULL on failure.
     */
     public function field_type($result = null, $field_number = -1) {
-        if($result !== null && $field_number < $result->field_count) {
-            $result->field_seek($field_number);
-            $finfo = $result->fetch_field();
+		$res = $this->result;
+		if($result !== null)
+			$res = $result;
+
+        if($res !== null && is_integer($field_number) && $field_number > -1  && $field_number < $res->field_count) {
+            $res->field_seek($field_number);
+            $finfo = $res->fetch_field();
 
             return $finfo->type;
         }
@@ -320,8 +317,8 @@ class MyDB extends DB {
 
        @param $table_name (string): Name of the table into which to insert rows.
        @param $assoc (array): Array whose keys are field names in the table
-              table_name, and whose values are the values of those fields that are
-              to be inserted.
+	   table_name, and whose values are the values of those fields that are
+	   to be inserted.
        @return TRUE on success, FALSE on failure.
     */
     public function insert($table_name, $assoc = array()) {
@@ -329,7 +326,7 @@ class MyDB extends DB {
             $query = "INSERT INTO " . $table_name . " VALUES(";
             if(is_array($assoc) && $assoc) {
                 foreach($assoc as $value)
-                    $query = $query . $value . ", ";
+				$query = $query . $value . ", ";
                 $query = substr($query, 0, -2);
                 $query = $query . ")";
             } else {
@@ -398,10 +395,10 @@ class MyDB extends DB {
     /* Creates a prepared statement for later execution.
 
        @param $stmtname (string): The name to give the prepared statement. Must be
-              unique per-connection.
+	   unique per-connection.
        @param $query (string): The parameterized SQL statement. Must contain only a
-              single statement. If any parameters are used, they are referred to as
-              $1, $2, etc.
+	   single statement. If any parameters are used, they are referred to as
+	   $1, $2, etc.
        @return TRUE on success, FALSE on failure.
     */
     public function prepare($stmtname, $query) {
@@ -428,35 +425,12 @@ class MyDB extends DB {
         return false;
     }
 
-    /* Query a prepared statement.
-
-       @param $stmtname (string): The name of the prepared statement to execute.
-       @param $params (array): Array of parameter values to substitute for the
-              placeholders in the original prepared query string. The number of
-              elements in the array must match the number of placeholders.
-       @return Query result resource on success, FALSE on failure.
-    */
-    public function query_prepared($stmtname, $params) {
-        if($this->exec_bind($stmtname, $params)) {
-            $this->stmts[$stmtname]->execute();
-            $result = $this->stmts[$stmtname]->get_result();
-            /* XXX: I don't know if the result is gone when the statement is close.
-               In that case we have to delete the next line. */
-            $this->stmts[$stmtname]->close();
-
-            return $result;
-        }
-
-        return false;
-    }
-
     /* Select records specified by assoc_array which has field=>value.
 
        @param $table_name (string): Name of the table from which to select rows.
-       @param $cols (array): Array with the names of the columns to return by
-              the query.
+       @param $cols (array|string): Array with the names of the columns to return by the query.
        @param $where (array): Array whose keys are columns in the table table_name,
-              and whose values are the conditions that a row must meet to be retrieved.
+	   and whose values are the conditions that a row must meet to be retrieved.
        @return Query result resource on success, FALSE on failure.
     */
     public function select($table_name, $cols = array(), $where = array()) {
@@ -465,8 +439,10 @@ class MyDB extends DB {
             $query = "SELECT ";
             if($cols && is_array($cols)) {
                 foreach($cols as $key => $value)
-                    $query .= $value . ", ";
+				$query .= $value . ", ";
                 $query = substr($query, 0, -2);
+			} else if($cols && is_string($cols)) {
+                $query .= $cols;
             } else {
                 $query .= "*";
             }
@@ -475,19 +451,18 @@ class MyDB extends DB {
             if($where && is_array($where)) {
                 $query .= " WHERE";
                 foreach($where as $key => $value)
-                    $query .= " " . $key . $value . " AND ";
+				$query .= " " . $key . " = " . $value . " AND ";
                 $query = substr($query, 0, -5);
             }
         }
 
         if($query) {
             /* We make the query and return the result. */
-            $result = $this->getConnection()->query($query);
+            $this->result = $this->getConnection()->query($query);
 
             return $result;
         }
 
-        return null;
+        return false;
     }
 }
-?>
