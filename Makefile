@@ -68,6 +68,12 @@ apache-start: $(BUILD_DIR)
 		$(HTTPD) -f $(HTTPD_CONFIG); \
 	fi
 
+selenium-start:
+	@$(MAKE) -C $(TOP_DIR)/tests selenium-start
+
+selenium-stop:
+	@$(MAKE) -C $(TOP_DIR)/tests selenium-stop
+
 db-stop: mysql-stop postgresql-stop
 
 mysql-stop:
@@ -106,11 +112,11 @@ install: build
 
 rw: dirs
 	@echo "\\033[1;35m+++ Installing www\\033[39;0m"
-	@make -C $(TOP_DIR)/www install
+	@$(MAKE) -C $(TOP_DIR)/www install
 
 tests: install start-environment
 	@echo "\\033[1;35m+++ Running tests\\033[39;0m"
-	@make -C $(TOP_DIR)/tests tests
+	@$(MAKE) -C $(TOP_DIR)/tests tests
 
 help:
 	@echo "\033[1;35mmake all\\033[39;0m - build, install and bring up environment."
@@ -125,6 +131,8 @@ help:
 	@echo "\033[1;35mmake postgresql-stop\\033[39;0m - bring down postgresql server."
 	@echo "\033[1;35mmake apache-start\\033[39;0m - bring up apache server."
 	@echo "\033[1;35mmake apache-stop\\033[39;0m - bring down apache server."
+	@echo "\033[1;35mmake selenium-start\\033[39;0m - bring up selenium daemon."
+	@echo "\033[1;35mmake selenium-stop\\033[39;0m - bring down selenium daemon."
 	@echo "\033[1;35mmake start-environment\\033[39;0m - bring up environment."
 	@echo "\033[1;35mmake stop-environment\\033[39;0m - bring down environment."
 

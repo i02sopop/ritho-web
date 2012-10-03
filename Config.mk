@@ -128,6 +128,8 @@ HTTPD_LOGDIR=$(LOG_DIR)/apache2
 HTTPD_CONFIG=$(CONF_DIR)/apache2.conf
 HTTPD_PIDFILE=$(RUN_DIR)/apache2.pid
 
+SELENIUM_PORT=$(call genport,30)
+
 SESSIONS_DIR=$(TMP_DIR)
 
 export
