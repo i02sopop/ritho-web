@@ -4,7 +4,9 @@ include $(TOPDIR)/Config.mk
 
 DIRS=conf www
 
-all: start-environment
+.PHONY: all doc
+
+all: start-environment doc
 
 dirs:
 	@if [ ! -d $(BUILD_DIR) ] ; then mkdir -p $(BUILD_DIR) ; fi
@@ -117,6 +119,9 @@ rw: dirs
 tests: install start-environment
 	@echo "\\033[1;35m+++ Running tests\\033[39;0m"
 	@$(MAKE) -C $(TOP_DIR)/tests tests
+
+doc:
+	@phpdoc -d www -t doc
 
 help:
 	@echo "\033[1;35mmake all\\033[39;0m - build, install and bring up environment."
