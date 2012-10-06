@@ -17,22 +17,56 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* MissingException exception.
+/**
+ * File missingexpeption.php.
+ *
+ * This file include the MissingException class.
+ * 
+ * @author Ritho-web team
+ * @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+ * @license http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
+ * @link http://ritho.net
+ */
 
-   @package Exceptions
-   @author Ritho-web team
-   @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
-*/
+// namespace ritho-web;
+
+/**
+ * MissingException exception class.
+ *
+ * This class raises an exception when a class is missing (is not included
+ * or required).
+ * 
+ * @package Exceptions
+ * @since 0.1
+ */
 class MissingException extends Exception {
-    protected $msg = ''; // Error message
-    protected $code = 0; // Error code
-    protected $previous = NULL; // Previous exception
+	/**
+	 * Error message.
+	 * @access protected.
+	 */
+    protected $msg = '';
 
-    /* Constructor sets the error message.
+	/**
+	 * Error code.
+	 * @access protected.
+	 */
+    protected $code = 0;
 
-       @parameter msg (string): The error message.
-       @parameter code (int): The error code.
-       @parameter previous (Exception): The previous exception.
+	/**
+	 * Previous exception.
+	 * @access protected.
+	 */
+    protected $previous = NULL; 
+
+    /**
+	 * Class constructor.
+	 *
+	 * This method sets the error message.
+	 *
+	 * @access public
+	 * @param string The error message.
+	 * @param int The error code.
+	 * @param Exception The previous exception.
     */
     public function __construct($msg = '', $code = 0, $previous = NULL) {
         $this->msg = 'Error loading the class: ' . $msg;

@@ -121,7 +121,7 @@ tests: install start-environment
 	@$(MAKE) -C $(TOP_DIR)/tests tests
 
 doc:
-	@phpdoc -d www -t doc
+	@phpdoc
 
 help:
 	@echo "\033[1;35mmake all\\033[39;0m - build, install and bring up environment."
