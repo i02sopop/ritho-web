@@ -80,3 +80,18 @@ function log_d($msg = "", $file = null) {
 function log_e($msg = "", $file = null) {
     Log::instance($file)->e($msg);
 }
+
+/*
+  Function to get the unix time in microseconds.
+
+  @author Ritho-web team
+  @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+  @parameter name (string): The class name.
+  @parameter file (string): The log filename.
+*/
+function getTime() {
+    $time = explode(' ', microtime());
+    $time = $time[1] + $time[0];
+
+    return $time;
+}
