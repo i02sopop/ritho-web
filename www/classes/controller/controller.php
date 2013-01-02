@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+/* Copyright (c) 2011-2013 Ritho-web team (look at AUTHORS file)
 
    This file is part of ritho-web.
 
@@ -14,56 +14,47 @@
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public
-   License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
+   License along with ritho-web. If not, see <http://www.gnu.org/licenses/>.
 */
 
 /*
   Basic controller engine.
 
   @author Ritho-web team
-  @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+  @copyright Copyright (c) 2011-2013 Ritho-web team (look at AUTHORS file)
 */
 abstract class Controller extends Base {
-    private $view; // View for the controller
+    const ACTION_RENDER = 'render';
+    const ACTION_REDIRECT = 'redirect';
 
-    /*
-      Controller execution.
-    */
+    /* Action to do (include a template, redirect, file, ...). */
+    protected $action = Controller::ACTION_RENDER;
+
+    /* Destination of the controller (template, url, ...).  */
+    protected $destination = 'index.html';
+
+    /* Context variables of the view. */
+    protected $context;
+
+    /* Controller execution. */
     public function run() {
         $this->init();
-
-        if($_SERVER['REQUEST_METHOD'] == 'POST')
-            $this->view = $this->post();
-        else
-            $this->view = $this->get();
-
+        $this->destination = ($_SERVER['REQUEST_METHOD'] == 'POST') ?
+            $this->post() :
+            $this->get();
         $this->display();
     }
 
-    /*
-      Method to initalize the controller before handling the request.
-    */
+    /* Method to initalize the controller before handling the request. */
     abstract protected function init();
 
-    /*
-      GET request handler.
-    */
+    /* GET request handler. */
     protected function get() {
-        $this->process();
+        throw new Exception($_SERVER['REQUEST_METHOD'] . ' request not handled');
     }
 
-    /*
-      POST request handler.
-    */
+    /* POST request handler. */
     protected function post() {
-        $this->process();
-    }
-
-    /**
-       Request handler. This method will be called if no method specific handler
-       is defined
-    */
-    protected function process() {
         throw new Exception($_SERVER['REQUEST_METHOD'] . ' request not handled');
     }
 
@@ -74,11 +65,11 @@ abstract class Controller extends Base {
       @param $obj (StdClass): Object to add the POST values.
       @return Object populated
     */
-    protected function populateWithPost($obj = null) {
-        if(!is_object($obj))
+    protected function populatePost($obj = null) {
+        if($obj && !is_object($obj))
             $obj = new StdClass();
 
-        foreach ($_POST as $var => $value)
+        foreach($_POST as $var => $value)
             $obj->$var = trim($value);
 
         return $obj;
@@ -88,12 +79,21 @@ abstract class Controller extends Base {
       Displays the view.
     */
     private function display() {
-        if($this->view->action == View::RENDER_ACTION)
-            $this->view->render();
-        else if ($this->view->action == View::REDIRECT_ACTION)
-            header('Location: ' . $this->view->url);
+        if($this->action === Controller::ACTION_RENDER)
+            $this->render($this->destination);
+        else if($this->action === Controller::ACTION_REDIRECT)
+            header('Location: ' . $this->destination);
         else
             throw new Exception('Unknown view action: ' . $this->view->action);
+    }
+
+    /* Method to generate the output the view. */
+    public function render($templateName) {
+        $output = new Template($templateName);
+        foreach($this->context as $key => $value) {
+            $output->$key = $value;
+        }
+        $output->render(true);
     }
 }
 ?>

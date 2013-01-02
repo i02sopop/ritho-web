@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+/* Copyright (c) 2011-2013 Ritho-web team (look at AUTHORS file)
 
    This file is part of ritho-web.
 
@@ -14,17 +14,16 @@
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public
-   License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
+   License along with ritho-web. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-  Basic template engine. 
+/* Basic template engine. 
   
   @author Ritho-web team
-  @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+  @copyright Copyright (c) 2011-2013 Ritho-web team (look at AUTHORS file)
 */ 
 class Template extends Base {
-    private $path; // Template path
+    private $path; /* Template path */
   
     /* Constructor sets the template name, and makes sure 
        it exists. 
@@ -32,7 +31,8 @@ class Template extends Base {
        @param name (string): The template name 
     */ 
     public function __construct($name) {
-        global $CONFIG; // Configs of the site.
+        global $CONFIG; /* Configs of the site. */
+
         if(!is_file($CONFIG['template_path'] . '/' . $name . $CONFIG['template_ext']))
             die('Invalid template: ' . $CONFIG['template_path'] . '/' . $name .
                 $CONFIG['template_ext']);
@@ -51,12 +51,12 @@ class Template extends Base {
     /* Renders a template. 
     
        @param print (bool): Check if the template has to be printed out
-       @return string 
+       @return string
     */
     public function render($print = false) { 
         ob_start();
 
-        // Extract data to local namespace.
+        /* Extract data to local namespace. */
         extract($this->data, EXTR_SKIP); 
         require_once($this->path);
         $output = ob_get_clean();
@@ -65,7 +65,7 @@ class Template extends Base {
             echo $output;
             return true;
         }
-    
+
         return $output;
     }
 }

@@ -1,7 +1,7 @@
 TOPDIR?=$(realpath ../..)
 include $(TOPDIR)/Config.mk
 
-DIRS=controller databases exceptions utils view
+DIRS=controller databases exceptions utils
 SRCS=base.php template.php
 
 build: install

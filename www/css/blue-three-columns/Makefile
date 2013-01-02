@@ -1,4 +1,4 @@
-TOPDIR?=$(realpath ../..)
+TOPDIR?=$(realpath ../../..)
 include $(TOPDIR)/Config.mk
 
 DIRS=

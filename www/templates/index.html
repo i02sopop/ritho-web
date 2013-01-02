@@ -1,20 +1,22 @@
 <?php echo "<!DOCTYPE HTML>"; ?>
 <html lang="es">
-<?php echo $head; ?>
+<?php require_once('head.html'); ?>
 <body id="ritho.net">
-<?php echo $header; ?>
+<?php require_once('header.html'); ?>
 <div class="col1">
-  <?php echo $left;?>
+  <?php require_once('left.html'); ?>
 </div>
 <div class="col2">
 <div class="col21">
-  <?php echo $center;?>
+  <?php require_once('center.html'); ?>
 </div>
 <div class="col22">
-  <?php echo $right;?>
+  <?php require_once('right.html'); ?>
 </div>
 </div>
-<?php echo $footer;?>
+<?php require_once('footer.html'); ?>
 <script type="text/javascript" src="<?php echo $jquery;?>"></script>
 </body>
 </html>
+
+
