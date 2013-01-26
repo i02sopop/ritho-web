@@ -4,7 +4,7 @@
    This file is part of ritho-web.
 
    ritho-web is free software: you can redistribute it and/or modify
-   it under the terms of the GNU Affero General Public License as 
+   it under the terms of the GNU Affero General Public License as
    published by the Free Software Foundation, either version 3 of the
    License, or (at your option) any later version.
 
@@ -23,17 +23,21 @@
   @author Ritho-web team
   @copyright Copyright (c) 2011-2013 Ritho-web team (look at AUTHORS file)
 */
-class CIndex extends Controller {
+class CIndex extends Controller
+{
     /* Constructor of CIndex. */
-    public function __construct() {
+    public function __construct()
+	{
     }
 
     /* Method to initalize the controller before handling the request. */
-    function init() {
+    function init()
+	{
     }
 
     /* GET request handler. */
-    protected function get() {
+    protected function get()
+	{
         $this->context['jquery'] = $CONFIG['js_path'] . '/ritho.js';
         $this->context['charset'] = 'utf-8';
         $this->context['author'] = 'Pablo Alvarez de Sotomayor Posadillo';
@@ -57,7 +61,7 @@ class CIndex extends Controller {
         $this->context['cssIE7'] = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/styleIE7.css';
         $this->context['cssIEOld'] = $CONFIG['css_path'] . '/' . $CONFIG['css_theme'] . '/styleIEOld.css';
         $this->context['jquery'] = $CONFIG['js_path'] . '/jquery.js';
-        $this->context['title'] = $this->name.' - Ritho\'s Web Page';
+        $this->context['title'] = $this->name.'index - Ritho\'s Web Page';
         $this->context['modernizr'] = $CONFIG['js_path'] . '/modernizr.js';
         $this->context['lesscss'] = $CONFIG['js_path'] . '/less.js';
         $this->context['gsVerification'] = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
