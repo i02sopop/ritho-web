@@ -4,7 +4,7 @@
    This file is part of ritho-web.
 
    ritho-web is free software: you can redistribute it and/or modify
-   it under the terms of the GNU Affero General Public License as 
+   it under the terms of the GNU Affero General Public License as
    published by the Free Software Foundation, either version 3 of the
    License, or (at your option) any later version.
 
@@ -18,7 +18,7 @@
 */
 
 /* Setting the default configuration variables */
-$GLOBALS['CONFIG'] = $CONFIG = array(
+$GLOBALS['configs'] = $configs = array(
     // Paths
     'class_path' => '%WWW_ROOT%/classes',
     'controller_path' => '%WWW_ROOT%/classes/controller',
@@ -53,7 +53,7 @@ $GLOBALS['CONFIG'] = $CONFIG = array(
 );
 
 /* Loading functions. */
-require_once($CONFIG['include_path'] . '/functions.php');
+require_once($configs['include_path'] . '/functions.php');
 
 /* Setting the timezone. */
-date_default_timezone_set($CONFIG['timezone']);
+date_default_timezone_set($configs['timezone']);

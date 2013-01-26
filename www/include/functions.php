@@ -4,7 +4,7 @@
    This file is part of ritho-web.
 
    ritho-web is free software: you can redistribute it and/or modify
-   it under the terms of the GNU Affero General Public License as 
+   it under the terms of the GNU Affero General Public License as
    published by the Free Software Foundation, either version 3 of the
    License, or (at your option) any later version.
 
@@ -17,7 +17,7 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once($CONFIG['exceptions_path'] . '/missingexception' . $CONFIG['class_ext']);
+require_once($configs['exceptions_path'] . '/missingexception' . $configs['class_ext']);
 
 /*
   Class autoload function.
@@ -27,20 +27,20 @@ require_once($CONFIG['exceptions_path'] . '/missingexception' . $CONFIG['class_e
   @parameter name (string): The class name.
 */
 function __autoload($name) {
-    global $CONFIG;
+    global $configs;
 
-    if(is_file($CONFIG['class_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
-        require_once($CONFIG['class_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
-    else if(is_file($CONFIG['model_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
-        require_once($CONFIG['model_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
-    else if(is_file($CONFIG['view_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
-        require_once($CONFIG['view_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
-    else if(is_file($CONFIG['controller_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
-        require_once($CONFIG['controller_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
-    else if(is_file($CONFIG['utils_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
-        require_once($CONFIG['utils_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
-    else if(is_file($CONFIG['databases_path'] . '/' . strtolower($name) . $CONFIG['class_ext']))
-        require_once($CONFIG['databases_path'] . '/' . strtolower($name) . $CONFIG['class_ext']);
+    if(is_file($configs['class_path'] . '/' . strtolower($name) . $configs['class_ext']))
+        require_once($configs['class_path'] . '/' . strtolower($name) . $configs['class_ext']);
+    else if(is_file($configs['model_path'] . '/' . strtolower($name) . $configs['class_ext']))
+        require_once($configs['model_path'] . '/' . strtolower($name) . $configs['class_ext']);
+    else if(is_file($configs['view_path'] . '/' . strtolower($name) . $configs['class_ext']))
+        require_once($configs['view_path'] . '/' . strtolower($name) . $configs['class_ext']);
+    else if(is_file($configs['controller_path'] . '/' . strtolower($name) . $configs['class_ext']))
+        require_once($configs['controller_path'] . '/' . strtolower($name) . $configs['class_ext']);
+    else if(is_file($configs['utils_path'] . '/' . strtolower($name) . $configs['class_ext']))
+        require_once($configs['utils_path'] . '/' . strtolower($name) . $configs['class_ext']);
+    else if(is_file($configs['databases_path'] . '/' . strtolower($name) . $configs['class_ext']))
+        require_once($configs['databases_path'] . '/' . strtolower($name) . $configs['class_ext']);
     else
         throw new MissingException("Impossible to load $name.");
 }

@@ -33,13 +33,13 @@ class Template extends Base
     */
     public function __construct($name)
 	{
-        global $CONFIG; /* Configs of the site. */
+        global $configs; /* Configs of the site. */
 
-        if(!is_file($CONFIG['template_path'] . '/' . $name . $CONFIG['template_ext']))
-            die('Invalid template: ' . $CONFIG['template_path'] . '/' . $name .
-                $CONFIG['template_ext']);
+        if(!is_file($configs['template_path'] . '/' . $name . $configs['template_ext']))
+            die('Invalid template: ' . $configs['template_path'] . '/' . $name .
+                $configs['template_ext']);
 
-        $this->path = $CONFIG['template_path'] . '/' . $name . $CONFIG['template_ext'];
+        $this->path = $configs['template_path'] . '/' . $name . $configs['template_ext'];
     }
 
     /* Render a template.

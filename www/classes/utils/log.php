@@ -1,6 +1,6 @@
 <?php
 /* Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
-  
+
    This file is part of ritho-web.
 
    ritho-web is free software: you can redistribute it and/or modify
@@ -60,18 +60,18 @@ class Log {
        @param file (string): Logging file name.
     */
     private function __construct($file = null) {
-        global $CONFIG;
+        global $configs;
 
-        if(!file_exists($CONFIG['log_path']) && !mkdir($CONFIG['log_path'], 0755, true)) {
-            throw new Exception("Sorry, I couldn't create the directory " . $CONFIG['log_path'] . " for logging.");
+        if(!file_exists($configs['log_path']) && !mkdir($configs['log_path'], 0755, true)) {
+            throw new Exception("Sorry, I couldn't create the directory " . $configs['log_path'] . " for logging.");
             return;
         }
 
-        $this->logFilename = $CONFIG['log_path'] . '/' . $CONFIG['log_file'];
+        $this->logFilename = $configs['log_path'] . '/' . $configs['log_file'];
         if($file && is_string($file)) {
-            $this->logFilename = $CONFIG['log_path'] . '/';
-            if($CONFIG['log_file_prefix'] && is_string($CONFIG['log_file_prefix']))
-                $this->logFilename .= $CONFIG['log_file_prefix'];
+            $this->logFilename = $configs['log_path'] . '/';
+            if($configs['log_file_prefix'] && is_string($configs['log_file_prefix']))
+                $this->logFilename .= $configs['log_file_prefix'];
             $this->logFilename .= $file . '.log';
         }
 
