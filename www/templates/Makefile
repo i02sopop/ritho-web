@@ -1,15 +1,24 @@
 TOPDIR?=$(realpath ../..)
 include $(TOPDIR)/Config.mk
 
-DIRS=
-SRCS=404.html center.html footer.html header.html head.html index.html left.html right.html section.html
+DIRS  =
+SRCS  = 404.html
+SRCS += center.html
+SRCS += footer.html
+SRCS += header.html
+SRCS += head.html
+SRCS += index.html
+SRCS += left.html
+SRCS += right.html
+SRCS += section.html
 
-build: install
-
-install:
-	@for i in $(DIRS) ; do $(MAKE) -C $$i build ; done
+install: $(SRCS)	
+	@for i in $(DIRS) ; do $(MAKE) -C $$i install; done
 	@mkdir -p $(WWW_DIR)/templates
 	@for i in $(SRCS); do \
-		cp $$i $(WWW_DIR)/templates ; \
-		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(WWW_DIR)/templates/$$i ; \
+		install $$i $(WWW_DIR)/templates; \
+		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(WWW_DIR)/templates/$$i; \
 	done
+
+clean:
+	@for i in $(DIRS) ; do $(MAKE) -C $$i clean; done

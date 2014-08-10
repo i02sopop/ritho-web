@@ -2,11 +2,14 @@ TOPDIR?=$(realpath ../..)
 include $(TOPDIR)/Config.mk
 
 DIRS=
-SRCS=agplv3-155x51.png agplv3-88x31.png not-fd.svg
+SRCS  = agplv3-155x51.png
+SRCS += agplv3-88x31.png
+SRCS += not-fd.svg
 
-build: install
+install: $(SRCS)
+	@for i in $(DIRS) ; do $(MAKE) -C $$i install; done
+	@mkdir -p $(IMG_DIR)
+	@install $(SRCS) $(IMG_DIR)
 
-install:
-	@for i in $(DIRS) ; do $(MAKE) -C $$i build ; done
-	@mkdir -p $(WWW_DIR)/img
-	@cp $(SRCS) $(WWW_DIR)/img
+clean:
+	@for i in $(DIRS) ; do $(MAKE) -C $$i clean; done

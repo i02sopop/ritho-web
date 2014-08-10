@@ -6,17 +6,23 @@ DIRS=conf www
 
 .PHONY: rall all doc
 
-all: start-environment doc
-
-rall: start-environment doc
+rall all:
+	@+if [ -d $(BUILD_DIR) ] ; then make clean ; fi
+	@+make start-environment
+	@+make doc
 
 dirs:
 	@if [ ! -d $(BUILD_DIR) ] ; then mkdir -p $(BUILD_DIR) ; fi
 	@if [ ! -d $(SESSIONS_DIR) ] ; then mkdir -p $(SESSIONS_DIR) ; fi
 
 start-environment: apache-start db-start
+	@touch $(LOG_DIR)/$(LOG_FILE)
 
 stop-environment: apache-stop db-stop
+
+rd: apache-start db-start
+ri: install
+rc: apache-stop db-stop
 
 clean: clean-build
 
@@ -31,6 +37,7 @@ mysql-start: $(BUILD_DIR)
 		rm -rf $(MYSQL_DATA) > /dev/null; \
 		$(USR_BIN)/mysql_install_db --user=$(USER) --ldata=$(MYSQL_DATA) > /dev/null 2> /dev/null; \
 		mkdir -p $(MYSQL_LOGDIR); \
+		mkdir -p $(BUILD_DIR)/tmp; \
 		$(USR_SBIN)/mysqld --defaults-extra-file=$(MYSQL_CONF) -P $(MYSQL_PORT) -h $(MYSQL_DATA) --socket=$(MYSQL_SOCKET) --pid-file=$(MYSQL_PID) > /dev/null 2>&1 & \
 		ps_alive=0; \
 		for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do \
@@ -54,14 +61,17 @@ postgresql-start: $(BUILD_DIR)
 		rm -rf $(PGSQL_DATA) > /dev/null; \
 		mkdir -p $(PGSQL_LOGDIR); \
 		$(PGSQL_BIN)/initdb --pgdata=$(PGSQL_DATA) --auth="ident" > /dev/null; \
-		$(PGSQL_BIN)/postmaster -h '' -k $(PGSQL_DATA) -D $(PGSQL_DATA) 1> $(PGSQL_LOG) < /dev/null 2>&1 & \
+		$(PGSQL_BIN)/postgres -c config_file=${CONF_DIR}/postgresql.conf -k $(PGSQL_DATA) -D $(PGSQL_DATA) 1> $(PGSQL_LOG) < /dev/null 2>&1 & \
 		echo $$! > $(BUILD_DIR)/postmaster.pid; \
-		while ! $(USR_BIN)/psql -h $(PGSQL_DATA) -c "select current_timestamp" template1 > /dev/null 2>&1; do \
+		while ! $(USR_BIN)/psql -h $(PGSQL_DATA) -p $(PGSQL_PORT) -c "select current_timestamp" template1 > /dev/null 2>&1; do \
 			/bin/sleep 1; \
 			echo -n "\\033[1;35m.\\033[39;0m"; \
 		done; \
-		$(USR_BIN)/createdb -h $(PGSQL_DATA) $(DATABASE); \
-		$(USR_BIN)/psql -q -h $(PGSQL_DATA) $(DATABASE) -f $(PGSQL_SCHEMA) > /dev/null 2>&1; \
+		$(USR_BIN)/createdb -h $(PGSQL_DATA) -p $(PGSQL_PORT) $(DATABASE); \
+		$(USR_BIN)/psql -q -h $(PGSQL_DATA) -p $(PGSQL_PORT) $(DATABASE) -f $(PGSQL_SCHEMA) > /dev/null 2>&1; \
+		for i in $(PGSQL_DATA_FILES); do \
+			$(USR_BIN)/psql -q -h $(PGSQL_DATA) -p $(PGSQL_PORT) $(DATABASE) -f $$i > /dev/null 2>&1; \
+		done; \
 	fi
 
 apache-start: $(BUILD_DIR)
@@ -77,6 +87,12 @@ selenium-start:
 
 selenium-stop:
 	@$(MAKE) -C $(TOPDIR)/tests selenium-stop
+
+phantom-start:
+	@$(MAKE) -C $(TOPDIR)/tests phantom-start
+
+phantom-stop:
+	@$(MAKE) -C $(TOPDIR)/tests phantom-stop
 
 db-stop: mysql-stop postgresql-stop
 
@@ -100,18 +116,16 @@ apache-stop:
 
 clean-build: stop-environment
 	@echo "\\033[1;35m+++ Cleaning files and directories.\\033[39;0m"
+	@for i in $(DIRS) ; do $(MAKE) -C $$i clean; done
 	@rm -rf $(LOG_DIR)
 	@rm -rf $(SESSIONS_DIR)
 	@rm -rf $(BUILD_DIR)
+	@rm -rf $(DOC_DIR)/phpdoc
+	@rm -rf $(TOPDIR)/www/configuration.php
 
-build: dirs
-	@echo "\\033[1;35m+++ Building up system\\033[39;0m"
-	@for i in $(DIRS) ; do $(MAKE) -C $$i build ; done
-	@echo "\\033[1;35m+++ System built\\033[39;0m"
-
-install: build
+install:
 	@echo "\\033[1;35m+++ Installing system\\033[39;0m"
-	@for i in $(DIRS) ; do $(MAKE) -C $$i install ; done
+	@for i in $(DIRS) ; do $(MAKE) -C $$i install; done
 	@echo "\\033[1;35m+++ System installed\\033[39;0m"
 
 rw: dirs
@@ -128,7 +142,6 @@ doc:
 
 help:
 	@echo "\033[1;35mmake all\\033[39;0m - build, install and bring up environment."
-	@echo "\033[1;35mmake build\\033[39;0m - build up environment."
 	@echo "\033[1;35mmake clean\\033[39;0m - bring down and remove environment."
 	@echo "\033[1;35mmake install\\033[39;0m - install environment."
 	@echo "\033[1;35mmake db-start\\033[39;0m - bring up db servers."
@@ -141,6 +154,8 @@ help:
 	@echo "\033[1;35mmake apache-stop\\033[39;0m - bring down apache server."
 	@echo "\033[1;35mmake selenium-start\\033[39;0m - bring up selenium daemon."
 	@echo "\033[1;35mmake selenium-stop\\033[39;0m - bring down selenium daemon."
+	@echo "\033[1;35mmake phantom-start\\033[39;0m - bring up phantomjs daemon."
+	@echo "\033[1;35mmake phantom-stop\\033[39;0m - bring down phantomjs daemon."
 	@echo "\033[1;35mmake start-environment\\033[39;0m - bring up environment."
 	@echo "\033[1;35mmake stop-environment\\033[39;0m - bring down environment."
 
