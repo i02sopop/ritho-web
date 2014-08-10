@@ -26,7 +26,7 @@ tests:install
 selenium-start:
 	@echo -n "\\033[1;35m+++ Starting Selenium\\033[39;0m "
 	@if [ ! -f $(BUILD_DIR)/selenium.pid ]; then \
-		java -jar $(TOP_DIR)/lib/selenium-server-standalone-2.25.0.jar -port $(SELENIUM_PORT) > /dev/null 2>&1 & echo $$! > $(BUILD_DIR)/selenium.pid ; \
+		java -jar $(TOPDIR)/lib/selenium-server-standalone-2.25.0.jar -port $(SELENIUM_PORT) > /dev/null 2>&1 & echo $$! > $(BUILD_DIR)/selenium.pid ; \
 		for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do \
                 sleep 1; \
 				if [ -f $(BUILD_DIR)/selenium.pid ]; then pid=`cat $(BUILD_DIR)/selenium.pid`; fi; \

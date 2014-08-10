@@ -73,10 +73,10 @@ apache-start: $(BUILD_DIR)
 	fi
 
 selenium-start:
-	@$(MAKE) -C $(TOP_DIR)/tests selenium-start
+	@$(MAKE) -C $(TOPDIR)/tests selenium-start
 
 selenium-stop:
-	@$(MAKE) -C $(TOP_DIR)/tests selenium-stop
+	@$(MAKE) -C $(TOPDIR)/tests selenium-stop
 
 db-stop: mysql-stop postgresql-stop
 
@@ -116,13 +116,14 @@ install: build
 
 rw: dirs
 	@echo "\\033[1;35m+++ Installing www\\033[39;0m"
-	@$(MAKE) -C $(TOP_DIR)/www install
+	@$(MAKE) -C $(TOPDIR)/www install
 
 tests: install start-environment
 	@echo "\\033[1;35m+++ Running tests\\033[39;0m"
-	@$(MAKE) -C $(TOP_DIR)/tests tests
+	@$(MAKE) -C $(TOPDIR)/tests tests
 
 doc:
+	@mkdir -p $(DOC_DIR)/phpdoc/log
 	@phpdoc
 
 help:

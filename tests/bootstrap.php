@@ -17,5 +17,5 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('%WWW_ROOT%/configuration.php');
+require_once('%WWW_DIR%/configuration.php');
 spl_autoload_register('__autoload');

@@ -8,8 +8,8 @@ build: install
 
 install:
 	@for i in $(DIRS) ; do $(MAKE) -C $$i build ; done
-	@mkdir -p $(WWW_ROOT)/templates
+	@mkdir -p $(WWW_DIR)/templates
 	@for i in $(SRCS); do \
-		cp $$i $(WWW_ROOT)/templates ; \
-		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(WWW_ROOT)/templates/$$i ; \
+		cp $$i $(WWW_DIR)/templates ; \
+		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(WWW_DIR)/templates/$$i ; \
 	done

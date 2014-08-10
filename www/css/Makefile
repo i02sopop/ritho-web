@@ -8,8 +8,8 @@ build: install
 
 install:
 	@for i in $(DIRS) ; do $(MAKE) -C $$i build ; done
-	@mkdir -p $(WWW_ROOT)/css
+	@mkdir -p $(WWW_DIR)/css
 	@for i in $(SRCS); do \
-		cp $$i $(WWW_ROOT)/css ; \
-		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(WWW_ROOT)/css/$$i ; \
+		cp $$i $(WWW_DIR)/css ; \
+		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(WWW_DIR)/css/$$i ; \
 	done
