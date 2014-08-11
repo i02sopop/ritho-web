@@ -3,7 +3,7 @@ include $(TOPDIR)/Config.mk
 
 THEME=blue-three-columns
 DIRS=fonts
-SRCS=style.css styleIE7.css styleIE.css styleIEOld.css stylePrint.css
+SRCS=style.css
 
 
 install:
