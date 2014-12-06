@@ -7,3 +7,10 @@
 /namespaces
 /packages
 /structure.xml
+/phpdoc-cache*
+/.htaccess
+/files
+/font
+/graphs
+/images
+/reports
