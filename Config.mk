@@ -111,7 +111,7 @@ DATABASE=ritho-web
 LOG_FILE=ritho.log
 LOG_PREFIX=ritho_
 
-PGSQL_VERSION=9.1
+PGSQL_VERSION=$(shell psql -V | awk -F' ' '{ print $$3 }' | awk -F'.' '{ if ($$2 != null) print $$1"."$$2 }')
 
 MYSQL_CONF=$(CONF_DIR)/my.cnf
 MYSQL_LOG=$(MYSQL_LOGDIR)/mysql.log

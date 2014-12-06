@@ -4,9 +4,11 @@ include $(TOPDIR)/Config.mk
 
 DIRS=conf www
 
-.PHONY: all doc
+.PHONY: all rall rc clean doc
 
 all: start-environment doc
+
+rall: start-environment doc
 
 dirs:
 	@if [ ! -d $(BUILD_DIR) ] ; then mkdir -p $(BUILD_DIR) ; fi
@@ -17,6 +19,8 @@ start-environment: apache-start db-start
 stop-environment: apache-stop db-stop
 
 clean: clean-build
+
+rc: clean-build
 
 db-start: postgresql-start mysql-start
 	@echo "\\033[1;35m+++ Starting db\\033[39;0m"
