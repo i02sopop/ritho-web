@@ -117,12 +117,13 @@ PGSQL_BIN=/usr/lib/postgresql/$(PGSQL_VERSION)/bin
 PGSQL_LOGDIR=$(LOG_DIR)
 PGSQL_LOG=$(PGSQL_LOGDIR)/pgsql.log
 PGSQL_SCHEMA=$(DB_SCRIPTS_DIR)/schema-postgresql-$(VERSION).sql
-PGSQL_DATA_FILES=$(wildcard $(DB_SCRIPTS_DIR)/initialize-*.sql)
 
 MYSQL_CONF=$(CONF_DIR)/my.cnf
 MYSQL_LOG=$(MYSQL_LOGDIR)/mysql.log
 MYSQL_LOG_BIN=$(MYSQL_LOGDIR)/mysql-bin.log
 MYSQL_LOG_QSLOW=$(MYSQL_LOGDIR)/mysql-slow.log
+
+DB_DATA_FILES=$(wildcard $(DB_SCRIPTS_DIR)/initialize-*.sql)
 
 DB_ENGINE=postgresql
 DB_HOST=$(HOST)

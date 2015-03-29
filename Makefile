@@ -49,6 +49,9 @@ mysql-start: $(BUILD_DIR)
 		if [ $${ps_alive} ]; then \
 			$(USR_BIN)/mysqladmin --protocol=TCP -P $(MYSQL_PORT) -h $(MYSQL_HOST) -u root create $(DATABASE) ; \
 			$(USR_BIN)/mysql --protocol=TCP -P $(MYSQL_PORT) -h $(MYSQL_HOST) -u root $(DATABASE) < $(MYSQL_SCHEMA) ; \
+			for i in $(DB_DATA_FILES); do \
+				$(USR_BIN)/mysql  --protocol=TCP -P $(MYSQL_PORT) -h $(MYSQL_HOST) -u root $(DATABASE) < $$i ; \
+			done; \
 		elif [ ! $${ps_alive} ]; then \
 			echo "\\033[1;35m+++ Failed to start mysql\\033[39;0m"; \
 		fi; \
@@ -69,7 +72,7 @@ postgresql-start: $(BUILD_DIR)
 		done; \
 		$(USR_BIN)/createdb -h $(PGSQL_DATA) -p $(PGSQL_PORT) $(DATABASE); \
 		$(USR_BIN)/psql -q -h $(PGSQL_DATA) -p $(PGSQL_PORT) $(DATABASE) -f $(PGSQL_SCHEMA) > /dev/null 2>&1; \
-		for i in $(PGSQL_DATA_FILES); do \
+		for i in $(DB_DATA_FILES); do \
 			$(USR_BIN)/psql -q -h $(PGSQL_DATA) -p $(PGSQL_PORT) $(DATABASE) -f $$i > /dev/null 2>&1; \
 		done; \
 	fi
