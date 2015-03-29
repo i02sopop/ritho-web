@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2014 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -17,26 +17,17 @@
  * License along with ritho-web. If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once('configuration.php');
+require_once 'configuration.php';
 
 /* TODO: This wil go to the main class. */
 /* Controller to run. */
 $controller = null;
 
 /* URI requested. */
-$requested = empty($_SERVER['REQUEST_URI']) ?
-	false :
-	$_SERVER['REQUEST_URI'];
-
-switch ($requested) {
-case '/':
-case '/index':
-case '/index.php':
-    $controller = new CIndex();
-    break;
-default:
-    $controller = new C404(substr($requested, 1));
-    break;
-}
+$requested = empty($_SERVER['REQUEST_URI']) ? false : $_SERVER['REQUEST_URI'];
+$path = (!empty($_SERVER['QUERY_STRING'])) ?
+	substr($requested, 0, strpos($requested, $_SERVER['QUERY_STRING']) -1) :
+	$requested;
+$controller = getController($path);
 
 $controller->run();
