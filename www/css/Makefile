@@ -1,7 +1,7 @@
 TOPDIR?=$(realpath ../..)
 include $(TOPDIR)/Config.mk
 
-DIRS=blue-three-columns
+DIRS=blue-three-columns bootstrap-theme
 SRCS=
 
 install: $(SRCS)
