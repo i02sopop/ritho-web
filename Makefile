@@ -4,7 +4,7 @@ include $(TOPDIR)/Config.mk
 
 DIRS=conf www
 
-.PHONY: rall all doc
+.PHONY: rall all
 
 rall all:
 	@+if [ -d $(BUILD_DIR) ] ; then make clean ; fi
