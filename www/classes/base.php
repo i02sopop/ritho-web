@@ -32,22 +32,21 @@
  * @package	  Ritho-web\Classes
  * @since	  0.1
  */
-abstract class Base
-{
-	/** Local and global data. */
+abstract class Base {
+
+	/** @var $data Local and global data. */
 	protected $data = array();
 
 	/** Constructor of the class. */
-	public function __construct()
-	{
+	public function __construct() {
 	}
 
 	/** Getter of the class.
 	 *
-	 * @parameter name (string): Name of the parameter to get.
+	 * @param string $name Name of the parameter to get.
+	 * @return Value of the variable.
 	 */
-	public function __get($name)
-	{
+	public function __get($name) {
 		if (method_exists($this, ($method = 'get_'.$name)))
 			return $this->$method();
 		else if (array_key_exists($name, $this->data))
@@ -61,10 +60,10 @@ abstract class Base
 
 	/** Check if a parameter is set in the class.
 	 *
-	 * @parameter name (string): Name of the parameter to check.
+	 * @param string $name Name of the parameter to check.
+	 * @return boolean True if the variable $name is set and false otherwise.
 	 */
-	public function __isset($name)
-	{
+	public function __isset($name) {
 		return (method_exists($this, ($method = 'isset_' . $name))) ?
 			$this->$method() :
 			isset($this->data[$name]);
@@ -72,11 +71,11 @@ abstract class Base
 
 	/** Setter of the class.
 	 *
-	 * @parameter name (string): Name of the parameter to set.
-	 * @parameter value (string): Value of the parameter to set.
+	 * @param string $name  Name of the parameter to set.
+	 * @param string $value Value of the parameter to set.
+	 * @return void
 	 */
-	public function __set($name, $value)
-	{
+	public function __set($name, $value) {
 		if (method_exists($this, ($method = 'set_' . $name)))
 			$this->$method($value);
 		else
@@ -85,11 +84,11 @@ abstract class Base
 
 	/** Unset a parameter of the class.
 	 *
-	 * @parameter name (string): Name of the parameter to unset..
+	 * @param string $name Name of the parameter to unset.
+	 * @return void
 	 */
-	public function __unset($name)
-	{
-		if (method_exists($this, ($method='unset_' . $name)))
+	public function __unset($name) {
+		if (method_exists($this, ($method = 'unset_' . $name)))
 			$this->$method();
 		else
 			unset($this->data[$name]);
