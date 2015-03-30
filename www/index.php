@@ -26,7 +26,7 @@ $controller = null;
 /* URI requested. */
 $requested = empty($_SERVER['REQUEST_URI']) ? false : $_SERVER['REQUEST_URI'];
 $path = (!empty($_SERVER['QUERY_STRING'])) ?
-	substr($requested, 0, strpos($requested, $_SERVER['QUERY_STRING']) -1) :
+	substr($requested, 0, strpos($requested, $_SERVER['QUERY_STRING']) - 1) :
 	$requested;
 $controller = getController($path);
 

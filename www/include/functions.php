@@ -34,7 +34,7 @@ function __autoload($name) {
 	while (!$fileExists && $dir = each($subdirs)) {
 		$handle = opendir($dir['value']);
 		if ($handle === false)
-			throw new MissingException("Impossible to load $name.");
+			throw new MissingException('Impossible to load ' . $name . '.');
 
 		while ($entry = readdir($handle)) {
 			if (strpos($entry, $className) === 0) {
@@ -51,7 +51,7 @@ function __autoload($name) {
 	}
 
 	if (!$fileExists)
-		throw new MissingException("Impossible to load $name.");
+		throw new MissingException('Impossible to load ' . $name . '.');
 }
 
 /** Function to log info messages into the logging file.

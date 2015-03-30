@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2014 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -19,15 +19,16 @@
 
 /** File base.php.
  *
- * @copyright 2011-2014 Ritho-web project (see AUTHORS).
+ * @copyright 2011-2015 Ritho-web project (see AUTHORS).
  * @license	  http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
  * @version	  GIT: <git_id>
  * @link http://ritho.net
  */
 
-/** Base class with some default methods and vars in common to all the app classes.
+/** Base class with some default methods and vars in common to all the app
+ *  classes.
  *
- * @copyright Copyright (c) 2011-2014 Ritho-web team (see AUTHORS)
+ * @copyright 2011-2015 Ritho-web project (see AUTHORS).
  * @category  General
  * @package	  Ritho-web\Classes
  * @since	  0.1
@@ -35,7 +36,7 @@
 abstract class Base {
 
 	/** @var $data Local and global data. */
-	protected $data = array();
+	private $_data = array();
 
 	/** Constructor of the class. */
 	public function __construct() {
@@ -47,10 +48,12 @@ abstract class Base {
 	 * @return Value of the variable.
 	 */
 	public function __get($name) {
-		if (method_exists($this, ($method = 'get_'.$name)))
+		if (method_exists($this, ($method = 'get' . ucfirst($name))))
 			return $this->$method();
-		else if (array_key_exists($name, $this->data))
-			return $this->data[$name];
+		else if (array_key_exists($name, $this->_data))
+			return $this->_data[$name];
+		else if (isset($this->$name))
+			return $this->$name;
 
 		$trace = debug_backtrace();
 		trigger_error('Undefined property via __get(): ' . $name . ' in ' .
@@ -64,9 +67,9 @@ abstract class Base {
 	 * @return boolean True if the variable $name is set and false otherwise.
 	 */
 	public function __isset($name) {
-		return (method_exists($this, ($method = 'isset_' . $name))) ?
+		return (method_exists($this, ($method = 'isset' . ucfirst($name)))) ?
 			$this->$method() :
-			isset($this->data[$name]);
+			isset($this->_data[$name]);
 	}
 
 	/** Setter of the class.
@@ -76,10 +79,12 @@ abstract class Base {
 	 * @return void
 	 */
 	public function __set($name, $value) {
-		if (method_exists($this, ($method = 'set_' . $name)))
+		if (method_exists($this, ($method = 'set' . ucfirst($name))))
 			$this->$method($value);
+		else if (isset($this->$name))
+			$this->$name = $value;
 		else
-			$this->data[$name] = $value;
+			$this->_data[$name] = $value;
 	}
 
 	/** Unset a parameter of the class.
@@ -88,9 +93,11 @@ abstract class Base {
 	 * @return void
 	 */
 	public function __unset($name) {
-		if (method_exists($this, ($method = 'unset_' . $name)))
+		if (method_exists($this, ($method = 'unset' . ucfirst($name))))
 			$this->$method();
+		else if (isset($this->$name))
+			unset($this->$name);
 		else
-			unset($this->data[$name]);
+			unset($this->_data[$name]);
 	}
 }
