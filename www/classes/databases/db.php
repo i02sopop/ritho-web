@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2014 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -19,7 +19,7 @@
 
 /** File db.php.
  *
- * @copyright 2011-2014 Ritho-web project (see AUTHORS).
+ * @copyright 2011-2015 Ritho-web project (see AUTHORS).
  * @license	  http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
  * @version	  GIT: <git_id>
  * @link http://ritho.net
@@ -32,318 +32,236 @@ define('SQL_BOTH', 2);
 
 /** Basic database engine.
  *
- * @copyright Copyright (c) 2011-2014 Ritho-web team (see AUTHORS)
+ * @copyright Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
  * @category  Databases
  * @package	  Ritho-web\Classes\Databases
  * @since	  0.1
  */
-abstract class DB extends Base
-{
-    private $user = 'root';
-    private $password = '';
-    private $host = 'localhost';
-    private $db = 'ritho';
-    private $port = -1;
-    private $connection = null;
-    private $isPersistent = false;
-    private $result = null;
-    private $stmts = array();
+abstract class DB extends Base {
 
-    /** Constructor of the class.
+	/** Constructor of the class.
 	 *
-	 * @param $newUser (string): User to authenticate to the DB server.
-	 * @param $newPassword (string): Password to authenticate to the DB server.
-	 * @param $newHost (string): Host where the db is listening.
-	 * @param $newDB (string): Database name.
-	 * @param $newPort (int): Port number where the DB server is listening.
+	 * @param string  $newUser     User to authenticate to the DB server.
+	 * @param string  $newPassword Password to authenticate to the DB server.
+	 * @param string  $newDB       Database name.
+	 * @param string  $newHost     Host where the db is listening.
+	 * @param integer $newPort     Port number where the DB server is listening.
 	 */
-    public function __construct($newUser = 'root', $newPassword = '', $newHost = 'localhost',
-		$newDB = 'ritho', $newPort = -1)
-	{
-        if ($newUser !== null)
-            $this->user = $newUser;
+	public function __construct($newUser = 'root', $newPassword = '',
+								$newDB = 'ritho', $newHost = 'localhost',
+								$newPort = -1) {
+		$this->user = ($newUser !== null) ? $newUser : 'root';
+		$this->password = ($newPassword !== null) ? $newPassword : '';
+		$this->host = ($newHost !== null) ? $newHost : 'localhost';
+		$this->db = ($newDB !== null) ? $newDB : 'ritho';
+		$this->port = $newPort;
+		$this->connection = null;
+		$this->isPersistent = false;
+		$this->result = null;
+		$this->stmts = array();
+	}
 
-        if ($newPassword !== null)
-            $this->password = $newPassword;
-
-        if ($newHost !== null)
-            $this->host = $newHost;
-
-        if ($newDB !== null)
-            $this->db = $newDB;
-
-        $this->port = $newPort;
-    }
-
-    /** Disconnect the database engine.
+	/** Disconnect the database engine.
 	 *
 	 * @return TRUE on success, FALSE on failure.
 	 */
-    abstract public function close();
+	abstract public function close();
 
-    /** Connect to the database engine.
+	/** Connect to the database engine.
 	 *
 	 * @return TRUE on success, FALSE on failure.
 	 */
-    abstract public function connect();
+	abstract public function connect();
 
-    /** Deletes records from a table specified by the keys and values in assoc_array.
+	/** Deletes records from a table specified by the keys and values in
+	 * assoc_array.
 	 *
-	 * @param $table_name (string): Name of the table from which to delete rows.
-	 * @param $assoc (array): An array whose keys are field names in the table table_name,
-	 * and whose values are the values of those fields that are to
+	 * @param string $tableName Name of the table from which to delete rows.
+	 * @param array  $assoc     An array whose keys are field names in the table
+	 * table_name, and whose values are the values of those fields that are to
 	 * be deleted.
 	 * @return TRUE on success, FALSE on failure.
 	 */
-    abstract public function delete($table_name, $assoc = array());
+	abstract public function delete($tableName, array $assoc = array());
 
-    /** Escape a string for insertion into the database.
+	/** Escape a string for insertion into the database.
 	 *
-	 * @param $str (string): String to escape.
+	 * @param string $str String to escape.
 	 * @return String escaped.
 	 */
-    abstract public function escape_string($str);
+	abstract public function escapeString($str);
 
-    /** Execute a query.
+	/** Execute a query.
 	 *
-	 * @param $query (string): Query to execute in the DB.
+	 * @param string $query Query to execute in the DB.
 	 * @return TRUE on success, FALSE on failure.
 	 */
-    abstract public function exec($query);
+	abstract public function exec($query);
 
-    /** Close a prepared statement.
+	/** Close a prepared statement.
 	 *
-	 * @param $stmtname (string): The name of the prepared statement to execute.
+	 * @param string $stmtname The name of the prepared statement to execute.
 	 * @return TRUE on success, FALSE on failure.
 	 */
-    abstract public function exec_close($stmtname = null);
+	abstract public function execClose($stmtname = null);
 
-    /** Sends a request to execute a prepared statement without waiting for the result(s).
+	/** Sends a request to execute a prepared statement without waiting for the
+	 *  result(s).
 	 *
-	 * @param $stmtname (string): The name of the prepared statement to execute.
-	 * @param $params (string | int | double | array): Array of parameter values
-	 * to substitute for the placeholders in the original prepared query
-	 * string. The number of elements in the array must match the number of
-	 * placeholders.
+	 * @param string                     $stmtname The name of the prepared
+	 *        statement to execute.
+	 * @param string|integer|float|array $params   Array of parameter values
+	 *        to substitute for the placeholders in the original prepared query
+	 *        string. The number of elements in the array must match the number
+	 *        of placeholders.
 	 * @return Query result resource on success, FALSE on failure.
 	 */
-    abstract public function exec_prepared($stmtname, $params);
+	abstract public function execPrepared($stmtname, $params);
 
-    /** Get an array that contains all rows (records) in the result resource.
+	/** Get an array that contains all rows (records) in the result resource.
 	 *
-	 * @param $result (resource): Query result resource.
+	 * @param resource $result Query result resource.
 	 * @return Array with all rows in the result. Each row is an array of field
 	 * values indexed by field name and by field number. FALSE if there are no
 	 * rows in the result, or on any other error.
 	 */
-    abstract public function fetch_all($result = null);
+	abstract public function fetchAll($result = null);
 
-    /** Fetch a row into a numbered array from a query result.
+	/** Fetch a row into a numbered array from a query result.
 	 *
-	 * @param $result (resource): Result to get the row.
-	 * @param $result_type (int): Parameter to control how the returned array is
-	 * indexed. result_type is a constant and can take the following values:
-	 * SQL_ASSOC, SQL_NUM and SQL_BOTH.
-	 * @param $row (int): Row to fetch.
+	 * @param resource $result     Result to get the row.
+	 * @param integer  $resultType Parameter to control how the returned array is
+	 *        indexed. result_type is a constant and can take the following values:
+	 *        SQL_ASSOC, SQL_NUM and SQL_BOTH.
+	 * @param integer  $row        Row to fetch.
 	 * @return Array indexed numerically, associatively or both, FALSE on error.
 	 * Each value in the array is represented as a string. Database NULL values
 	 * are returned as NULL.
 	 */
-    abstract public function fetch_array($result = null, $result_type = 0, $row = -1);
+	abstract public function fetchArray($result = null, $resultType = 0,
+	                                    $row = -1);
 
-    /** Fetch a row into an associative array from a query result.
+	/** Fetch a row into an associative array from a query result.
 	 *
-	 * @param $result (resource): Result to get the row.
-	 * @param $row (int): Row to fetch.
+	 * @param resource $result Result to get the row.
+	 * @param integer  $row    Row to fetch.
 	 * @return Array indexed associatively, FALSE on error. Each value in the
 	 * array is represented as a string. Database NULL values are returned as
 	 * NULL. Returns NULL if there are no more rows in resultset.
 	 */
-    abstract public function fetch_assoc($result = null, $row = -1);
+	abstract public function fetchAssoc($result = null, $row = -1);
 
-    /** Fetch an object with properties that correspond to the fetched row's field
+	/** Fetch an object with properties that correspond to the fetched row's field
 	 * names. It can optionally instantiate an object of a specific class, and
 	 * pass parameters to that class's constructor.
 	 *
-	 * @param $result (resource): Result to get the row.
-	 * @param $class_name (string): Class name to store the row.
-	 * @param $params (array): Params to attach to the constructor of the object.
+	 * @param resource $result    Result to get the row.
+	 * @param string   $className Class name to store the row.
+	 * @param array    $params    Params to attach to the constructor of the
+	 *        object.
 	 * @return Object fetched.
 	 */
-    abstract public function fetch_object($result = null, $class_name = 'StdClass',
-		$params = array());
+	abstract public function fetchObject($result = null, $className = 'StdClass',
+										 array $params = array());
 
-    /** Fetch a row into a numbered array from a query result.
+	/** Fetch a row into a numbered array from a query result.
 	 *
-	 * @param $result (resource): Result to get the row.
-	 * @param $row (int): Row to fetch.
+	 * @param resource $result Result to get the row.
+	 * @param integer  $row    Row to fetch.
 	 * @return Array indexed numerically, FALSE on error. Each value in the array
 	 * is represented as a string. Database NULL values are returned as NULL.
 	 */
-    abstract public function fetch_row($result = null, $row = -1);
+	abstract public function fetchRow($result = null, $row = -1);
 
-    /** Get the name of the field occupying the given field_number in the given
+	/** Get the name of the field occupying the given field_number in the given
 	 * result resource. Field numbering starts from 0.
 	 *
-	 * @param $result (resource): Result to get the name of the column.
-	 * @param $field_number (integer): Number of field to check.
+	 * @param resource $result      Result to get the name of the column.
+	 * @param integer  $fieldNumber Number of field to check.
 	 * @return An string with the name of the field.
 	 */
-    abstract public function field_name($result = null, $field_number = -1);
+	abstract public function fieldName($result = null, $fieldNumber = -1);
 
-    /** Get a string containing the base type name of the given field_number in the
+	/** Get a string containing the base type name of the given field_number in the
 	 * given result resource.
 	 *
-	 * @param $result (resource): Result resource to get the type of the field.
-	 * @param $field_number (int): Number of field to check.
+	 * @param resource $result      Result resource to get the type of the field.
+	 * @param integer  $fieldNumber Number of field to check.
 	 * @return String with the type of object of the given field.
 	 */
-    abstract public function field_type($result = null, $field_number = -1);
+	abstract public function fieldType($result = null, $fieldNumber = -1);
 
-    /** Free a query result.
+	/** Free a query result.
 	 *
-	 * @param $result (resource): Result to free.
+	 * @param resource $result Result to free.
 	 * @return TRUE on success, FALSE on failure.
 	 */
-    abstract public function free($result = null);
+	abstract public function free($result = null);
 
-    /** Inserts the values of assoc_array into the table specified by table_name.
+	/** Inserts the values of assoc_array into the table specified by table_name.
 	 *
-	 * @param $table_name (string): Name of the table into which to insert rows.
-	 * @param $assoc (array): Array whose keys are field names in the table table_name,
+	 * @param string $tableName Name of the table into which to insert rows.
+	 * @param array  $assoc     Array whose keys are field names in the table
+	 *        tableName,
 	 * and whose values are the values of those fields that are to be inserted.
 	 * @return TRUE on success, FALSE on failure.
 	 */
-    abstract public function insert($table_name, $assoc = array());
+	abstract public function insert($tableName, array $assoc = array());
 
-    /** Get the number of fields (columns) in a result resource.
+	/** Get the number of fields (columns) in a result resource.
 	 *
-	 * @param $result (resource): Result to check.
+	 * @param resource $result Result to check.
 	 * @return Number of columns of the result.
 	 */
-    abstract public function num_fields($result = null);
+	abstract public function numFields($result = null);
 
-    /** Get the number of rows in a result resource..
+	/** Get the number of rows in a result resource..
 	 *
-	 * @param $result (resource): Result to check.
+	 * @param resource $result Result to check.
 	 * @return Number of rows of the result.
 	 */
-    abstract public function num_rows($result = null);
+	abstract public function numRows($result = null);
 
-    /** Persistent connection to the database engine.
+	/** Persistent connection to the database engine.
 	 *
 	 * @return TRUE on success, FALSE on failure.
 	 */
-    abstract public function pconnect();
+	abstract public function pconnect();
 
-    /** Pings a database connection and tries to reconnect it if it is broken.
+	/** Pings a database connection and tries to reconnect it if it is broken.
 	 *
 	 * @return TRUE on success, FALSE on failure.
 	 */
-    abstract public function ping();
+	abstract public function ping();
 
-    /** Creates a prepared statement for later execution.
+	/** Creates a prepared statement for later execution.
 	 *
-	 * @param $stmtname (string): The name to give the prepared statement. Must
+	 * @param string $stmtname The name to give the prepared statement. Must
 	 * be unique per-connection.
-	 * @param $query (string): The parameterized SQL statement. Must contain only
+	 * @param string $query    The parameterized SQL statement. Must contain only
 	 * a single statement. If any parameters are used, they are referred to as $1,
 	 * $2, etc.
 	 * @return TRUE on success, FALSE on failure.
-    */
-    abstract public function prepare($stmtname, $query);
+	 */
+	abstract public function prepare($stmtname, $query);
 
-    /** Execute a query.
+	/** Execute a query.
 	 *
-	 * @param $query (string): Query to execute in the DB.
+	 * @param string $query Query to execute in the DB.
 	 * @return Query result resource on success, FALSE on failure.
 	 */
-    abstract public function query($query);
+	abstract public function query($query);
 
-    /** Select records specified by assoc_array which has field=>value.
+	/** Select records specified by assoc_array which has field=>value.
 	 *
-	 * @param $table_name (string): Name of the table from which to select rows.
-	 * @param $cols (array): Array with the names of the columns to return by the query.
-	 * @param $where (array): Array whose keys are columns in the table table_name, and
-	 * whose values are the conditions that a row must meet to be retrieved.
+	 * @param string $tableName Name of the table from which to select rows.
+	 * @param array  $cols      Array with the names of the columns to return by
+	 *        the query.
+	 * @param array  $where     Array whose keys are columns in the table
+	 *        tableName, and whose values are the conditions that a row must meet
+	 *        to be retrieved.
 	 * @return Query result resource on success, FALSE on failure.
-    */
-    abstract public function select($table_name, $cols = array(), $where = array());
-
-    /** Getters. */
-    protected function getUser()
-	{
-        return $this->user;
-    }
-
-    protected function getPassword()
-	{
-        return $this->password;
-    }
-
-    protected function getHost()
-	{
-        return $this->host;
-    }
-
-    protected function getDB()
-	{
-        return $this->db;
-    }
-
-    protected function getPort()
-	{
-        return $this->port;
-    }
-
-    protected function getConnection()
-	{
-        return $this->connection;
-    }
-
-    protected function isPersistent()
-	{
-        return $this->isPersistent;
-    }
-
-    /** Setters. */
-    protected function setUser($newUser = 'root')
-	{
-        if ($newUser !== null)
-            $this->user = $newUser;
-    }
-
-    protected function setPassword($newPassword = '')
-	{
-        if ($newPassword !== null)
-            $this->password = $newPassword;
-    }
-
-    protected function setHost($newHost = 'localhost')
-	{
-        if ($newHost !== null)
-            $this->host = $newHost;
-    }
-
-    protected function setDB($newDB = 'ritho')
-	{
-        if ($newDB !== null)
-            $this->db = $newDB;
-    }
-
-    protected function setPort($newPort = 3306)
-	{
-        $this->port = $newPort;
-    }
-
-    protected function setConnection($newConnection = null)
-	{
-        if ($newConnection !== null)
-            $this->connection = $newConnection;
-    }
-
-    protected function setPersistent($newPersistent = true)
-	{
-        $this->isPersistent = $newPersistent;
-    }
+	 */
+	abstract public function select($tableName, array $cols = array(),
+	                                array $where = array());
 }

@@ -115,7 +115,7 @@ function loadPaths() {
 		if ($res === false)
 			throw new Exception('Error loading the paths fromm the database.');
 
-		$rows = $dbConn->fetch_all($res);
+		$rows = $dbConn->fetchAll($res);
 		if ($rows && count($rows) > 0) {
 			foreach ($rows as $row) {
 				$GLOBALS['paths'][$row['c_path']]['controller'] = $row['controller'];
