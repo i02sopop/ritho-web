@@ -52,8 +52,8 @@ class PgDB extends DB {
 	 * @return TRUE on success, FALSE on failure.
 	 */
 	public function close() {
-		if ($this->getConnection() != null)
-			return pg_close($this->getConnection());
+		if ($this->connection != null)
+			return pg_close($this->connection);
 		return pg_close();
 	}
 
@@ -63,17 +63,17 @@ class PgDB extends DB {
 	 */
 	public function connect() {
 		/* Close previous persistent connection. */
-		$this->setPersistent(false);
-		if ($this->setConnection(null))
+		$this->persistent = false;
+		if ($this->connection = null)
 			$this->close();
 
 		/* XXX: Get charset from config. */
-		$connString = 'host=' . $this->getHost() . ' port=' . $this->getPort() .
-			' dbname=' . $this->getDB() . ' user=' . $this->getUser() . ' password=' .
-			$this->getPassword() . " options='--client_encoding=UTF8'";
+		$connString = 'host=' . $this->host . ' port=' . $this->port .
+			' dbname=' . $this->db . ' user=' . $this->user . ' password=' .
+			$this->password . " options='--client_encoding=UTF8'";
 		$this->setConnection(pg_connect($connString));
 
-		return (pg_connection_status($this->getConnection()) === PGSQL_CONNECTION_OK);
+		return (pg_connection_status($this->connection) === PGSQL_CONNECTION_OK);
 	}
 
 	/** Deletes records from a table specified by the keys and values in
@@ -100,7 +100,7 @@ class PgDB extends DB {
 
 			$query .= ';';
 			Log::i($this->escapeString($query));
-			return (pg_query($this->getConnection(),
+			return (pg_query($this->connection,
 			                 $this->escapeString($query)) !== false);
 		}
 
@@ -115,7 +115,7 @@ class PgDB extends DB {
 	 */
 	public function escapeString($str) {
 		return ($str && is_string($str))
-			? pg_escapeString($this->getConnection(), $str) :
+			? pg_escapeString($this->connection, $str) :
 			'';
 	}
 
@@ -126,7 +126,7 @@ class PgDB extends DB {
 	 */
 	public function exec($query) {
 		return ($query && is_string($query)) ?
-			(pg_query($this->getConnection(), $this->escapeString($query)) !== false) :
+			(pg_query($this->connection, $this->escapeString($query)) !== false) :
 			false;
 	}
 
@@ -315,7 +315,7 @@ class PgDB extends DB {
 		return (!$tableName || !is_string($tableName) ||
 		        !$assoc || !is_array($assoc)) ?
 		    false :
-		    pg_insert($this->getConnection(), $tableName, $assoc);
+		    pg_insert($this->connection, $tableName, $assoc);
 	}
 
 	/** Get the number of fields (columns) in a result resource.
@@ -349,14 +349,14 @@ class PgDB extends DB {
 	 * @return TRUE on success, FALSE on failure.
 	 */
 	public function pconnect() {
-		$this->setPersistent(true);
+		$this->persistent = true;
 		/* XXX: Get charset from config. */
-		$connString = 'host=' . $this->getHost() . ' port=' . $this->getPort() .
-			' dbname=' . $this->getDB() . ' user=' . $this->getUser() . ' password=' .
-			$this->getPassword() . " options='--client_encoding=UTF8'";
-		$this->setConnection(pg_pconnect($connString, PGSQL_CONNECT_FORCE_NEW));
+		$connString = 'host=' . $this->host . ' port=' . $this->port .
+			' dbname=' . $this->db . ' user=' . $this->user . ' password=' .
+			$this->password . " options='--client_encoding=UTF8'";
+		$this->connection = pg_pconnect($connString, PGSQL_CONNECT_FORCE_NEW);
 
-		return (pg_connection_status($this->getConnection()) === PGSQL_CONNECTION_OK);
+		return (pg_connection_status($this->connection) === PGSQL_CONNECTION_OK);
 	}
 
 	/** Pings a database connection and tries to reconnect it if it is broken.
@@ -364,7 +364,7 @@ class PgDB extends DB {
 	 * @return TRUE on success, FALSE on failure.
 	 */
 	public function ping() {
-		return pg_ping($this->getConnection());
+		return pg_ping($this->connection);
 	}
 
 	/** Creates a prepared statement for later execution.
@@ -393,7 +393,7 @@ class PgDB extends DB {
 	 */
 	public function query($query) {
 		if ($query && is_string($query)) {
-			$this->result = pg_query($this->getConnection(), $query);
+			$this->result = pg_query($this->connection, $query);
 			return $this->result;
 		}
 
@@ -436,7 +436,7 @@ class PgDB extends DB {
 
 		if ($query) {
 			/* We make the query and return the result. */
-			$this->result = pg_query($this->getConnection(), $query);
+			$this->result = pg_query($this->connection, $query);
 			return $result;
 		}
 

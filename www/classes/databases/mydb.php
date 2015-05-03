@@ -52,7 +52,7 @@ class MyDB extends DB {
 	 */
 	public function close() {
 		if (!$this->isPersistent())
-			return $this->getConnection()->close();
+			return $this->connection->close();
 		return true;
 	}
 
@@ -62,33 +62,33 @@ class MyDB extends DB {
 	 */
 	public function connect() {
 		/* Close previous persistent connection. */
-		$this->setPersistent(false);
-		if ($this->setConnection(null))
+		$this->persistent = false;
+		if ($this->connection = null)
 			$this->close();
 
 		/* Connect to the MySQL database. */
-		$this->setConnection(new mysqli($this->getHost(),
-		                                $this->getUser(),
-		                                $this->getPassword(),
-		                                $this->getDB(),
-		                                $this->getPort()));
-		if ($this->getConnection()->connect_errno) {
+		$this->connection = new mysqli($this->host,
+		                               $this->user,
+		                               $this->password,
+		                               $this->db,
+		                               $this->port);
+		if ($this->connection->connect_errno) {
 			Log::e('Failed to connect to MySQL: ' .
-			       $this->getConnection()->connect_errno);
+			       $this->connection->connect_errno);
 			/* TODO: Throws an exception if there is an error instead die. */
 			die('mysqli failed');
 		}
 
 		/* Set the character set of the connection
 		 * XXX: Get the charset from config. */
-		if (!mysqli_set_charset($this->getConnection(), 'UTF8')) {
+		if (!mysqli_set_charset($this->connection, 'UTF8')) {
 			Log::e('Failed to set the charset of the MySQL connection: ' .
-			       $this->getConnection()->connect_errno);
+			       $this->connection->connect_errno);
 			/* TODO: Throws an exception if there is an error instead die. */
 			die('mysqli_set_charset failed');
 		}
 
-		return ($this->getConnection()->connect_errno) ? false : true;
+		return ($this->connection->connect_errno) ? false : true;
 	}
 
 	/** Delete records from a table specified by the keys and values in
@@ -115,7 +115,7 @@ class MyDB extends DB {
 
 			$query .= ';';
 			Log::i($this->escapeString($query));
-			return $this->getConnection()->real_query($this->escapeString($query));
+			return $this->connection->real_query($this->escapeString($query));
 		}
 
 		Log::e('Error deleting the rows.');
@@ -129,7 +129,7 @@ class MyDB extends DB {
 	 */
 	public function escapeString($str) {
 		return ($str && is_string($str)) ?
-		    $this->getConnection()->real_escapeString($str) :
+		    $this->connection->real_escapeString($str) :
 		    '';
 	}
 
@@ -140,7 +140,7 @@ class MyDB extends DB {
 	 */
 	public function exec($query) {
 		return ($query && is_string($query)) ?
-			$this->getConnection()->real_query($this->escapeString($query)) :
+			$this->connection->real_query($this->escapeString($query)) :
 			false;
 	}
 
@@ -364,7 +364,7 @@ class MyDB extends DB {
 
 		if ($query) {
 			Log::i($this->escapeString($query));
-			return $this->getConnection()->real_query($this->escape_string($query));
+			return $this->connection->real_query($this->escape_string($query));
 		} else {
 			Log::e('Error inserting the rows.');
 			return false;
@@ -402,8 +402,8 @@ class MyDB extends DB {
 	 * @return TRUE on success, FALSE on failure.
 	 */
 	public function pconnect() {
-		$this->setPersistent(true);
-		return ($this->getConnection() === null) ?
+		$this->persistent = true;
+		return ($this->connection === null) ?
 			$this->connect() :
 			$this->isPersistent();
 	}
@@ -413,7 +413,7 @@ class MyDB extends DB {
 	 * @return TRUE on success, FALSE on failure.
 	 */
 	public function ping() {
-		return $this->getConnection()->ping();
+		return $this->connection->ping();
 	}
 
 	/** Creates a prepared statement for later execution.
@@ -427,7 +427,7 @@ class MyDB extends DB {
 	 */
 	public function prepare($stmtname, $query) {
 		if ($stmtname && is_string($stmtname)) {
-			$this->stmts[$stmtname] = $this->getConnection()->prepare($query);
+			$this->stmts[$stmtname] = $this->connection->prepare($query);
 			return ($this->stmts[$stmtname] !== false);
 		}
 
@@ -441,7 +441,7 @@ class MyDB extends DB {
 	 */
 	public function query($query) {
 		if ($query && is_string($query)) {
-			$this->result = $this->getConnection()->query($query);
+			$this->result = $this->connection->query($query);
 			return $this->result;
 		}
 
@@ -484,7 +484,7 @@ class MyDB extends DB {
 
 		if ($query) {
 			/* We make the query and return the result. */
-			$this->result = $this->getConnection()->query($query);
+			$this->result = $this->connection->query($query);
 
 			return $result;
 		}
