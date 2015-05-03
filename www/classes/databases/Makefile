@@ -11,3 +11,6 @@ install: $(SRCS)
 		install $$i $(WWW_DIR)/classes/databases; \
 		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(WWW_DIR)/classes/databases/$$i; \
 	done
+
+clean:
+	@for i in $(DIRS) ; do $(MAKE) -C $$i clean; done
