@@ -40,6 +40,11 @@ abstract class Base {
 
 	/** Constructor of the class. */
 	public function __construct() {
+		/* Load all configs. */
+		foreach ($GLOBALS['configs'] as $key => $value)
+			$this->configs[$key] = $value;
+
+		$this->db = DB::getDbConnection();
 	}
 
 	/** Getter of the class.
