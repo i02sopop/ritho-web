@@ -109,7 +109,7 @@ function getTime() {
 function loadPaths() {
 	if (empty($GLOBALS['paths'])) {
 		/* Open a connection with the database. */
-		$dbConn = getDbConnection();
+		$dbConn = DB::getDbConnection();
 		$dbConn->pconnect();
 		$res = $dbConn->select('paths');
 		if ($res === false)
@@ -184,37 +184,4 @@ function getController($path) {
 	if (empty($controllerName))
 		return new C404($firstParam, array('path' => substr($path, 1)));
 	return new $controllerName($firstParam, $params);
-}
-
-/** Function to get a database connection depending of the db engine used.
- *
- * @return Object Database connection.
- */
-function getDbConnection() {
-	$dbConn = null;
-	switch ($GLOBALS['configs']['db_engine']) {
-		case 'postgresql':
-			$dbConn = new PgDB($GLOBALS['configs']['db_user'],
-			                 $GLOBALS['configs']['db_password'],
-			                 $GLOBALS['configs']['db_host'],
-			                 $GLOBALS['configs']['db_name'],
-			                 $GLOBALS['configs']['db_port']);
-			break;
-		case 'mysql':
-			$dbConn = new MyDB($GLOBALS['configs']['db_user'],
-			                 $GLOBALS['configs']['db_password'],
-			                 $GLOBALS['configs']['db_host'],
-			                 $GLOBALS['configs']['db_name'],
-			                 $GLOBALS['configs']['db_port']);
-			break;
-		default:
-			$dbConn = new DB($GLOBALS['configs']['db_user'],
-			                 $GLOBALS['configs']['db_password'],
-			                 $GLOBALS['configs']['db_host'],
-			                 $GLOBALS['configs']['db_name'],
-			                 $GLOBALS['configs']['db_port']);
-			break;
-	}
-
-	return $dbConn;
 }

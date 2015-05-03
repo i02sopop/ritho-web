@@ -39,6 +39,40 @@ define('SQL_BOTH', 2);
  */
 abstract class DB extends Base {
 
+	/** Function to get a database connection depending of the db engine used.
+	 *
+	 * @return Object Database connection.
+	 */
+	public static function getDbConnection() {
+		$dbConn = null;
+		switch ($GLOBALS['configs']['db_engine']) {
+			case 'postgresql':
+				$dbConn = new PgDB($GLOBALS['configs']['db_user'],
+				                   $GLOBALS['configs']['db_password'],
+				                   $GLOBALS['configs']['db_host'],
+				                   $GLOBALS['configs']['db_name'],
+				                   $GLOBALS['configs']['db_port']);
+                break;
+            case 'mysql':
+                $dbConn = new MyDB($GLOBALS['configs']['db_user'],
+				                   $GLOBALS['configs']['db_password'],
+				                   $GLOBALS['configs']['db_host'],
+				                   $GLOBALS['configs']['db_name'],
+				                   $GLOBALS['configs']['db_port']);
+				break;
+			default:
+				$dbConn = new DB($GLOBALS['configs']['db_user'],
+				                 $GLOBALS['configs']['db_password'],
+				                 $GLOBALS['configs']['db_host'],
+				                 $GLOBALS['configs']['db_name'],
+				                 $GLOBALS['configs']['db_port']);
+				break;
+		}
+
+		return $dbConn;
+	}
+
+
 	/** Constructor of the class.
 	 *
 	 * @param string  $newUser     User to authenticate to the DB server.
