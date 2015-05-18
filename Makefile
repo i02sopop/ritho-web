@@ -9,7 +9,6 @@ DIRS=conf www
 rall all:
 	@+if [ -d $(BUILD_DIR) ] ; then make clean ; fi
 	@+make start-environment
-	@+make doc
 
 rall: start-environment doc
 
