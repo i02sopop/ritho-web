@@ -51,7 +51,7 @@ class MyDB extends DB {
 	 * @return TRUE on success, FALSE on failure.
 	 */
 	public function close() {
-		if (!$this->isPersistent())
+		if (!$this->persistent)
 			return $this->connection->close();
 		return true;
 	}
@@ -405,7 +405,7 @@ class MyDB extends DB {
 		$this->persistent = true;
 		return ($this->connection === null) ?
 			$this->connect() :
-			$this->isPersistent();
+			$this->persistent;
 	}
 
 	/** Pings a database connection and tries to reconnect it if it is broken.

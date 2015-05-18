@@ -17,11 +17,9 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('%WWW_DIR%/classes/databases/mydb.php');
-
 class DBTest extends PHPUnit_Framework_TestCase {
     public function testInitial() {
-        $db = new MyDB('root', '', '%MYSQL_HOST%', '%DATABASE%', %MYSQL_PORT%);
+        $db = new MyDB('root', '', '%DATABASE%', '%MYSQL_HOST%', %MYSQL_PORT%);
         $db->connect();
         $db->close();
     }
