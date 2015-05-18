@@ -51,7 +51,7 @@ function __autoload($name) {
 	}
 
 	if (!$fileExists)
-		throw new MissingException('Impossible to load ' . $name . '.');
+		log_e('Couldn\'t load the class ' . $name . '.');
 }
 
 /** Function to log info messages into the logging file.
