@@ -15,6 +15,20 @@ use the application.
  Installation Requirements
 ===========================
 
+apache2
+libapache2-mod-php5
+libapache2-mod-gnutls
+postgresql-9.1
+mysql-client
+mysql-server
+php5
+php5-xsl
+phpdoc
+	pear channel-discover pear.phpdoc.org
+	pear install phpdoc/phpDocumentor-alpha
+phpunit
+graphviz
+
  Installation Process
 ======================
 
