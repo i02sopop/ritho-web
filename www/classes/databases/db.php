@@ -49,29 +49,28 @@ abstract class DB extends Base {
 			case 'postgresql':
 				$dbConn = new PgDB($GLOBALS['configs']['db_user'],
 				                   $GLOBALS['configs']['db_password'],
-				                   $GLOBALS['configs']['db_host'],
 				                   $GLOBALS['configs']['db_name'],
+				                   $GLOBALS['configs']['db_host'],
 				                   $GLOBALS['configs']['db_port']);
                 break;
             case 'mysql':
                 $dbConn = new MyDB($GLOBALS['configs']['db_user'],
 				                   $GLOBALS['configs']['db_password'],
-				                   $GLOBALS['configs']['db_host'],
 				                   $GLOBALS['configs']['db_name'],
+				                   $GLOBALS['configs']['db_host'],
 				                   $GLOBALS['configs']['db_port']);
 				break;
 			default:
 				$dbConn = new DB($GLOBALS['configs']['db_user'],
 				                 $GLOBALS['configs']['db_password'],
-				                 $GLOBALS['configs']['db_host'],
 				                 $GLOBALS['configs']['db_name'],
+				                 $GLOBALS['configs']['db_host'],
 				                 $GLOBALS['configs']['db_port']);
 				break;
 		}
 
 		return $dbConn;
 	}
-
 
 	/** Constructor of the class.
 	 *

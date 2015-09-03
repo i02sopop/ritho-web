@@ -20,14 +20,13 @@
 /** File pgdb.php.
  *
  * @copyright 2011-2015 Ritho-web project (see AUTHORS).
- * @license	  http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
- * @version	  GIT: <git_id>
+ * @license http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
+ * @version GIT: <git_id>
  * @link http://ritho.net
  */
 
 /** Postgresql database engine.
  *
- * @copyright Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
  * @category  Databases
  * @package	  Ritho-web\Classes\Databases
  * @since	  0.1
@@ -71,7 +70,7 @@ class PgDB extends DB {
 		$connString = 'host=' . $this->host . ' port=' . $this->port .
 			' dbname=' . $this->db . ' user=' . $this->user . ' password=' .
 			$this->password . " options='--client_encoding=UTF8'";
-		$this->setConnection(pg_connect($connString));
+		$this->connection = pg_connect($connString);
 
 		return (pg_connection_status($this->connection) === PGSQL_CONNECTION_OK);
 	}
@@ -80,7 +79,7 @@ class PgDB extends DB {
 	 *   assoc_array.
 	 *
 	 * @param string $tableName Name of the table from which to delete rows.
-	 * @param array  $assoc     An array whose keys are field names in the table
+	 * @param array	 $assoc     An array whose keys are field names in the table
 	 * table_name, and whose values are the values of those fields that are to
 	 * be deleted.
 	 * @return TRUE on success, FALSE on failure.
@@ -210,7 +209,7 @@ class PgDB extends DB {
 	/** Fetch a row into an associative array from a query result.
 	 *
 	 * @param resource $result Result to get the row.
-	 * @param integer  $row    Row to fetch.
+	 * @param integer  $row	   Row to fetch.
 	 * @return Array indexed associatively, FALSE on error. Each value in the
 	 * array is represented as a string. Database NULL values are returned as
 	 * NULL. Returns NULL if there are no more rows in resultset.
@@ -225,8 +224,8 @@ class PgDB extends DB {
 	 *
 	 * @param resource $result    Result to get the row.
 	 * @param string   $className Class name to store the row.
-	 * @param array    $params    Params to attach to the constructor of the
-	 *        object.
+	 * @param array	   $params    Params to attach to the constructor of the
+	 *		  object.
 	 * @return Object fetched.
 	 */
 	public function fetchObject($result = null, $className = 'StdClass',
@@ -244,7 +243,7 @@ class PgDB extends DB {
 	/** Fetch a row into a numbered array from a query result.
 	 *
 	 * @param resource $result Result to get the row.
-	 * @param integer  $row    Row to fetch.
+	 * @param integer  $row	   Row to fetch.
 	 * @return Array indexed numerically, FALSE on error. Each value in the array
 	 * is represented as a string. Database NULL values are returned as NULL.
 	 */
@@ -306,7 +305,7 @@ class PgDB extends DB {
 	/** Inserts the values of assoc_array into the table specified by table_name.
 	 *
 	 * @param string $tableName Name of the table into which to insert rows.
-	 * @param array  $assoc     Array whose keys are field names in the table
+	 * @param array	 $assoc     Array whose keys are field names in the table
 	 *        tableName,
 	 * and whose values are the values of those fields that are to be inserted.
 	 * @return TRUE on success, FALSE on failure.
@@ -371,7 +370,7 @@ class PgDB extends DB {
 	 *
 	 * @param string $stmtname The name to give the prepared statement. Must
 	 * be unique per-connection.
-	 * @param string $query    The parameterized SQL statement. Must contain only
+	 * @param string $query	   The parameterized SQL statement. Must contain only
 	 * a single statement. If any parameters are used, they are referred to as $1,
 	 * $2, etc.
 	 * @return TRUE on success, FALSE on failure.
@@ -403,9 +402,9 @@ class PgDB extends DB {
 	/** Select records specified by assoc_array which has field=>value.
 	 *
 	 * @param string $tableName Name of the table from which to select rows.
-	 * @param array  $cols      Array with the names of the columns to return by
+	 * @param array	 $cols      Array with the names of the columns to return by
 	 *        the query.
-	 * @param array  $where     Array whose keys are columns in the table
+	 * @param array	 $where     Array whose keys are columns in the table
 	 *        tableName, and whose values are the conditions that a row must meet
 	 *        to be retrieved.
 	 * @return Query result resource on success, FALSE on failure.
@@ -437,7 +436,7 @@ class PgDB extends DB {
 		if ($query) {
 			/* We make the query and return the result. */
 			$this->result = pg_query($this->connection, $query);
-			return $result;
+			return $this->result;
 		}
 
 		return false;
