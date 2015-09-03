@@ -29,8 +29,9 @@ clean: clean-build
 
 rc: clean-build
 
-db-start: postgresql-start mysql-start
+db-start:
 	@echo "\\033[1;35m+++ Starting db\\033[39;0m"
+	@make $(DB_ENGINE)-start
 
 $(BUILD_DIR): install
 
@@ -67,6 +68,7 @@ postgresql-start: $(BUILD_DIR)
 		rm -rf $(PGSQL_DATA) > /dev/null; \
 		mkdir -p $(PGSQL_LOGDIR); \
 		$(PGSQL_BIN)/initdb --pgdata=$(PGSQL_DATA) --auth="ident" > /dev/null; \
+		$(INSTALL) conf/pg_hba.conf $(PGSQL_DATA); \
 		$(PGSQL_BIN)/postgres -c config_file=${CONF_DIR}/postgresql.conf -k $(PGSQL_DATA) -D $(PGSQL_DATA) 1> $(PGSQL_LOG) < /dev/null 2>&1 & \
 		echo $$! > $(BUILD_DIR)/postmaster.pid; \
 		while ! $(USR_BIN)/psql -h $(PGSQL_DATA) -p $(PGSQL_PORT) -c "select current_timestamp" template1 > /dev/null 2>&1; do \
@@ -100,7 +102,9 @@ phantom-start:
 phantom-stop:
 	@$(MAKE) -C $(TOPDIR)/tests phantom-stop
 
-db-stop: mysql-stop postgresql-stop
+db-stop:
+	@echo "\\033[1;35m+++ Stoping db\\033[39;0m"
+	@make $(DB_ENGINE)-stop
 
 mysql-stop:
 	@echo "\\033[1;35m+++ Stopping mysql\\033[39;0m"

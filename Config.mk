@@ -65,7 +65,7 @@ HTTPD_GROUP=$(shell id -gn)
 PGSQL_HOST=$(BUILD_DIR)/data
 PGSQL_PORT=$(call genport,10)
 PGSQL_USER=$(shell id -un)
-PGSQL_PASSWD=
+PGSQL_PASSWD=$(shell id -un)
 
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
@@ -90,6 +90,8 @@ SUPPORT_EMAIL=palvarez@ritho.net
 USR_BIN=/usr/bin
 USR_SBIN=/usr/sbin
 
+INSTALL=/usr/bin/install
+
 SSL_DIR=$(CONF_DIR)/ssl
 SSL_CERT=$(SSL_DIR)/server.crt
 SSL_KEY=$(SSL_DIR)/priv/server.key
@@ -105,7 +107,7 @@ IMG_DIR=$(WWW_DIR)/img
 BOOTSTRAP_DIR=$(LIB_DIR)/bootstrap
 TESTS_ROOT=$(SERVER_ROOT)/tests
 
-DATABASE=ritho-web
+DATABASE=ritho_web
 
 LOG_FILE=ritho.log
 LOG_PREFIX=ritho_
@@ -128,6 +130,8 @@ DB_DATA_FILES=$(wildcard $(DB_SCRIPTS_DIR)/initialize-*.sql)
 DB_ENGINE=postgresql
 DB_HOST=$(HOST)
 DB_PORT=$(PGSQL_PORT)
+DB_USER=$(PGSQL_USER)
+DB_PASSWD=$(PGSQL_PASSWD)
 
 HTTPD=/usr/sbin/apache2
 HTTPD_SYSCONFIG=/etc/apache2
