@@ -43,6 +43,8 @@ class Template extends Base {
 	 * @param string $name The template name.
 	 */
 	public function __construct($name) {
+		parent::__construct();
+
 		/* Configs of the site. */
 	    $configs = $GLOBALS['configs'];
 
