@@ -150,31 +150,32 @@ function cleanPath($path) {
  */
 function getController($path) {
 	loadPaths();
+	$paths = $GLOBALS['paths'];
 	$controllerName = '';
 	$firstParam = '';
 	$params = null;
 	$path = cleanPath($path);
 	if (empty($path)) {
 		$controllerName = 'CIndex';
-		$firstParam = '';
-	} else if (array_key_exists($path, $GLOBALS['paths'])) {
-		$controllerName = $GLOBALS['paths'][$path]['controller'];
-		$firstParam = $GLOBALS['paths'][$path]['param'];
+		$firstParam = Controller::ACTION_RENDER;
+	} else if (array_key_exists($path, $paths)) {
+		$controllerName = $paths[$path]['controller'];
+		$firstParam = $paths[$path]['param'];
 	} else {
-		$pathKeys = array_keys($GLOBALS['paths']);
-	    $pathSelected = '';
+		$pathKeys = array_keys($paths);
+		$pathSelected = '';
 		foreach ($pathKeys as $curPath) {
 			if (strlen($curPath) > strlen($pathSelected)) {
 				$pattern = preg_replace('/\//', '\\/', preg_quote($curPath));
 				if (preg_match('/' . $pattern . '/', $path) === 1)
-				    $pathSelected = $curPath;
+					$pathSelected = $curPath;
 			}
 		}
 
-		$controllerName = $GLOBALS['paths'][$pathSelected]['controller'];
+		$controllerName = $paths[$pathSelected]['controller'];
 		if ($controllerName === 'CIndex')
 			$controllerName = '';
-		$firstParam = $GLOBALS['paths'][$pathSelected]['param'];
+		$firstParam = $paths[$pathSelected]['param'];
 		$params = preg_split('/\//', substr($path, strlen($pathSelected)));
 		if (!empty($params[0]))
 			$controllerName = '';
