@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2014 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -19,15 +19,14 @@
 
 /** File cindex.php.
  *
- * @copyright 2011-2014 Ritho-web project (see AUTHORS).
- * @license   http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
- * @version   GIT: <git_id>
+ * @copyright 2011-2015 Ritho-web project (see AUTHORS).
+ * @license http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
+ * @version GIT: <git_id>
  * @link http://ritho.net
  */
 
 /** Controller for the Index page.
  *
- * @copyright Copyright (c) 2011-2014 Ritho-web team (see AUTHORS)
  * @category  Controller
  * @package   Ritho-web\Classes\Controller
  * @since     0.1
@@ -35,9 +34,12 @@
 class CIndex extends Controller {
 	/** Constructor of CIndex.
 	 *
+	 * @param string $action      Action to take (different from the default one).
+	 * @param array  $extraParams Extra parameters to do the action.
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct($action = '', array $extraParams = null) {
+		parent::__construct($action, $extraParams);
 	}
 
 	/** Method to initalize the controller before handling the request.
@@ -45,6 +47,7 @@ class CIndex extends Controller {
 	 * @return void
 	 */
 	public function init() {
+		$this->name = 'index';
 	}
 
 	/** GET request handler.
@@ -52,34 +55,8 @@ class CIndex extends Controller {
 	 * @return string Template name to render.
 	 */
 	protected function get() {
-		$configs = $GLOBALS['configs'];
-
-		$this->context['jquery'] = $configs['js_path'] . '/ritho.js';
-		$this->context['charset'] = 'utf-8';
-		$this->context['author'] = 'Pablo Alvarez de Sotomayor Posadillo';
-		$this->context['description'] = 'www/classes/controller/c404.php';
-		$this->context['copy'] = 'Copyright 2011-2015, Pablo Alvarez de Sotomayor Posadillo';
-		$this->context['projName'] = 'Ritho';
-		$this->context['creator'] = 'Pablo Alvarez de Sotomayor Posadillo';
-		$this->context['subject'] = 'Ritho\'s web page.';
-
-		/* size: 16x16 or 32x32, transparency is OK, see wikipedia for info on
-		 * broswer support: http://mky.be/favicon/ */
-		$this->context['favicon'] = '/img/favicon.png';
-
-		/* size: 57x57 for older iPhones, 72x72 for iPads, 114x114 for iPhone4's
-		 * retina display (IMHO, just go ahead and use the biggest one)
-		 * To prevent iOS from applying its styles to the icon name it thusly:
-		 * apple-touch-icon-precomposed.png
-		 * Transparency is not recommended (iOS will put a black BG behind the
-		 * icon). */
-		$this->context['appleicon'] = $configs['img_path'] . '/custom_icon.png';
-		$this->context['css'] = $configs['css_path'] . '/' . $configs['css_theme'] . '/style.css';
-		$this->context['jquery'] = $configs['js_path'] . '/jquery.min.js';
-		$this->context['title'] = $this->name.'index - Ritho\'s Web Page';
-		$this->context['modernizr'] = $configs['js_path'] . '/modernizr.min.js';
-		$this->context['lesscss'] = $configs['js_path'] . '/less.min.js';
-		$this->context['gsVerification'] = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
+		$this->setHeaders();
+		$this->context['title'] = 'Inicio';
 
 		return 'index';
 	}
