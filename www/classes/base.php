@@ -53,7 +53,7 @@ abstract class Base {
 	 * @param string $name Name of the parameter to get.
 	 * @return Value of the variable.
 	 */
-	public function __get($name) {
+	public function &__get($name) {
 		if (method_exists($this, ($method = 'get' . ucfirst($name))))
 			return $this->$method();
 		else if (array_key_exists($name, $this->_data))
@@ -64,7 +64,7 @@ abstract class Base {
 		$trace = debug_backtrace();
 		trigger_error('Undefined property via __get(): ' . $name . ' in ' .
 			$trace[0]['file'] . ' on line ' . $trace[0]['line'], E_USER_NOTICE);
-		return null;
+		return $trace;
 	}
 
 	/** Check if a parameter is set in the class.
