@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2014 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -19,7 +19,7 @@
 
 /** File controller.php.
  *
- * @copyright 2011-2014 Ritho-web project (see AUTHORS).
+ * @copyright 2011-2015 Ritho-web project (see AUTHORS).
  * @license   http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
  * @version   GIT: <git_id>
  * @link http://ritho.net
@@ -27,84 +27,167 @@
 
 /** Basic controller engine.
  *
- * @copyright Copyright (c) 2011-2014 Ritho-web team (see AUTHORS)
  * @category  Controller
  * @package   Ritho-web\Classes\Controller
  * @since     0.1
  */
-abstract class Controller extends Base
-{
-    const ACTION_RENDER = 'render';
-    const ACTION_REDIRECT = 'redirect';
+abstract class Controller extends Base {
+	const ACTION_RENDER = 'render';
+	const ACTION_REDIRECT = 'redirect';
 
-    /** Action to do (include a template, redirect, file, ...). */
-    protected $action = Controller::ACTION_RENDER;
+	/** @var $action Action to do (include a template, redirect, file, ...). */
+	private $_action = self::ACTION_RENDER;
 
-    /** Destination of the controller (template, url, ...).  */
-    protected $destination = 'index.html';
+	/** @var $destination Destination of the controller (template, url, ...).  */
+	protected $destination = 'index';
 
-    /** Context variables of the view. */
-    protected $context;
+	/** @var $context Context variables of the view. */
+	protected $context;
 
-    /** Controller execution. */
-    public function run()
-	{
-        $this->init();
-        $this->destination = ($_SERVER['REQUEST_METHOD'] == 'POST') ?
-            $this->post() :
-            $this->get();
-        $this->display();
-    }
-
-    /** Method to initalize the controller before handling the request. */
-    abstract protected function init();
-
-    /** GET request handler. */
-    protected function get()
-	{
-        throw new Exception($_SERVER['REQUEST_METHOD'] . ' request not handled');
-    }
-
-    /** POST request handler. */
-    protected function post()
-	{
-        throw new Exception($_SERVER['REQUEST_METHOD'] . ' request not handled');
-    }
-
-    /** Populates the given object with POST data. If not object is given a StdClass is created.
+	/** Constructor of the class.
 	 *
-	 * @param $obj (StdClass): Object to add the POST values.
-     * @return Object populated
+	 * @param string $action      Action to take (different from the default one).
+	 * @param array  $extraParams Extra parameters to do the action.
+	 * @return void
 	 */
-    protected function populatePost($obj = null)
-	{
-        if ($obj && !is_object($obj))
-            $obj = new StdClass();
+	public function __construct($action = '', array $extraParams = null) {
+		parent::__construct();
 
-        foreach ($_POST as $var => $value)
-            $obj->$var = trim($value);
+		$this->action = $action;
+		$this->extraParams = $extraParams;
 
-        return $obj;
-    }
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+			$this->_populatePost();
+		else if ($_SERVER['REQUEST_METHOD'] == 'GET')
+			$this->_populateGet();
+	}
 
-    /** Displays the view. */
-    private function display()
-	{
-        if ($this->action === Controller::ACTION_RENDER)
-            $this->render($this->destination);
-		else if ($this->action === Controller::ACTION_REDIRECT)
-            header('Location: ' . $this->destination);
+	/** Method to set the common header (context) variables of every page.
+	 *
+	 * @return void
+	 */
+	public function setHeaders() {
+		$configs = $GLOBALS['configs'];
+		$this->context['configs'] = $GLOBALS['configs'];
+		$this->context['js'][] = array('name' => 'jquery',
+		                               'src' => 'jquery.min.js');
+		$this->context['js'][] = array('name' => 'modernizr',
+		                               'src' => 'modernizr.min.js');
+		$this->context['js'][] = array('name' => 'lesscss',
+		                               'src' => 'less.min.js');
+		$this->context['js'][] = array('name' => 'ritho',
+		                               'src' => 'ritho.min.js');
+		$this->context['css'][] = array('name' => 'theme',
+		                                'src' => $configs['css_theme'] .
+										         '/style.css');
+		$this->context['charset'] = 'utf-8';
+		$this->context['author'] = 'Pablo Alvarez de Sotomayor Posadillo';
+		$this->context['description'] = 'Ritho\'s Web Page';
+		$this->context['copy'] = 'Copyright 2011-2015, Pablo Alvarez de Sotomayor Posadillo';
+		$this->context['projName'] = 'Ritho';
+		$this->context['creator'] = 'Pablo Alvarez de Sotomayor Posadillo';
+		$this->context['subject'] = 'Ritho\'s web page.';
+
+		/* size: 16x16 or 32x32, transparency is OK, see wikipedia for info on
+		 * broswer support: http://mky.be/favicon/ */
+		$this->context['favicon'] = '/img/favicon.png';
+
+		/* size: 57x57 for older iPhones, 72x72 for iPads, 114x114 for iPhone4's
+		 * retina display (IMHO, just go ahead and use the biggest one)
+		 * To prevent iOS from applying its styles to the icon name it thusly:
+		 * apple-touch-icon-precomposed.png
+		 * Transparency is not recommended (iOS will put a black BG behind the
+		 * icon). */
+		$this->context['appleicon'] = $configs['img_path'] . '/custom_icon.png';
+		$this->context['title'] = $this->name.'index - Ritho\'s Web Page';
+		$this->context['gsVerification'] =
+		    'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
+	}
+
+	/** Controller execution.
+	 *
+	 * @return void
+	 */
+	public function run() {
+		$this->init();
+		$this->destination = ($_SERVER['REQUEST_METHOD'] == 'POST') ?
+			$this->post() :
+			$this->get();
+		$this->context['page'] = $this->destination;
+		$this->_display();
+	}
+
+	/** Method to initalize the controller before handling the request.
+	 *
+	 * @return void
+	 */
+	abstract protected function init();
+
+	/** GET request handler.
+	 *
+	 * @throws Exception Throws an exception when the subclass doesn't define the
+	 *         get method.
+	 * @return void
+	 */
+	protected function get() {
+		throw new Exception($_SERVER['REQUEST_METHOD'] . ' request not handled');
+	}
+
+	/** POST request handler.
+	 *
+	 * @throws Exception Throws an exception when the subclass doesn't define the
+	 *         post method.
+	 * @return void
+	 */
+	protected function post() {
+		throw new Exception($_SERVER['REQUEST_METHOD'] . ' request not handled');
+	}
+
+	/** Populates the controller object with POST data.
+	 *
+	 * @return void
+	 */
+	private function _populatePost() {
+		foreach ($_POST as $var => $value) {
+			$this->$var = trim($value);
+			$this->context[$var] = trim($value);
+		}
+	}
+
+	/** Populates the controller object with GET data.
+	 *
+	 * @return void
+	 */
+	private function _populateGet() {
+		foreach ($_GET as $var => $value) {
+			$this->$var = trim($value);
+			$this->context[$var] = trim($value);
+		}
+	}
+
+	/** Displays the view.
+	 *
+	 * @throws Exception Throws an exception when the action is not defined.
+	 * @return void
+	 */
+	private function _display() {
+		if ($this->_action === self::ACTION_RENDER)
+			$this->render($this->destination);
+		else if ($this->_action === self::ACTION_REDIRECT)
+			header('Location: ' . $this->destination);
 		else
-            throw new Exception('Unknown view action: ' . $this->view->action);
-    }
+			throw new Exception('Unknown view action: ' . $this->view->action);
+	}
 
-    /* Method to generate the output the view. */
-    public function render($templateName)
-	{
-        $output = new Template($templateName);
-        foreach ($this->context as $key => $value)
-            $output->$key = $value;
-        $output->render(true);
-    }
+	/** Method to generate the output the view.
+	 *
+	 * @param string $templateName Name of the template to render.
+	 * @return void
+	 */
+	public function render($templateName) {
+		$output = new Template($templateName);
+		foreach ($this->context as $key => $value)
+			$output->$key = $value;
+		$output->render(true);
+	}
 }
-?>

@@ -29,5 +29,4 @@ $path = (!empty($_SERVER['QUERY_STRING'])) ?
 	substr($requested, 0, strpos($requested, $_SERVER['QUERY_STRING']) - 1) :
 	$requested;
 $controller = getController($path);
-
 $controller->run();
