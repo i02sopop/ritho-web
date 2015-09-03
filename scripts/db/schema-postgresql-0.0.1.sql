@@ -57,3 +57,11 @@ CREATE TABLE paths (
 	controller VARCHAR(50),
 	param VARCHAR(30)
 );
+
+--
+-- Create database users.
+--
+
+CREATE USER i02sopop WITH PASSWORD 'i02sopop';
+GRANT ALL PRIVILEGES ON DATABASE ritho_web TO i02sopop;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO i02sopop;
