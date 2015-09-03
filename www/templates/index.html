@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="es">
 <?php require_once 'head.html'; ?>
-<body id="ritho.net">
+<body id="ritho">
 <?php require_once 'header.html'; ?>
 <div class="col1">
   <?php require_once 'left.html'; ?>
@@ -15,7 +15,10 @@
 </div>
 </div>
 <?php require_once 'footer.html'; ?>
-<script type="text/javascript" src="<?php echo $jquery;?>"></script>
+<?php foreach ($js as $jsFile) { ?>
+<script type="text/javascript" src="<?php echo $configs['js_path']; ?>/<?php echo $jsFile['src']; ?>">
+</script>
+<?php } ?>
 </body>
 </html>
 
