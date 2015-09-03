@@ -41,8 +41,9 @@ abstract class Base {
 	/** Constructor of the class. */
 	public function __construct() {
 		/* Load all configs. */
+		$this->configs = array();
 		foreach ($GLOBALS['configs'] as $key => $value)
-			$this->configs[$key] = $value;
+		    $this->configs[$key] = $value;
 
 		$this->db = DB::getDbConnection();
 	}
