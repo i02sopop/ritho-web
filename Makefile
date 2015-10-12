@@ -6,9 +6,9 @@ DIRS=conf www
 
 .PHONY: all rall rc clean doc
 
-all: start-environment doc
+all: rall doc
 
-rall: start-environment doc
+rall: start-environment
 
 dirs:
 	@if [ ! -d $(BUILD_DIR) ] ; then mkdir -p $(BUILD_DIR) ; fi
@@ -22,8 +22,9 @@ clean: clean-build
 
 rc: clean-build
 
-db-start: postgresql-start mysql-start
+db-start:
 	@echo "\\033[1;35m+++ Starting db\\033[39;0m"
+	@+make $(DB_ENGINE)-start
 
 $(BUILD_DIR): install
 
@@ -80,7 +81,9 @@ selenium-start:
 selenium-stop:
 	@$(MAKE) -C $(TOP_DIR)/tests selenium-stop
 
-db-stop: mysql-stop postgresql-stop
+db-stop:
+	@echo "\\033[1;35m+++ Stopping db\\033[39;0m"
+	@+make $(DB_ENGINE)-stop
 
 mysql-stop:
 	@echo "\\033[1;35m+++ Stopping mysql\\033[39;0m"
@@ -145,7 +148,7 @@ help:
 	@echo "\033[1;35mmake start-environment\\033[39;0m - bring up environment."
 	@echo "\033[1;35mmake stop-environment\\033[39;0m - bring down environment."
 
-info:
+rinfo:
 	@echo "To connect to postgresql database: \033[1;35mpsql -h $(PGSQL_DATA) $(DATABASE)\\033[39;0m"
 	@echo "To connect to mysql database (tcp): \033[1;35mmysql --protocol=TCP -P $(MYSQL_PORT) -u root $(DATABASE)\\033[39;0m"
 	@echo "To connect to mysql database (socket): \033[1;35mmysql --socket=$(MYSQL_SOCKET) -u root $(DATABASE)\\033[39;0m"
