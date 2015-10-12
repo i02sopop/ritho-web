@@ -131,12 +131,13 @@ doc:
 	@phpdoc
 
 help:
-	@echo "\033[1;35mmake all\\033[39;0m - build, install and bring up environment."
+	@echo "\033[1;35mmake all\\033[39;0m - build, install and bring up the regress environment and generate the documentation."
+	@echo "\033[1;35mmake all\\033[39;0m - build, install and bring up the regress environment."
 	@echo "\033[1;35mmake build\\033[39;0m - build up environment."
 	@echo "\033[1;35mmake clean\\033[39;0m - bring down and remove environment."
 	@echo "\033[1;35mmake install\\033[39;0m - install environment."
-	@echo "\033[1;35mmake db-start\\033[39;0m - bring up db servers."
-	@echo "\033[1;35mmake db-stop\\033[39;0m - bring down db servers."
+	@echo "\033[1;35mmake db-start\\033[39;0m - bring up the db server that regress use (postgresql or mysql)."
+	@echo "\033[1;35mmake db-stop\\033[39;0m - bring down the db server that regress use (postgresql or mysql)."
 	@echo "\033[1;35mmake mysql-start\\033[39;0m - bring up mysql server."
 	@echo "\033[1;35mmake mysql-stop\\033[39;0m - bring down mysql server."
 	@echo "\033[1;35mmake postgresql-start\\033[39;0m - bring up postgresql server."
@@ -145,8 +146,9 @@ help:
 	@echo "\033[1;35mmake apache-stop\\033[39;0m - bring down apache server."
 	@echo "\033[1;35mmake selenium-start\\033[39;0m - bring up selenium daemon."
 	@echo "\033[1;35mmake selenium-stop\\033[39;0m - bring down selenium daemon."
-	@echo "\033[1;35mmake start-environment\\033[39;0m - bring up environment."
-	@echo "\033[1;35mmake stop-environment\\033[39;0m - bring down environment."
+	@echo "\033[1;35mmake start-environment\\033[39;0m - bring up the regress environment."
+	@echo "\033[1;35mmake stop-environment\\033[39;0m - bring down the regress environment."
+	@echo "\033[1;35mmake rinfo\\033[39;0m - shows information about the regress environment."
 
 rinfo:
 	@echo "To connect to postgresql database: \033[1;35mpsql -h $(PGSQL_DATA) $(DATABASE)\\033[39;0m"
