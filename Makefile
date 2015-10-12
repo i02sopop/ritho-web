@@ -33,7 +33,7 @@ mysql-start: $(BUILD_DIR)
 		rm -rf $(MYSQL_DATA) > /dev/null; \
 		$(USR_BIN)/mysql_install_db --user=$(USER) --ldata=$(MYSQL_DATA) > /dev/null 2> /dev/null; \
 		mkdir -p $(MYSQL_LOGDIR); \
-		$(USR_SBIN)/mysqld --defaults-extra-file=$(MYSQL_CONF) -P $(MYSQL_PORT) -h $(MYSQL_DATA) --socket=$(MYSQL_SOCKET) --pid-file=$(MYSQL_PID) > /dev/null 2>&1 & \
+		$(USR_SBIN)/mysqld --defaults-file=$(MYSQL_CONF) -P $(MYSQL_PORT) -h $(MYSQL_DATA) --socket=$(MYSQL_SOCKET) --pid-file=$(MYSQL_PID) > /dev/null 2>&1 & \
 		ps_alive=0; \
 		for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do \
                 sleep 1; \
@@ -71,7 +71,7 @@ apache-start: $(BUILD_DIR)
 	@if [ ! -f $(HTTPD_PIDFILE) ]; then \
 		if [ ! -d $(HTTPD_LOGDIR) ] ; then mkdir -p $(HTTPD_LOGDIR) ; fi; \
 		echo "SetEnv PGDATA $(PGSQL_DATA)" >> $(HTTPD_CONFIG); \
-		$(HTTPD) -f $(HTTPD_CONFIG); \
+		APACHE_RUN_DIR=$(RUN_DIR) $(HTTPD) -f $(HTTPD_CONFIG); \
 	fi
 
 selenium-start:
@@ -97,7 +97,7 @@ postgresql-stop:
 apache-stop:
 	@echo "\\033[1;35m+++ Stopping HTTP daemon\\033[39;0m"
 	@if [ -f $(RUN_DIR)/apache2.pid ]; then \
-		$(HTTPD) -f $(CONF_DIR)/apache2.conf -k stop; \
+		APACHE_RUN_DIR=$(RUN_DIR) $(HTTPD) -f $(CONF_DIR)/apache2.conf -k stop; \
 	fi
 
 clean-build: stop-environment

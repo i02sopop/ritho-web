@@ -29,7 +29,7 @@ PGSQL_PASSWD=
 
 PGSQL_DATA=$(PGSQL_HOST)
 PGSQL_DIR=$(BUILD_DIR)/pgsql
-PGSQL_BIN=/usr/lib/postgresql/9.1/bin
+PGSQL_BIN=/usr/lib/postgresql/9.4/bin
 PGSQL_LOGDIR=$(LOG_DIR)
 PGSQL_LOG=$(PGSQL_LOGDIR)/pgsql.log
 PGSQL_SCHEMA=$(DB_SCRIPTS_DIR)/schema-postgresql-$(VERSION).sql
@@ -73,7 +73,7 @@ PGSQL_PASSWD=
 
 PGSQL_DATA=$(PGSQL_HOST)
 PGSQL_DIR=$(BUILD_DIR)/pgsql
-PGSQL_BIN=/usr/lib/postgresql/9.1/bin
+PGSQL_BIN=/usr/lib/postgresql/9.4/bin
 PGSQL_LOGDIR=$(LOG_DIR)
 PGSQL_LOG=$(PGSQL_LOGDIR)/pgsql.log
 PGSQL_SCHEMA=$(DB_SCRIPTS_DIR)/schema-postgresql-$(VERSION).sql
@@ -102,8 +102,8 @@ SSL_KEY=$(SSL_DIR)/priv/server.key
 SSL_CONFIG=$(SSL_DIR)/openssl.cnf
 
 SERVER_ROOT=$(BUILD_DIR)
-WWW_ROOT=$(SERVER_ROOT)/www
-CSS_DIR=$(WWW_ROOT)/css
+WWW_DIR=$(SERVER_ROOT)/www
+CSS_DIR=$(WWW_DIR)/css
 TESTS_ROOT=$(SERVER_ROOT)/tests
 
 DATABASE=ritho-web

@@ -8,5 +8,5 @@ build: install
 
 install:
 	@for i in $(DIRS) ; do $(MAKE) -C $$i build ; done
-	@mkdir -p $(WWW_ROOT)/img
-	@cp $(SRCS) $(WWW_ROOT)/img
+	@mkdir -p $(WWW_DIR)/img
+	@cp $(SRCS) $(WWW_DIR)/img

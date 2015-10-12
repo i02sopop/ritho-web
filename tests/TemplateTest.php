@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+/* Copyright (c) 2011-2015 Ritho-web team (look at AUTHORS file)
 
    This file is part of ritho-web.
 
@@ -17,7 +17,7 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('%WWW_ROOT%/classes/template.php');
+require_once('%WWW_DIR%/classes/template.php');
 
 class TemplateTest extends PHPUnit_Framework_TestCase {
     public function testInitial() {

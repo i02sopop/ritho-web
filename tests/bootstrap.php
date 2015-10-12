@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+/* Copyright (c) 2011-2015 Ritho-web team (look at AUTHORS file)
 
    This file is part of ritho-web.
 
@@ -17,5 +17,5 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('%WWW_ROOT%/configuration.php');
+require_once('%WWW_DIR%/configuration.php');
 spl_autoload_register('__autoload');
