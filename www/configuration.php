@@ -18,7 +18,7 @@
 */
 
 /* Setting the default configuration variables */
-$GLOBALS['configs'] = array(
+$configs = array(
     // Paths
     'class_path' => '%WWW_DIR%/classes',
     'controller_path' => '%WWW_DIR%/classes/controller',
@@ -52,11 +52,13 @@ $GLOBALS['configs'] = array(
     'timezone' => 'Europe/Madrid',
 );
 
+$GLOBALS['configs'] = &$configs;
+
 /* Load functions. */
-require_once($GLOBALS['configs']['include_path'] . '/functions.php');
+require_once($configs['include_path'] . '/functions.php');
 
 /* Load configs from DB. */
-//getConfigsFromDB($GLOBALS['configs']);
+//getConfigsFromDB($configs);
 
 /* Setting the timezone. */
-date_default_timezone_set($GLOBALS['configs']['timezone']);
+date_default_timezone_set($configs['timezone']);

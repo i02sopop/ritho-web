@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2013 Ritho-web team (look at AUTHORS file)
+/* Copyright (c) 2011-2015 Ritho-web team (look at AUTHORS file)
 
    This file is part of ritho-web.
 
@@ -14,33 +14,24 @@
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public
-   License along with ritho-web. If not, see <http://www.gnu.org/licenses/>.
+   License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-  Controller for the Index page.
-
-  @author Ritho-web team
-  @copyright Copyright (c) 2011-2013 Ritho-web team (look at AUTHORS file)
-*/
-class CIndex extends Controller
-{
-    /* Constructor of CIndex. */
-    public function __construct()
-	{
+/** Controller for the Index page. */
+class CIndex extends Controller {
+    /** Constructor of CIndex. */
+    public function __construct() {
+		parent::__construct();
     }
 
-    /* Method to initalize the controller before handling the request. */
-    function init()
-	{
+    /** Method to initalize the controller before handling the request. */
+    function init() {
+        $this->name = 'index';
     }
 
     /* GET request handler. */
-    protected function get()
-	{
-		global $configs;
-
-        $this->context['jquery'] = $configs['js_path'] . '/ritho.js';
+    protected function get() {
+        $this->context['jquery'] = $this->configs['js_path'] . '/ritho.js';
         $this->context['charset'] = 'utf-8';
         $this->context['author'] = 'Pablo Alvarez de Sotomayor Posadillo';
         $this->context['description'] = 'www/classes/controller/c404.php';
@@ -56,16 +47,16 @@ class CIndex extends Controller
         // size: 57x57 for older iPhones, 72x72 for iPads, 114x114 for iPhone4's retina display (IMHO, just go ahead and use the biggest one)
         // To prevent iOS from applying its styles to the icon name it thusly: apple-touch-icon-precomposed.png
         // Transparency is not recommended (iOS will put a black BG behind the icon)
-        $this->context['appleicon'] = $configs['img_path'] . '/custom_icon.png';
-        $this->context['css'] = $configs['css_path'] . '/' . $configs['css_theme'] . '/style.css';
-        $this->context['cssPrint'] = $configs['css_path'] . '/' . $configs['css_theme'] . '/stylePrint.css';
-        $this->context['cssIE'] = $configs['css_path'] . '/' . $configs['css_theme'] . '/styleIE.css';
-        $this->context['cssIE7'] = $configs['css_path'] . '/' . $configs['css_theme'] . '/styleIE7.css';
-        $this->context['cssIEOld'] = $configs['css_path'] . '/' . $configs['css_theme'] . '/styleIEOld.css';
-        $this->context['jquery'] = $configs['js_path'] . '/jquery.js';
-        $this->context['title'] = $this->name.'index - Ritho\'s Web Page';
-        $this->context['modernizr'] = $configs['js_path'] . '/modernizr.js';
-        $this->context['lesscss'] = $configs['js_path'] . '/less.js';
+        $this->context['appleicon'] = $this->configs['img_path'] . '/custom_icon.png';
+        $this->context['css'] = $this->configs['css_path'] . '/' . $this->configs['css_theme'] . '/style.css';
+        $this->context['cssPrint'] = $this->configs['css_path'] . '/' . $this->configs['css_theme'] . '/stylePrint.css';
+        $this->context['cssIE'] = $this->configs['css_path'] . '/' . $this->configs['css_theme'] . '/styleIE.css';
+        $this->context['cssIE7'] = $this->configs['css_path'] . '/' . $this->configs['css_theme'] . '/styleIE7.css';
+        $this->context['cssIEOld'] = $this->configs['css_path'] . '/' . $this->configs['css_theme'] . '/styleIEOld.css';
+        $this->context['jquery'] = $this->configs['js_path'] . '/jquery.js';
+        $this->context['title'] = $this->name . ' - Ritho\'s Web Page';
+        $this->context['modernizr'] = $this->configs['js_path'] . '/modernizr.js';
+        $this->context['lesscss'] = $this->configs['js_path'] . '/less.js';
         $this->context['gsVerification'] = 'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
 
         return "index";

@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+/* Copyright (c) 2011-2015 Ritho-web team (look at AUTHORS file)
 
    This file is part of ritho-web.
 
@@ -17,71 +17,73 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-  Base class with some default methods and vars in common to all the app classes..
-
-  @author Ritho-web team
-  @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
-*/
+/* Base class with some default methods and vars in common to all the app classes. */
 abstract class Base {
-    protected $data = array(); // Local and global data.
+	/** Local and global data. */
+	protected $_data = array();
 
-    /*
-      Constructor of the class.
-    */
-    public function __construct() {
-    }
+	/** Constructor of the class. */
+	public function __construct() {
+		global $configs;
 
-    /*
-      Getter of the class.
+		$this->configs = $configs;
+	}
 
-      @parameter name (string): Name of the parameter to get.
-    */
-    public function __get($name) {
-        if(method_exists($this, ($method = 'get_'.$name)))
-            return $this->$method();
-        else if(array_key_exists($name, $this->data))
-            return $this->data[$name];
+	/** Getter of the class.
+	 *
+	 * @param string $name Name of the parameter to get.
+	 */
+	public function __get($name) {
+		if (method_exists($this, ($method = 'get_' . ucfirst($name))))
+			return $this->$method();
+		else if (array_key_exists($name, $this->_data))
+			return $this->_data[$name];
+		else if (isset($this->$name))
+			return $this->$name;
 
-        $trace = debug_backtrace();
-        trigger_error('Undefined property via __get(): ' . $name . ' in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'], E_USER_NOTICE);
-        return null;
-    }
+		$trace = debug_backtrace();
+		trigger_error(
+			'Undefined property via __get(): ' . $name .
+			' in ' . $trace[0]['file'] . ' on line ' .
+			$trace[0]['line'], E_USER_NOTICE);
+		return null;
+	}
 
-    /*
-      Check if a parameter is set in the class.
+	/** Check if a parameter is set in the class.
+	 *
+	 * @param string $name Name of the parameter to check.
+	 */
+	public function __isset($name) {
+		if (method_exists($this, ($method = 'isset_' . ucfirst($name))))
+			return $this->$method();
+		return isset($this->_data[$name]) ||
+			isset($this->$name);
+	}
 
-      @parameter name (string): Name of the parameter to check.
-    */
-    public function __isset($name) {
-        if(method_exists($this, ($method = 'isset_' . $name)))
-            return $this->$method();
-        else
-            return isset($this->data[$name]);
-    }
+	/** Setter of the class.
+	 *
+	 * @param string $name Name of the parameter to set.
+	 * @param string $value Value of the parameter to set.
+	 */
+	public function __set($name, $value) {
+		if (method_exists($this, ($method = 'set_' . ucfirst($name))))
+			$this->$method($value);
+		else if (property_exists($this, $name))
+			$this->$name = $value;
+		else
+			$this->_data[$name] = $value;
+	}
 
-    /*
-      Setter of the class.
-
-      @parameter name (string): Name of the parameter to set.
-      @parameter value (string): Value of the parameter to set.
-    */
-    public function __set($name, $value) {
-        if(method_exists($this, ($method = 'set_' . $name)))
-            $this->$method($value);
-        else
-            $this->data[$name] = $value;
-    }
-
-    /*
-      Unset a parameter of the class.
-
-      @parameter name (string): Name of the parameter to unset..
-    */
-    public function __unset($name) {
-        if(method_exists($this, ($method='unset_' . $name)))
-            $this->$method();
-        else
-            unset($this->data[$name]);
-    }
+	/** Unset a parameter of the class.
+	 *
+	 * @param string $name Name of the parameter to unset..
+	 */
+	public function __unset($name) {
+		if (method_exists($this, ($method='unset_' . ucfirst($name))))
+			$this->$method();
+		else if (property_exists($this, $name))
+			unset($this->$name);
+		else
+			unset($this->_data[$name]);
+	}
 }

@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2013 Ritho-web team (look at AUTHORS file)
+/* Copyright (c) 2011-2015 Ritho-web team (look at AUTHORS file)
 
    This file is part of ritho-web.
 
@@ -14,58 +14,49 @@
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public
-   License along with ritho-web. If not, see <http://www.gnu.org/licenses/>.
+   License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* Basic template engine.
+/* Basic template engine.*/
+class Template extends Base {
+    /** Template path */
+    private $_path;
 
-  @author Ritho-web team
-  @copyright Copyright (c) 2011-2013 Ritho-web team (look at AUTHORS file)
-*/
-class Template extends Base
-{
-    private $path; /* Template path */
+    /** Constructor sets the template name, and makes sure
+     * it exists.
+     *
+     * @param string $name The template name
+     */
+    public function __construct($name) {
+		parent::__construct();
 
-    /* Constructor sets the template name, and makes sure
-       it exists.
-
-       @param name (string): The template name
-    */
-    public function __construct($name)
-	{
-        global $configs; /* Configs of the site. */
-
-        if(!is_file($configs['template_path'] . '/' . $name . $configs['template_ext']))
-            die('Invalid template: ' . $configs['template_path'] . '/' . $name .
-                $configs['template_ext']);
-
-        $this->path = $configs['template_path'] . '/' . $name . $configs['template_ext'];
+        $this->_path = $this->configs['template_path'] . '/' . $name . $this->configs['template_ext'];
+        if (!is_file($this->_path))
+            die('Invalid template: ' . $this->_path);
     }
 
-    /* Render a template.
-
-       @return string
-    */
-    public function __toString()
-	{
+    /** Render a template.
+     *
+     * @return string
+     */
+    public function __toString() {
         return $this->render();
     }
 
-    /* Renders a template.
-
-       @param print (bool): Check if the template has to be printed out
-       @return string
-    */
-    public function render($print = false)
-	{
+    /** Renders a template.
+     *
+     * @param bool $print Check if the template has to be printed out.
+     * @return string
+     */
+    public function render($print = false) {
         ob_start();
 
         /* Extract data to local namespace. */
-        extract($this->data, EXTR_SKIP);
-        require_once($this->path);
+        extract($this->_data, EXTR_SKIP);
+        require_once($this->_path);
         $output = ob_get_clean();
 
-        if($print === true) {
+        if ($print === true) {
             echo $output;
             return true;
         }
@@ -73,4 +64,3 @@ class Template extends Base
         return $output;
     }
 }
-?>
