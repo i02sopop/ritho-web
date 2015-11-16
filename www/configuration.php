@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
+/* Copyright (c) 2011-2015 Ritho-web team (look at AUTHORS file)
 
    This file is part of ritho-web.
 
@@ -18,7 +18,7 @@
 */
 
 /* Setting the default configuration variables */
-$GLOBALS['configs'] = $configs = array(
+$GLOBALS['configs'] = array(
     // Paths
     'class_path' => '%WWW_DIR%/classes',
     'controller_path' => '%WWW_DIR%/classes/controller',
@@ -52,8 +52,11 @@ $GLOBALS['configs'] = $configs = array(
     'timezone' => 'Europe/Madrid',
 );
 
-/* Loading functions. */
-require_once($configs['include_path'] . '/functions.php');
+/* Load functions. */
+require_once($GLOBALS['configs']['include_path'] . '/functions.php');
+
+/* Load configs from DB. */
+//getConfigsFromDB($GLOBALS['configs']);
 
 /* Setting the timezone. */
-date_default_timezone_set($configs['timezone']);
+date_default_timezone_set($GLOBALS['configs']['timezone']);
