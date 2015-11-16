@@ -1,6 +1,5 @@
  Contribute to ritho-web project
 =================================
-
 There are six main ways to contribute to this project. The first one
 is test the program and report the bugs founded. If you find any bug,
 please visit the Testers section of this document to know how to
@@ -33,15 +32,50 @@ contact with palvarez@ritho.net exposing your idea.
 
  Testers
 =========
+Tests, both manual and automatic ones, are a main part of the
+development process. We have a set of tests that try to cover the
+majority of the project, but if you want to help testing manually or
+writing new test suites it's always welcome.
+
+To run manual tests you don't need to do anything but build the
+project and start testing, and if you find any bug please report it to
+the github page (https://github.com/i02sopop/ritho-web/issues).
+
+If you want to write new automatic test suites, please notify it to
+palvarez@ritho.net or add a new task to github and assign it to
+yourself in order to know who is working on which tests. Once you
+finish your test suite you can make a pull request through github or
+you can send the patch to palvarez@ritho.net in order to include it
+into the project.
 
  Donations
 ===========
+Right now we don't have any donations mechanism, but if you want to
+make a donation (with money or hardware), please contact
+palvarez@ritho.net in order to see the different alternatives to make
+the donation.
 
  Translators
 =============
+The main language of this project is English, but translations are
+always important, that's why we maintain an Spanish translation of the
+project. If you want to collaborate with the translation of this
+project into Spanish, please contact palvarez@ritho.net. If you want
+to translate this project to another language, please acknowledge it to
+palvarez@ritho.net to set you as a main translator of the project for
+the language you want to translate and ask for any resource you would
+need and we'll try to provide it.
 
  Documenters
 =============
+Documentation is one of the things that we usually miss in the free
+software projects, specially good user documentation. For now the
+technical documentation is based on phpdoc and comments, but it would
+be great to have both a technical documentation and a user manual in
+order to help other people to use this project, so if you are
+interested in writing some documentation please write to
+palvarez@ritho.net to make you head of the documentation part of the
+project.
 
  Administrators
 ================
