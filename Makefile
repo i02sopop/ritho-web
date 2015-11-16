@@ -123,9 +123,14 @@ rw: dirs
 	@echo "\\033[1;35m+++ Installing www\\033[39;0m"
 	@$(MAKE) -C $(TOP_DIR)/www install
 
-tests: install start-environment
+tests: start-environment
 	@echo "\\033[1;35m+++ Running tests\\033[39;0m"
 	@$(MAKE) -C $(TOP_DIR)/tests tests
+
+cleanlogs:
+	@for log in $(LOG_FILES); do \
+		echo "" > $$log ; \
+	done
 
 doc:
 	@phpdoc
