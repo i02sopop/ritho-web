@@ -39,7 +39,7 @@ $request = empty($_SERVER['REQUEST_URI']) ?
 
 $path = (!empty($_SERVER['QUERY_STRING'])) ?
 	substr($requested, 0, strpos($requested, $_SERVER['QUERY_STRING']) -1) :
-	$requested;
+	$request;
 
 switch ($path) {
 case '/':
