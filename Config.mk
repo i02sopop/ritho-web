@@ -118,7 +118,7 @@ MYSQL_LOG=$(MYSQL_LOGDIR)/mysql.log
 MYSQL_LOG_BIN=$(MYSQL_LOGDIR)/mysql-bin.log
 MYSQL_LOG_QSLOW=$(MYSQL_LOGDIR)/mysql-slow.log
 
-DB_ENGINE=mysql
+DB_ENGINE=postgresql
 DB_HOST=$(HOST)
 DB_PORT=$(MYSQL_PORT)
 
