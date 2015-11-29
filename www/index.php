@@ -28,28 +28,4 @@
 
 require_once 'configuration.php';
 
-/** TODO: This wil go to the main class. */
-/** Controller to run. */
-$controller = null;
-
-/** URI requested. */
-$request = empty($_SERVER['REQUEST_URI']) ?
-    false :
-    $_SERVER['REQUEST_URI'];
-
-$path = (!empty($_SERVER['QUERY_STRING'])) ?
-	substr($requested, 0, strpos($requested, $_SERVER['QUERY_STRING']) -1) :
-	$request;
-
-switch ($path) {
-case '/':
-case '/index':
-case '/index.php':
-    $controller = new CIndex();
-    break;
-default:
-    $controller = new C404($path);
-    break;
-}
-
-$controller->run();
+$ritho = new Ritho();

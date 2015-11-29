@@ -1,8 +1,12 @@
 TOPDIR?=$(realpath ../..)
 include $(TOPDIR)/Config.mk
 
-DIRS=controller databases exceptions utils
-SRCS=base.php template.php
+DIRS  = controller
+DIRS += databases
+DIRS += exceptions
+DIRS += utils
+SRCS  = base.php
+SRCS += ritho.php
 
 build: install
 

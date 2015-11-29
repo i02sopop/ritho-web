@@ -1,8 +1,9 @@
 TOPDIR?=$(realpath ../../..)
 include $(TOPDIR)/Config.mk
 
-DIRS=
-SRCS=log.php
+DIRS  =
+SRCS  = log.php
+SRCS += template.php
 
 build: install
 

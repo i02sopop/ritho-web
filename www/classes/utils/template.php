@@ -17,7 +17,7 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* Basic template engine.*/
+/** Basic template engine.*/
 class Template extends Base {
     /** Template path */
     private $_path;
