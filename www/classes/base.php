@@ -69,9 +69,9 @@ abstract class Base {
 	 * @return boolean True if the variable $name is set and false otherwise.
 	 */
 	public function __isset($name) {
-		return (method_exists($this, ($method = 'isset' . ucfirst($name)))) ?
-			$this->$method() :
-			isset($this->_data[$name]);
+		if (method_exists($this, ($method = 'isset' . ucfirst($name))))
+			return $this->$method();
+		return isset($this->_data[$name]) || isset($this->$name);
 	}
 
 	/** Setter of the class.
