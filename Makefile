@@ -173,13 +173,6 @@ help:
 	@echo "\033[1;35mmake stop-environment\\033[39;0m - bring down environment."
 
 rinfo:
-	@echo "To connect to postgresql database: \033[1;35mpsql -h $(PGSQL_DATA) $(DATABASE)\\033[39;0m"
-	@echo "To connect to mysql database (tcp): \033[1;35mmysql --protocol=TCP -P $(MYSQL_PORT) -u root $(DATABASE)\\033[39;0m"
-	@echo "To connect to mysql database (socket): \033[1;35mmysql --socket=$(MYSQL_SOCKET) -u root $(DATABASE)\\033[39;0m"
-	@echo "Development environment: \033[1;35mhttp://$(HOST):$(HTTP_PORT)\\033[39;0m"
-	@echo "Development environment SSL: \033[1;35mhttps://$(HOST):$(HTTPS_PORT)\\033[39;0m"
-
-rinfo:
 	@echo "To connect to postgresql database: \033[1;35mpsql -h $(PGSQL_HOST) -p $(PGSQL_PORT) -U $(PGSQL_USER) $(DATABASE)\\033[39;0m"
 	@echo "To connect to mysql database (tcp): \033[1;35mmysql --protocol=TCP -P $(MYSQL_PORT) -u root $(DATABASE)\\033[39;0m"
 	@echo "To connect to mysql database (socket): \033[1;35mmysql --socket=$(MYSQL_SOCKET) -u root $(DATABASE)\\033[39;0m"
