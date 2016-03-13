@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2016 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -19,20 +19,16 @@
 
 /** File base.php.
  *
- * @copyright 2011-2015 Ritho-web project (see AUTHORS).
+ * @category  General
+ * @package	  Ritho-web\Classes
+ * @since	  0.1
  * @license	  http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
  * @version	  GIT: <git_id>
  * @link http://ritho.net
  */
 
 /** Base class with some default methods and vars in common to all the app
- *  classes.
- *
- * @copyright 2011-2015 Ritho-web project (see AUTHORS).
- * @category  General
- * @package	  Ritho-web\Classes
- * @since	  0.1
- */
+ *  classes. */
 abstract class Base {
 
 	/** @var $data Local and global data. */
@@ -56,10 +52,10 @@ abstract class Base {
 	public function &__get($name) {
 		if (method_exists($this, ($method = 'get' . ucfirst($name))))
 			return $this->$method();
+		else if ($this->$name !== null)
+			return $this->$name;
 		else if (array_key_exists($name, $this->_data))
 			return $this->_data[$name];
-		else if (isset($this->$name))
-			return $this->$name;
 
 		$trace = debug_backtrace();
 		trigger_error('Undefined property via __get(): ' . $name . ' in ' .
