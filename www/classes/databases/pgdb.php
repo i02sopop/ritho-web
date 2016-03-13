@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2016 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -19,18 +19,15 @@
 
 /** File pgdb.php.
  *
- * @copyright 2011-2015 Ritho-web project (see AUTHORS).
+ * @category  Databases
+ * @package	  Ritho-web\Classes\Databases
+ * @since	  0.1
  * @license http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
  * @version GIT: <git_id>
  * @link http://ritho.net
  */
 
-/** Postgresql database engine.
- *
- * @category  Databases
- * @package	  Ritho-web\Classes\Databases
- * @since	  0.1
- */
+/** Postgresql database engine. */
 class PgDB extends DB {
 
 	/** Constructor of the class.
@@ -88,13 +85,14 @@ class PgDB extends DB {
 		if ($tableName && is_string($tableName)) {
 			$query = 'DELETE FROM ' . $tableName;
 			if ($assoc && is_array($assoc)) {
-				$query .= ' WHERE ' . array_reduce(array_keys($assoc),
-												   function($result, $key) {
-													   $result = (!$result || !is_string($result)) ?
-														   '$key = ' . $assoc[$key] :
-														   $result . ' AND ' . $key . ' = ' . $assoc[$key];
-													   return $result;
-												   });
+				$query .= ' WHERE ' .
+					array_reduce(array_keys($assoc),
+								 function($result, $key) {
+									 $result = (!$result || !is_string($result)) ?
+										 '$key = ' . $assoc[$key] :
+										 $result . ' AND ' . $key . ' = ' . $assoc[$key];
+									 return $result;
+								 });
 			}
 
 			$query .= ';';

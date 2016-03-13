@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2016 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -19,19 +19,15 @@
 
 /** File mydb.php.
  *
- * @copyright 2011-2015 Ritho-web project (see AUTHORS).
+ * @category  Databases
+ * @package	  Ritho-web\Classes\Databases
+ * @since	  0.1
  * @license	  http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
  * @version	  GIT: <git_id>
  * @link http://ritho.net
  */
 
-/** MySQL database engine.
- *
- * @copyright Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
- * @category  Databases
- * @package	  Ritho-web\Classes\Databases
- * @since	  0.1
- */
+/** MySQL database engine. */
 class MyDB extends DB {
 	/** Constructor of the class.
 	 *

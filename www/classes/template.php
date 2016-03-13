@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2016 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -19,19 +19,15 @@
 
 /** File template.php.
  *
- * @copyright 2011-2015 Ritho-web project (see AUTHORS).
+ * @category  General
+ * @package	  Ritho-web\Classes
+ * @since	  0.1
  * @license	  http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
  * @version	  GIT: <git_id>
  * @link http://ritho.net
  */
 
-/** Basic template engine.
- *
- * @copyright Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
- * @category  General
- * @package	  Ritho-web\Classes
- * @since	  0.1
- */
+/** Basic template engine. */
 class Template extends Base {
 
 	/** @var string Template path. */
@@ -45,16 +41,13 @@ class Template extends Base {
 	public function __construct($name) {
 		parent::__construct();
 
-		/* Configs of the site. */
-	    $configs = $GLOBALS['configs'];
+		if (!is_file($this->configs['template_path'] . '/' . $name .
+		             $this->configs['template_ext']))
+			die('Invalid template: ' . $this->configs['template_path'] . '/' .
+				$name . $this->configs['template_ext']);
 
-		if (!is_file($configs['template_path'] . '/' . $name .
-		             $configs['template_ext']))
-			die('Invalid template: ' . $configs['template_path'] . '/' . $name .
-				$configs['template_ext']);
-
-		$this->path = $configs['template_path'] . '/' . $name .
-		    $configs['template_ext'];
+		$this->path = $this->configs['template_path'] . '/' . $name .
+		    $this->configs['template_ext'];
 	}
 
 	/** Render a template.

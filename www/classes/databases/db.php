@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2016 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -19,7 +19,9 @@
 
 /** File db.php.
  *
- * @copyright 2011-2015 Ritho-web project (see AUTHORS).
+ * @category  Databases
+ * @package	  Ritho-web\Classes\Databases
+ * @since	  0.1
  * @license	  http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
  * @version	  GIT: <git_id>
  * @link http://ritho.net
@@ -30,13 +32,7 @@ define('SQL_ASSOC', 0);
 define('SQL_NUM', 1);
 define('SQL_BOTH', 2);
 
-/** Basic database engine.
- *
- * @copyright Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
- * @category  Databases
- * @package	  Ritho-web\Classes\Databases
- * @since	  0.1
- */
+/** Basic database engine. */
 abstract class DB extends Base {
 
 	/** Function to get a database connection depending of the db engine used.

@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2016 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -19,18 +19,15 @@
 
 /** File controller.php.
  *
- * @copyright 2011-2015 Ritho-web project (see AUTHORS).
+ * @category  Controller
+ * @package   Ritho-web\Classes\Controller
+ * @since     0.1
  * @license   http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
  * @version   GIT: <git_id>
  * @link http://ritho.net
  */
 
-/** Basic controller engine.
- *
- * @category  Controller
- * @package   Ritho-web\Classes\Controller
- * @since     0.1
- */
+/** Basic controller engine. */
 abstract class Controller extends Base {
 	const ACTION_RENDER = 'render';
 	const ACTION_REDIRECT = 'redirect';
@@ -67,8 +64,7 @@ abstract class Controller extends Base {
 	 * @return void
 	 */
 	public function setHeaders() {
-		$configs = $GLOBALS['configs'];
-		$this->context['configs'] = $GLOBALS['configs'];
+		$this->context['configs'] = $this->configs;
 		$this->context['js'][] = array('name' => 'jquery',
 		                               'src' => 'jquery.min.js');
 		$this->context['js'][] = array('name' => 'modernizr',
@@ -78,12 +74,13 @@ abstract class Controller extends Base {
 		$this->context['js'][] = array('name' => 'ritho',
 		                               'src' => 'ritho.min.js');
 		$this->context['css'][] = array('name' => 'theme',
-		                                'src' => $configs['css_theme'] .
+		                                'src' => $this->configs['css_theme'] .
 										         '/style.css');
 		$this->context['charset'] = 'utf-8';
 		$this->context['author'] = 'Pablo Alvarez de Sotomayor Posadillo';
 		$this->context['description'] = 'Ritho\'s Web Page';
-		$this->context['copy'] = 'Copyright 2011-2015, Pablo Alvarez de Sotomayor Posadillo';
+		$this->context['copy'] =
+			'Copyright 2011-2016, Pablo Alvarez de Sotomayor Posadillo';
 		$this->context['projName'] = 'Ritho';
 		$this->context['creator'] = 'Pablo Alvarez de Sotomayor Posadillo';
 		$this->context['subject'] = 'Ritho\'s web page.';
@@ -98,8 +95,8 @@ abstract class Controller extends Base {
 		 * apple-touch-icon-precomposed.png
 		 * Transparency is not recommended (iOS will put a black BG behind the
 		 * icon). */
-		$this->context['appleicon'] = $configs['img_path'] . '/custom_icon.png';
-		$this->context['title'] = $this->name.'index - Ritho\'s Web Page';
+		$this->context['appleicon'] = $this->configs['img_path'] . '/custom_icon.png';
+		$this->context['title'] = $this->name . ' - Ritho\'s Web Page';
 		$this->context['gsVerification'] =
 		    'Hr_OWj4SMe2RICyrXgKkj-rsIe-UqF15qtVk579MITk';
 	}

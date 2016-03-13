@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2015 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2016 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -19,18 +19,15 @@
 
 /** File cindex.php.
  *
- * @copyright 2011-2015 Ritho-web project (see AUTHORS).
+ * @category  Controller
+ * @package   Ritho-web\Classes\Controller
+ * @since     0.1
  * @license http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
  * @version GIT: <git_id>
  * @link http://ritho.net
  */
 
-/** Controller for the Index page.
- *
- * @category  Controller
- * @package   Ritho-web\Classes\Controller
- * @since     0.1
- */
+/** Controller for the Index page. */
 class CIndex extends Controller {
 	/** Constructor of CIndex.
 	 *

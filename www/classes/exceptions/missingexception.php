@@ -1,5 +1,5 @@
 <?php
-/* Copyright (c) 2011-2014 Ritho-web team (see AUTHORS)
+/* Copyright (c) 2011-2016 Ritho-web team (see AUTHORS)
  *
  * This file is part of ritho-web.
  *
@@ -22,43 +22,36 @@
  *
  * This file include the MissingException class.
  *
- * @author Ritho-web team
- * @copyright Copyright (c) 2011-2012 Ritho-web team (look at AUTHORS file)
- * @license http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
- * @link http://ritho.net
- */
-
-/** Raise an exception when a class is missing.
- *
- * @copyright Copyright (c) 2011-2014 Ritho-web team (see AUTHORS)
  * @category  Exceptions
  * @package   Ritho-web\Classes\Exceptions
  * @since     0.1
+ * @license http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
+ * @version GIT: <git_id>
+ * @link http://ritho.net
  */
-class MissingException extends Exception
-{
-	/** Error message. */
-    protected $msg = '';
 
-	/** Error code. */
-    protected $code = 0;
+/** Raise an exception when a class is missing. */
+class MissingException extends Exception {
 
-	/** Previous exception. */
-    protected $previous = NULL;
+	/** @var $msg Error message. */
+	protected $msg = '';
 
-    /** Class constructor.
+	/** @var $code Error code. */
+	protected $code = 0;
+
+	/** @var $previous Previous exception. */
+	protected $previous = null;
+
+	/** Class constructor.
 	 *
-	 * @access public
-	 * @param string The error message.
-	 * @param int The error code.
-	 * @param Exception The previous exception.
-    */
-    public function __construct($msg = '', $code = 0, $previous = NULL)
-	{
-        $this->msg = 'Error loading the class: ' . $msg;
-        $this->code = $code;
-        $this->previous = $previous;
-        parent::__construct($msg, $code, $previous);
-    }
+	 * @param string    $msg      The error message.
+	 * @param integer   $code     The error code.
+	 * @param Exception $previous The previous exception.
+	 */
+	public function __construct($msg = '', $code = 0, Exception $previous = null) {
+		$this->msg = 'Error loading the class: ' . $msg;
+		$this->code = $code;
+		$this->previous = $previous;
+		parent::__construct($msg, $code, $previous);
+	}
 }
-?>

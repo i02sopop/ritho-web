@@ -1,9 +1,13 @@
-<?php echo "<!DOCTYPE HTML>"; ?>
+<!DOCTYPE HTML>
 <html lang="es">
-<?php require_once('head.html'); ?>
+<?php require_once 'head.html'; ?>
 <body id="ritho">
-<h1>Error. Page <?php if(isset($path)) echo $path; ?> not found.</h1>
+<?php require_once 'header.html'; ?>
+<h3>Page <?php if(isset($errorPage)) echo $errorPage; ?> not found.</h3>
+<?php require_once 'footer.html'; ?>
+<?php foreach ($js as $jsFile) { ?>
+<script type="text/javascript" src="<?php echo $configs['js_path']; ?>/<?php echo $jsFile['src']; ?>">
+</script>
+<?php } ?>
 </body>
 </html>
-
-
