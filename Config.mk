@@ -62,10 +62,10 @@ HTTPS_PORT=$(call genport,2)
 HTTPD_USER=$(shell id -un)
 HTTPD_GROUP=$(shell id -gn)
 
-PGSQL_HOST=$(BUILD_DIR)/data
+PGSQL_HOST=$(HOST)
 PGSQL_PORT=$(call genport,10)
-PGSQL_USER=$(shell id -un)
-PGSQL_PASSWD=$(shell id -un)
+PGSQL_USER=ritho
+PGSQL_PASSWD=ritho
 
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
@@ -113,7 +113,7 @@ LOG_FILE=ritho.log
 LOG_PREFIX=ritho_
 
 PGSQL_VERSION=$(shell psql -V | awk -F' ' '{ print $$3 }' | awk -F'.' '{ if ($$2 != null) print $$1"."$$2 }')
-PGSQL_DATA=$(PGSQL_HOST)
+PGSQL_DATA=$(BUILD_DIR)/data
 PGSQL_DIR=$(BUILD_DIR)/pgsql
 PGSQL_BIN=/usr/lib/postgresql/$(PGSQL_VERSION)/bin
 PGSQL_LOGDIR=$(LOG_DIR)
@@ -128,7 +128,7 @@ MYSQL_LOG_QSLOW=$(MYSQL_LOGDIR)/mysql-slow.log
 DB_DATA_FILES=$(wildcard $(DB_SCRIPTS_DIR)/initialize-*.sql)
 
 DB_ENGINE=postgresql
-DB_HOST=$(HOST)
+DB_HOST=$(PGSQL_HOST)
 DB_PORT=$(PGSQL_PORT)
 DB_USER=$(PGSQL_USER)
 DB_PASSWD=$(PGSQL_PASSWD)
