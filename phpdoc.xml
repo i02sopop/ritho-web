@@ -14,7 +14,7 @@
 	</extensions>
   </parser>
   <transformer>
-    <target>doc</target>
+    <target>doc/phpdoc</target>
     <!-- <external-class-documentation> -->
     <!--     <prefix>HTML_QuickForm2</prefix> -->
     <!--     <uri>http://pear.php.net/package/HTML_QuickForm2/docs/latest/HTML_QuickForm2/{CLASS}.html</uri> -->
@@ -31,8 +31,8 @@
   <logging>
 	<level>info</level>
     <paths>
-        <default>{APP_ROOT}/doc/log/{DATE}.log</default>
-        <errors>{APP_ROOT}/doc/log/{DATE}.errors.log</errors>
+      <default>doc/phpdoc/log/{DATE}.log</default>
+      <errors>doc/phpdoc/log/{DATE}.errors.log</errors>
     </paths>
   </logging>
 </phpdoc>

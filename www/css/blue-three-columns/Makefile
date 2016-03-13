@@ -1,15 +1,19 @@
 TOPDIR?=$(realpath ../../..)
 include $(TOPDIR)/Config.mk
 
-DIRS=
-SRCS=style.css styleIE7.css styleIE.css styleIEOld.css stylePrint.css
+THEME=blue-three-columns
+DIRS=fonts
+SRCS=style.css
 
-build: install
 
 install:
-	@for i in $(DIRS) ; do $(MAKE) -C $$i build ; done
-	@mkdir -p $(WWW_DIR)/css/blue-three-columns
+	@for i in $(DIRS) ; do $(MAKE) -C $$i install; done
+	@mkdir -p $(CSS_DIR)/$(THEME)
 	@for i in $(SRCS); do \
-		cp $$i $(WWW_DIR)/css/blue-three-columns ; \
-		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(WWW_DIR)/css/blue-three-columns/$$i ; \
+		install $$i $(CSS_DIR)/$(THEME); \
+		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(CSS_DIR)/$(THEME)/$$i ; \
 	done
+
+clean:
+	@for i in $(DIRS) ; do $(MAKE) -C $$i clean; done
+	@echo "Cleaning css theme"

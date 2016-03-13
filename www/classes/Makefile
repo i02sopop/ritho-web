@@ -6,14 +6,15 @@ DIRS += databases
 DIRS += exceptions
 DIRS += utils
 SRCS  = base.php
-SRCS += ritho.php
+SRCS += template.php
 
-build: install
-
-install:
-	@for i in $(DIRS) ; do $(MAKE) -C $$i build ; done
+install: $(SRCS)
+	@for i in $(DIRS) ; do $(MAKE) -C $$i install; done
 	@mkdir -p $(WWW_DIR)/classes
 	@for i in $(SRCS); do \
-		cp $$i $(WWW_DIR)/classes ; \
+		install $$i $(WWW_DIR)/classes ; \
 		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(WWW_DIR)/classes/$$i ; \
 	done
+
+clean:
+	@for i in $(DIRS) ; do $(MAKE) -C $$i clean; done

@@ -1,8 +1,14 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS groups;
 DROP TABLE IF EXISTS user_group;
+DROP TABLE IF EXISTS paths;
+DROP TABLE IF EXISTS config;
 
-CREATE TABLE users(
+--
+-- Table to store the site users.
+--
+
+CREATE TABLE users (
        id INT PRIMARY KEY,
        username VARCHAR(20) NOT NULL UNIQUE,
        pass VARCHAR(30) NOT NULL,
@@ -14,13 +20,48 @@ CREATE TABLE users(
        u_country VARCHAR(30)
 );
 
-CREATE TABLE groups(
+--
+-- Table to store the site groups.
+--
+
+CREATE TABLE groups (
        id INT PRIMARY KEY,
        gname VARCHAR(30) NOT NULL UNIQUE
 );
 
-CREATE TABLE user_group(
+--
+-- Table to store the relation between users and groups.
+--
+
+CREATE TABLE user_group (
        uid INT REFERENCES users(id),
        gid INT REFERENCES groups(id),
        PRIMARY KEY(uid,gid)
 );
+
+-- 
+-- Table to store the configs of the site.
+-- 
+
+CREATE TABLE config (
+	c_key VARCHAR(30) PRIMARY KEY,
+	c_value VARCHAR(100)
+);
+
+--
+-- Table to store the path and the controller that responds to it.
+--
+
+CREATE TABLE paths (
+	c_path VARCHAR(250) PRIMARY KEY,
+	controller VARCHAR(50),
+	param VARCHAR(30)
+);
+
+--
+-- Create database users.
+--
+
+CREATE USER ritho WITH PASSWORD 'ritho';
+GRANT ALL PRIVILEGES ON DATABASE ritho_web TO ritho;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ritho;

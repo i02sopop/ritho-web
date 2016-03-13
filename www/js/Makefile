@@ -1,15 +1,32 @@
 TOPDIR?=$(realpath ../..)
 include $(TOPDIR)/Config.mk
 
-DIRS=
-SRCS=jquery.js modernizr.js ritho.js less.js ember.js
+DIRS  =
+SRCS  = jquery.min.js
+SRCS += modernizr.min.js
+SRCS += ritho.min.js
+SRCS += less.min.js
+CHECK_JS = ritho.js
 
-build: install
-
-install:
-	@for i in $(DIRS) ; do $(MAKE) -C $$i build ; done
-	@mkdir -p $(WWW_DIR)/js
-	@for i in $(SRCS); do \
-		cp $$i $(WWW_DIR)/js ; \
-		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(WWW_DIR)/js/$$i ; \
+check-js: $(CHECK_JS)
+	@for i in $(CHECK_JS); do \
+		jshint $$i --config .jshintrc ; \
 	done
+	@echo "Running JSHint on javascript...             ${CHECK} Done"
+
+%.min.js: %.js
+	@+make check-js
+	@java -jar $(LIB_DIR)/yuicompressor-2.4.7.jar --type js -o $@ $<
+	@echo "Compiling and minifying javascript...       ${CHECK} Done"
+
+install: $(SRCS)
+	@for i in $(DIRS) ; do $(MAKE) -C $$i install; done
+	@mkdir -p $(JS_DIR)
+	@for i in $(SRCS); do \
+		install $$i $(JS_DIR); \
+		perl -i -pne 's/%(\w+?)%/$$ENV{$$1}/ge' $(JS_DIR)/$$i; \
+	done
+
+clean:
+	@for i in $(DIRS) ; do $(MAKE) -C $$i clean; done
+	@rm -f *.min.js
