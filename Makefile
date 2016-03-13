@@ -10,8 +10,6 @@ rall all:
 	@+if [ -d $(BUILD_DIR) ] ; then make clean ; fi
 	@+make start-environment
 
-rall: start-environment doc
-
 dirs:
 	@if [ ! -d $(BUILD_DIR) ] ; then mkdir -p $(BUILD_DIR) ; fi
 	@if [ ! -d $(SESSIONS_DIR) ] ; then mkdir -p $(SESSIONS_DIR) ; fi
