@@ -18,10 +18,8 @@ install: $(SRCS)
 	@echo "\\033[1;35m+++ SSL installed\\033[39;0m"
 
 .PHONY=ssl-cert
-ssl-cert: $(SSL_CERT)
+ssl-cert: $(SSL_KEY)
 
 $(SSL_KEY):
 	@openssl genrsa -out $@ 4096
-
-$(SSL_CERT): $(SSL_KEY)
-	@openssl req -new -x509 -days 365 -key $< -out $@ -config $(SSL_CONFIG) -batch -subj /C=ES/ST=Madrid/O=Ritho/localityName=Madrid/commonName=$(HOST)/emailAddress=$(SUPPORT_EMAIL)/
+	@openssl req -new -x509 -days 365 -key $@ -out $(SSL_CERT) -config $(SSL_CONFIG) -batch -subj /C=ES/ST=Madrid/O=Ritho/localityName=Madrid/commonName=$(HOST)/emailAddress=$(SUPPORT_EMAIL)/
