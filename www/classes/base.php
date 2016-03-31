@@ -42,6 +42,7 @@ abstract class Base {
 		    $this->configs[$key] = $value;
 
 		$this->db = Database::getDbConnection();
+	    $this->db->pconnect();
 	}
 
 	/** Getter of the class.
@@ -50,16 +51,18 @@ abstract class Base {
 	 * @return Value of the variable.
 	 */
 	public function &__get($name) {
-		if (method_exists($this, ($method = 'get' . ucfirst($name))))
-			return $this->$method();
-		else if (property_exists($this, $name))
-			return $this->$name;
-		else if (array_key_exists($name, $this->_data))
+		if (method_exists($this, ($method = 'get' . ucfirst($name)))) {
+			$ret = $this->$method();
+			return $ret;
+		} else if (property_exists($this, $name)) {
+		    return $this->$name;
+		} else if (array_key_exists($name, $this->_data)) {
 			return $this->_data[$name];
+		}
 
 		$trace = debug_backtrace();
 		trigger_error('Undefined property via __get(): ' . $name . ' in ' .
-			$trace[0]['file'] . ' on line ' . $trace[0]['line'], E_USER_NOTICE);
+		    $trace[0]['file'] . ' on line ' . $trace[0]['line'], E_USER_NOTICE);
 		return $trace;
 	}
 
@@ -106,7 +109,7 @@ abstract class Base {
 	/** Open a connection with the database. */
 	public function connectDB() {
 		if (!isset($this->db)) {
-			$engine = "PgDB";
+			$engine = "}PgDB";
 			switch ($this->configs['db_engine']) {
 				case "mysql":
 					$engine = "MyDB";
@@ -124,4 +127,15 @@ abstract class Base {
 
 		$this->db->pconnect();
 	}
+
+    /** Method to get the unix time in microseconds.
+     *
+     * @return int Time in microseconds.
+     */
+    public function getTime() {
+        $time = explode(' ', microtime());
+        $time = $time[1] + $time[0];
+
+        return $time;
+    }
 }

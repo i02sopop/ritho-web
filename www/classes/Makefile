@@ -7,6 +7,7 @@ DIRS += exceptions
 DIRS += utils
 SRCS  = base.php
 SRCS += template.php
+SRCS += ritho.php
 
 install: $(SRCS)
 	@for i in $(DIRS) ; do $(MAKE) -C $$i install; done

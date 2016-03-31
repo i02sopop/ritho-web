@@ -19,14 +19,4 @@
 
 require_once 'configuration.php';
 
-/* TODO: This wil go to the main class. */
-/* Controller to run. */
-$controller = null;
-
-/* URI requested. */
-$requested = empty($_SERVER['REQUEST_URI']) ? false : $_SERVER['REQUEST_URI'];
-$path = (!empty($_SERVER['QUERY_STRING'])) ?
-	substr($requested, 0, strpos($requested, $_SERVER['QUERY_STRING']) - 1) :
-	$requested;
-$controller = getController($path);
-$controller->run();
+$ritho = new Ritho();
