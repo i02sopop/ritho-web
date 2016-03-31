@@ -1,8 +1,12 @@
 TOPDIR?=$(realpath ..)
 include $(TOPDIR)/Config.mk
 
-DIRS=ssl
-SRCS=apache2-vhosts.conf apache2.conf postgresql.conf my.cnf
+DIRS  = ssl
+SRCS  = apache2-vhosts.conf
+SRCS += apache2.conf
+SRCS += postgresql.conf
+SRCS += pg_hba.conf
+SRCS += my.cnf
 
 install:
 	@echo "\\033[1;35m+++ Installing conf\\033[39;0m"
