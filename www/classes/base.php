@@ -52,7 +52,7 @@ abstract class Base {
 	public function &__get($name) {
 		if (method_exists($this, ($method = 'get' . ucfirst($name))))
 			return $this->$method();
-		else if ($this->$name !== null)
+		else if (property_exists($this, $name))
 			return $this->$name;
 		else if (array_key_exists($name, $this->_data))
 			return $this->_data[$name];
