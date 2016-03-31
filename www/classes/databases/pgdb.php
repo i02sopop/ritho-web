@@ -28,7 +28,7 @@
  */
 
 /** Postgresql database engine. */
-class PgDB extends DB {
+class PgDB extends Database {
 
 	/** Constructor of the class.
 	 *
@@ -39,7 +39,7 @@ class PgDB extends DB {
 	 * @param integer $port Port number where the DB server is listening.
 	 */
 	public function __construct($user = 'root', $pass = '', $db = 'db',
-								$host = 'localhost', $port = 5432) {
+	                            $host = 'localhost', $port = 5432) {
 		parent::__construct($user, $pass, $db, $host, $port);
 	}
 
@@ -227,7 +227,7 @@ class PgDB extends DB {
 	 * @return Object fetched.
 	 */
 	public function fetchObject($result = null, $className = 'StdClass',
-								array $params = array()) {
+	                            array $params = array()) {
 		$res = $this->result;
 		if ($result !== null)
 			$res = $result;

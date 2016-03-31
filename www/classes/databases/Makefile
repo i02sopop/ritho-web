@@ -1,8 +1,10 @@
 TOPDIR?=$(realpath ../../..)
 include $(TOPDIR)/Config.mk
 
-DIRS=
-SRCS=db.php mydb.php pgdb.php
+DIRS  =
+SRCS  = database.php
+SRCS += mydb.php
+SRCS += pgdb.php
 
 install: $(SRCS)
 	@for i in $(DIRS) ; do $(MAKE) -C $$i install; done

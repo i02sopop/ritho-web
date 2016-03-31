@@ -52,7 +52,7 @@ $GLOBALS['configs'] = $configs = array(
 	'timezone' => 'Europe/Madrid',
 	);
 
-/* Loading functions. */
+/* Load functions. */
 require_once($configs['include_path'] . '/functions.php');
 
 /* Setting the timezone. */

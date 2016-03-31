@@ -28,7 +28,7 @@
  */
 
 /** MySQL database engine. */
-class MyDB extends DB {
+class MyDB extends Database {
 	/** Constructor of the class.
 	 *
 	 * @param string  $user     User to authenticate to the DB server.

@@ -7,8 +7,8 @@ DIRS=conf www
 .PHONY: all rall rc clean doc
 
 rall all:
-	@+if [ -d $(BUILD_DIR) ] ; then make clean ; fi
-	@+make start-environment
+	@if [ -d $(BUILD_DIR) ] ; then $(MAKE) clean ; fi
+	@$(MAKE) start-environment
 
 dirs:
 	@if [ ! -d $(BUILD_DIR) ] ; then mkdir -p $(BUILD_DIR) ; fi
@@ -29,7 +29,7 @@ rc: clean-build
 
 db-start:
 	@echo "\\033[1;35m+++ Starting db\\033[39;0m"
-	@make $(DB_ENGINE)-start
+	@$(MAKE) $(DB_ENGINE)-start
 
 $(BUILD_DIR): install
 
@@ -102,7 +102,7 @@ phantom-stop:
 
 db-stop:
 	@echo "\\033[1;35m+++ Stoping db\\033[39;0m"
-	@make $(DB_ENGINE)-stop
+	@$(MAKE) $(DB_ENGINE)-stop
 
 mysql-stop:
 	@echo "\\033[1;35m+++ Stopping mysql\\033[39;0m"
@@ -129,7 +129,6 @@ clean-build: stop-environment
 	@rm -rf $(SESSIONS_DIR)
 	@rm -rf $(BUILD_DIR)
 	@rm -rf $(DOC_DIR)/phpdoc
-	@rm -rf $(TOPDIR)/www/configuration.php
 
 install:
 	@echo "\\033[1;35m+++ Installing system\\033[39;0m"

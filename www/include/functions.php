@@ -109,7 +109,7 @@ function getTime() {
 function loadPaths() {
 	if (empty($GLOBALS['paths'])) {
 		/* Open a connection with the database. */
-		$dbConn = DB::getDbConnection();
+		$dbConn = Database::getDbConnection();
 		$dbConn->pconnect();
 		$res = $dbConn->select('paths');
 		if ($res === false)

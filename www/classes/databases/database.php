@@ -33,7 +33,7 @@ define('SQL_NUM', 1);
 define('SQL_BOTH', 2);
 
 /** Basic database engine. */
-abstract class DB extends Base {
+abstract class Database extends Base {
 
 	/** Function to get a database connection depending of the db engine used.
 	 *
@@ -48,9 +48,9 @@ abstract class DB extends Base {
 				                   $GLOBALS['configs']['db_name'],
 				                   $GLOBALS['configs']['db_host'],
 				                   $GLOBALS['configs']['db_port']);
-                break;
-            case 'mysql':
-                $dbConn = new MyDB($GLOBALS['configs']['db_user'],
+				break;
+			case 'mysql':
+				$dbConn = new MyDB($GLOBALS['configs']['db_user'],
 				                   $GLOBALS['configs']['db_password'],
 				                   $GLOBALS['configs']['db_name'],
 				                   $GLOBALS['configs']['db_host'],
@@ -77,12 +77,12 @@ abstract class DB extends Base {
 	 * @param integer $newPort     Port number where the DB server is listening.
 	 */
 	public function __construct($newUser = 'root', $newPassword = '',
-								$newDB = 'ritho', $newHost = 'localhost',
-								$newPort = -1) {
-		$this->user = ($newUser !== null) ? $newUser : 'root';
-		$this->password = ($newPassword !== null) ? $newPassword : '';
-		$this->host = ($newHost !== null) ? $newHost : 'localhost';
-		$this->db = ($newDB !== null) ? $newDB : 'ritho';
+	                            $newDB = 'ritho', $newHost = 'localhost',
+	                            $newPort = -1) {
+		$this->user = $newUser ?? 'root';
+		$this->password = $newPassword ?? '';
+		$this->host = $newHost ?? 'localhost';
+		$this->db = $newDB ?? 'ritho';
 		$this->port = $newPort;
 		$this->connection = null;
 		$this->isPersistent = false;
@@ -191,7 +191,7 @@ abstract class DB extends Base {
 	 * @return Object fetched.
 	 */
 	abstract public function fetchObject($result = null, $className = 'StdClass',
-										 array $params = array());
+	                                     array $params = array());
 
 	/** Fetch a row into a numbered array from a query result.
 	 *

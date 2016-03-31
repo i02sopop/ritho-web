@@ -41,7 +41,7 @@ abstract class Base {
 		foreach ($GLOBALS['configs'] as $key => $value)
 		    $this->configs[$key] = $value;
 
-		$this->db = DB::getDbConnection();
+		$this->db = Database::getDbConnection();
 	}
 
 	/** Getter of the class.
@@ -101,5 +101,27 @@ abstract class Base {
 			unset($this->$name);
 		else
 			unset($this->_data[$name]);
+	}
+
+	/** Open a connection with the database. */
+	public function connectDB() {
+		if (!isset($this->db)) {
+			$engine = "PgDB";
+			switch ($this->configs['db_engine']) {
+				case "mysql":
+					$engine = "MyDB";
+					break;
+				case "postgresql":
+					$engine = "PgDB";
+			}
+
+			$this->db = new $engine(
+				$this->configs['db_user'], $this->configs['db_password'],
+				$this->configs['db_host'], $this->configs['db_name'],
+				$this->configs['db_port']
+			);
+		}
+
+		$this->db->pconnect();
 	}
 }
