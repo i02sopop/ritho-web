@@ -57,11 +57,13 @@ class Log extends Base {
 	 * @param string $file Logging file name.
 	 * @throws Exception When there's a permission problem we throw an exception.
 	 */
-	private function __construct($file = null) {
+	public function __construct($file = null) {
+		parent::__construct();
+
 		if (!file_exists($this->configs['log_path']) &&
 			!mkdir($this->configs['log_path'], 0755, true)) {
 			throw new Exception('Sorry, I couldn\'t create the directory ' .
-								$this->configs['log_path'] . ' for logging.');
+			    $this->configs['log_path'] . ' for logging.');
 		}
 
 		$this->logFilename = $this->configs['log_path'] . '/' .
