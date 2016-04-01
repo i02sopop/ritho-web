@@ -1,0 +1,15 @@
+language: php
+
+php:
+  - '7.0'
+
+addons:
+  apt:
+    packages:
+      - php7.0-pgsql
+      - libapache2-mod-php7.0
+
+install: true
+
+script:
+  - make rall
