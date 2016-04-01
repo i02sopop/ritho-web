@@ -6,7 +6,6 @@ DIRS += databases
 DIRS += exceptions
 DIRS += utils
 SRCS  = base.php
-SRCS += template.php
 SRCS += ritho.php
 
 install: $(SRCS)
