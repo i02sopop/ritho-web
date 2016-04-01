@@ -20,7 +20,7 @@
 /** File template.php.
  *
  * @category  General
- * @package	  Ritho-web\Classes
+ * @package	  Ritho-web\Classes\Utils
  * @since	  0.1
  * @license	  http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
  * @version	  GIT: <git_id>
@@ -42,7 +42,7 @@ class Template extends Base {
 		parent::__construct();
 
 		$this->_path = $this->configs['template_path'] . '/' . $name .
-		     $this->configs['template_ext'];
+		    $this->configs['template_ext'];
 		if (!is_file($this->_path))
 			die('Invalid template: ' . $this->_path);
 	}

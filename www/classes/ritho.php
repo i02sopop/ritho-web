@@ -17,96 +17,114 @@
    License along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/** File ritho.php.
+ *
+ * @category  General
+ * @package	  Ritho-web\Classes\Utils
+ * @since	  0.1
+ * @license	  http://opensource.org/licenses/AGPL-3.0 GNU Affero General Public License
+ * @version	  GIT: <git_id>
+ * @link http://ritho.net
+ */
+
 /** Ritho application class. */
 class Ritho extends Base {
 
-    /** Class constructor. */
-    public function __construct() {
+	/** Class constructor. */
+	public function __construct() {
 		parent::__construct();
 
-        $this->request = empty($_SERVER['REQUEST_URI']) ?
-            false :
-            $_SERVER['REQUEST_URI'];
+		$this->request = empty($_SERVER['REQUEST_URI']) ?
+		    false :
+		    $_SERVER['REQUEST_URI'];
 
-        $this->pathRequested = (!empty($_SERVER['QUERY_STRING'])) ?
-            substr($this->requested, 0, strpos($this->requested, $_SERVER['QUERY_STRING']) - 1) :
-            $this->request;
+		$this->pathRequested = (!empty($_SERVER['QUERY_STRING'])) ?
+		    substr($this->request, 0, strpos($this->request, $_SERVER['QUERY_STRING']) - 1) :
+		    $this->request;
 
-        $this->controller = $this->getController();
-        $this->controller->run();
-    }
+		$this->getController();
+		$this->controller->run();
+	}
 
-    /** Method to create the controller related with an entry path. */
-    protected function getController() {
-        $this->loadPaths();
-        $controllerName = '';
-        $firstParam = '';
-        $params = null;
-        $path = $this->cleanPath();
-        if (empty($path)) {
-            $controllerName = 'CIndex';
-            $firstParam = '';
-        } else if (array_key_exists($path, $this->paths)) {
-            $controllerName = $this->paths[$path]['controller'];
-            $firstParam = $this->paths[$path]['param'];
-        } else {
-            $pathKeys = array_keys($this->paths);
-            $pathSelected = '';
-            foreach ($pathKeys as $curPath) {
-                if (strlen($curPath) > strlen($pathSelected)) {
-                    $pattern = preg_replace('/\//', '\\/', preg_quote($curPath));
-                    if (preg_match('/' . $pattern . '/', $path) === 1)
-                        $pathSelected = $curPath;
-                }
-            }
-            $controllerName = $this->paths[$pathSelected]['controller'];
-            if ($controllerName === 'CIndex')
-                $controllerName = '';
-            $firstParam = $this->paths[$pathSelected]['param'];
-            $params = preg_split('/\//', substr($path, strlen($pathSelected)));
-            if (!empty($params[0]))
-                $controllerName = '';
-            array_shift($params);
-        }
+	/** Method to create the controller related with an entry path.
+	 *
+	 * @return void
+	 */
+	protected function getController() {
+		$this->_loadPaths();
+		$controllerName = '';
+		$firstParam = '';
+		$params = null;
+		$path = $this->_cleanPath();
+		if (empty($path)) {
+			$controllerName = 'CIndex';
+			$firstParam = '';
+		} else if (array_key_exists($path, $this->paths)) {
+			$controllerName = $this->paths[$path]['controller'];
+			$firstParam = $this->paths[$path]['param'];
+		} else {
+			$pathKeys = array_keys($this->paths);
+			$pathSelected = '';
+			foreach ($pathKeys as $curPath) {
+				if (strlen($curPath) > strlen($pathSelected)) {
+					$pattern = preg_replace('/\//', '\\/', preg_quote($curPath));
+					if (preg_match('/' . $pattern . '/', $path) === 1)
+						$pathSelected = $curPath;
+				}
+			}
 
-        if (empty($controllerName))
-            return new C404($firstParam, array('path' => substr($path, 1)));
+			$controllerName = $this->paths[$pathSelected]['controller'];
+			if ($controllerName === 'CIndex')
+				$controllerName = '';
+			$firstParam = $this->paths[$pathSelected]['param'];
+			$params = preg_split('/\//', substr($path, strlen($pathSelected)));
+			if (!empty($params[0]))
+				$controllerName = '';
+			array_shift($params);
+		}
 
-        return new $controllerName($firstParam, $params);
-    }
+		if (empty($controllerName))
+			$this->controller = new C404($firstParam, array('path' => substr($path, 1)));
 
-    /** Method to load the relation between paths and controllers from db. */
-    private function loadPaths() {
-        if (!isset($this->paths))
-            $this->paths = array();
+		$this->controller = new $controllerName($firstParam, $params);
+	}
 
-        if (empty($this->paths)) {
-            $res = $this->db->select('paths');
-            if ($res === false)
-                throw new Exception('Error loading the paths fromm the database.');
+	/** Method to load the relation between paths and controllers from db.
+	 *
+	 * @throws Exception Throws an exception when it can't load the paths from db.
+	 * @return void
+	 */
+	private function _loadPaths() {
+		if (!isset($this->paths))
+			$this->paths = array();
 
-            $rows = $this->db->fetchAll($res);
-            if ($rows && count($rows) > 0) {
-                foreach ($rows as $row) {
-                    $this->paths[$row['c_path']]['controller'] = $row['controller'];
-                    $this->paths[$row['c_path']]['param'] = $row['param'];
-                }
-            }
-        }
-    }
+		if (empty($this->paths)) {
+			$res = $this->db->select('paths');
+			if ($res === false)
+				throw new Exception('Error loading the paths fromm the database.');
 
+			$rows = $this->db->fetchAll($res);
+			if ($rows && count($rows) > 0) {
+				foreach ($rows as $row) {
+					$this->paths[$row['c_path']]['controller'] = $row['controller'];
+					$this->paths[$row['c_path']]['param'] = $row['param'];
+				}
+			}
+		}
+	}
 
-    /** Method to clean the path of spaces (trim) and the final slash (/).
-     *
-     * @return void
-     */
-    private function cleanPath() {
-        if (!is_string($this->pathRequested))
-            $this->pathRequested = '';
+	/** Method to clean the path of spaces (trim) and the final slash (/).
+	 *
+	 * @return void
+	 */
+	private function _cleanPath() {
+		if (!is_string($this->pathRequested))
+			$this->pathRequested = '';
 
-        $this->pathRequested = trim(urldecode($this->pathRequested));
-        if (!empty($this->pathRequested) &&
-            strrpos($this->pathRequested, '/') == (strlen($this->pathRequested) - 1))
-            $this->pathRequested = substr($this->pathRequested, 0, strlen($this->pathRequested) - 1);
-    }
+		$this->pathRequested = trim(urldecode($this->pathRequested));
+		if (!empty($this->pathRequested) &&
+			strrpos($this->pathRequested, '/') == (strlen($this->pathRequested) - 1))
+			$this->pathRequested = substr($this->pathRequested, 0,
+			                              strlen($this->pathRequested) - 1);
+	}
 }
