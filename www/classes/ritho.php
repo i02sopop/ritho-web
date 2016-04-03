@@ -42,7 +42,7 @@ class Ritho extends Base {
 		    substr($this->request, 0, strpos($this->request, $_SERVER['QUERY_STRING']) - 1) :
 		    $this->request;
 
-		$this->getController();
+		$this->_getController();
 		$this->controller->run();
 	}
 
@@ -50,7 +50,7 @@ class Ritho extends Base {
 	 *
 	 * @return void
 	 */
-	protected function getController() {
+	private function _getController() {
 		$this->_loadPaths();
 		$controllerName = '';
 		$firstParam = '';
