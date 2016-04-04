@@ -12,6 +12,10 @@ addons:
       - libapache2-mod-php7.0
       - php7.0
       - php7.0-pgsql
+      - libgnutls30
+      - libssl-1.0.2
+      - openssl
+      - ssl-cert
 
 install: true
 
