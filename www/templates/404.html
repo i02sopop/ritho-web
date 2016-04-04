@@ -1,9 +1,23 @@
 <!DOCTYPE HTML>
 <html lang="es">
-<?php require_once 'head.html'; ?>
-<body id="ritho">
-<?php require_once 'header.html'; ?>
-<h3>Page <?php if(isset($errorPage)) echo $errorPage; ?> not found.</h3>
+  <?php require_once 'head.html'; ?>
+  <body id="ritho">
+	<?php require_once 'header.html'; ?>
+	<div class="col1">
+	  <?php require_once 'left.html'; ?>
+	</div>
+	<div class="col2">
+	  <div class="col21">
+		<section>
+		  <h1>Página no encontrada</h1>
+		  <p>La página <?php if(isset($errorPage)) echo $errorPage; ?>
+		  no ha sido encontrada.</p>
+		</section>
+	  </div>
+	  <div class="col22">
+		<?php require_once 'right.html'; ?>
+	  </div>
+	</div>
 <?php require_once 'footer.html'; ?>
 <?php foreach ($js as $jsFile) { ?>
 <script type="text/javascript" src="<?php echo $configs['js_path']; ?>/<?php echo $jsFile['src']; ?>">

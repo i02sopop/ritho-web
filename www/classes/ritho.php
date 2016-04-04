@@ -86,8 +86,8 @@ class Ritho extends Base {
 
 		if (empty($controllerName))
 			$this->controller = new C404($firstParam, array('path' => substr($path, 1)));
-
-		$this->controller = new $controllerName($firstParam, $params);
+		else
+			$this->controller = new $controllerName($firstParam, $params);
 	}
 
 	/** Method to load the relation between paths and controllers from db.
