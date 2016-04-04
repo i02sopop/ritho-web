@@ -55,7 +55,8 @@ class Ritho extends Base {
 		$controllerName = '';
 		$firstParam = '';
 		$params = null;
-		$path = $this->_cleanPath();
+		$this->_cleanPath();
+		$path = $this->pathRequested;
 		if (empty($path)) {
 			$controllerName = 'CIndex';
 			$firstParam = '';

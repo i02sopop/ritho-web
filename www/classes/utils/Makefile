@@ -3,6 +3,7 @@ include $(TOPDIR)/Config.mk
 
 DIRS  =
 SRCS  = log.php
+SRCS += account.php
 SRCS += template.php
 
 install: $(SRCS)

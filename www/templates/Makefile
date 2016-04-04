@@ -3,6 +3,7 @@ include $(TOPDIR)/Config.mk
 
 DIRS  =
 SRCS  = 404.html
+SRCS += account.html
 SRCS += center.html
 SRCS += footer.html
 SRCS += header.html

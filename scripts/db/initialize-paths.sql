@@ -4,7 +4,7 @@ INSERT INTO paths (c_path, controller, param) VALUES
 	('/inicio', 'CIndex', ''),
 --	('/login', 'CLogin', ''),
 --	('/logout', 'CLogout', ''),
---	('/cuenta', 'CAccount', 'account'),
+	('/cuenta', 'CAccount', 'account'),
 	('/help', 'CHelp', ''),
 	('/ayuda', 'CHelp', ''),
 	('/404', 'C404', '')

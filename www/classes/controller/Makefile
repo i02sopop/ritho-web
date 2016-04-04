@@ -4,6 +4,7 @@ include $(TOPDIR)/Config.mk
 DIRS=
 SRCS  = controller.php
 SRCS += cindex.php
+SRCS += caccount.php
 SRCS += c404.php
 
 install: $(SRCS)
