@@ -6,11 +6,11 @@ php:
 addons:
   apt:
     packages:
-	  - nodejs
-	  - npm
-	  - apache2
+      - nodejs
+      - npm
+      - apache2
       - libapache2-mod-php7.0
-	  - php7.0
+      - php7.0
       - php7.0-pgsql
 
 install: true
